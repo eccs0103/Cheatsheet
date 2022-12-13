@@ -5,7 +5,7 @@ const url = (() => {
 	}
 	return input;
 })();
-Manager.queryText(``).then((text) => {
+Manager.queryText(url).then((text) => {
 	const sheet = Sheet.import(/** @type {SheetNotation} */(JSON.parse(text)));
 	const settings = Settings.import(archiveSettings.data);
 	window.addEventListener(`beforeunload`, (event) => {
