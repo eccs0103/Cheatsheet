@@ -129,7 +129,7 @@ class Settings {
 const nameDeveloper = `Adaptive Core`;
 const nameProject = `Cheatsheet`;
 /** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
-const versionProject = (/** @type {VersionNotation} */ ({ "global": 2, "partial": 1, "local": 6 }));
+// const versionProject = (/** @type {VersionNotation} */ ({ "global": 0, "partial": 0, "local": 0 }));
 const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}`, Settings.export(new Settings()));
 const safeMode = true;
 //#endregion

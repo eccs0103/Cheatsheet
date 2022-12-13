@@ -5,9 +5,8 @@ const url = (() => {
 	}
 	return input;
 })();
-Manager.queryText(url).then((text) => {
+Manager.queryText(``).then((text) => {
 	const sheet = Sheet.import(/** @type {SheetNotation} */(JSON.parse(text)));
-
 	const settings = Settings.import(archiveSettings.data);
 	window.addEventListener(`beforeunload`, (event) => {
 		archiveSettings.data = Settings.export(settings);
