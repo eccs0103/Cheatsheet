@@ -1,11 +1,4 @@
-const url = (() => {
-	let input = window.prompt(`Enter the url.`);
-	while (!input) {
-		input = window.prompt(`Enter the url.`);
-	}
-	return input;
-})();
-Manager.queryText(``).then((text) => {
+Manager.queryText(`https://raw.githubusercontent.com/eccs0103/Cheatsheet/main/scripts/database.json`).then((text) => {
 	const sheet = Sheet.import(/** @type {SheetNotation} */(JSON.parse(text)));
 	const settings = Settings.import(archiveSettings.data);
 	window.addEventListener(`beforeunload`, (event) => {
@@ -42,42 +35,6 @@ Manager.queryText(``).then((text) => {
 	inputSeachField.addEventListener(`input`, (event) => {
 		search(inputSeachField.value);
 	});
-
-	const inputA = (/** @type {HTMLInputElement} */ (document.querySelector(`input#a`)));
-	inputA.checked = settings.hideIncorrectAnswers;
-	inputA.addEventListener(`change`, (event) => {
-		settings.hideIncorrectAnswers = inputA.checked;
-		search(inputSeachField.value);
-	});
 }).catch((reason) => {
 	window.alert(reason);
 });
-
-// new Sheet(`A`, ...[
-// 	new Pole(`A-1`, 0, ...[
-// 		`A-1-1`,
-// 		`A-1-2`,
-// 		`A-1-3`,
-// 		`A-1-4`,
-// 	]),
-// 	new Pole(`A-2`, 0, ...[
-// 		`A-2-1`,
-// 		`A-2-2`,
-// 		`A-2-3`,
-// 		`A-2-4`,
-// 	]),
-// 	new Pole(`A-3`, 0, ...[
-// 		`A-3-1`,
-// 		`A-3-2`,
-// 		`A-3-3`,
-// 		`A-3-4`,
-// 	]),
-// 	new Pole(`A-4`, 0, ...[
-// 		`A-4-1`,
-// 		`A-4-2`,
-// 		`A-4-3`,
-// 		`A-4-4`,
-// 	]),
-// ]);
-
-

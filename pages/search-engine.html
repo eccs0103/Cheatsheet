@@ -12,18 +12,12 @@
 	<script type="text/javascript" src="../scripts/search-engine.js" defer></script>
 </head>
 
-<body style="position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; grid-template-columns: 1fr auto; gap: var(--size-gap); padding: var(--size-gap);">
-	<div class="layer" style="grid-area: 1 / 1 / span 1 / span 2; padding: var(--size-gap); overflow-y: hidden;">
+<body style="position: fixed; inset: 0; display: grid; gap: var(--size-gap); padding: var(--size-gap);">
+	<div class="layer" style="padding: var(--size-gap); overflow-y: hidden;">
 		<ol id="poles-container" style="height: 100%; overflow-y: auto;"></ol>
 	</div>
-	<div class="layer" style="grid-area: 2 / 1 / span 1 / span 1;">
+	<div class="layer">
 		<input id="search-field" type="text" inputmode="latin" placeholder="Input text" class="transparent" style="width: 100%;">
-	</div>
-	<div class="layer" style="display: flex; justify-content: center; align-items: center; padding: 0 var(--size-gap);">
-		<input id="a" type="checkbox" hidden>
-		<label for="a" role="checkbox" class="depth toggle">
-			<span class="layer knob"></span>
-		</label>
 	</div>
 </body>
 
