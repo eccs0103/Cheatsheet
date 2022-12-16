@@ -52,6 +52,13 @@ class Archive {
 	set data(value) {
 		localStorage.setItem(this.#path, JSON.stringify(value, undefined, " "));
 	}
+	/**
+	 * 
+	 * @param {(value: Notation) => Notation} action 
+	 */
+	change(action) {
+		this.data = action(this.data);
+	}
 }
 //#endregion
 //#region Manager

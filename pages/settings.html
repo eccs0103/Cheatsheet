@@ -4,12 +4,12 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Cheatsheet - Search engine</title>
+	<title>Cheatsheet - Settings</title>
 	<link rel="stylesheet" type="text/css" href="../styles/style.css" />
 	<link rel="stylesheet" type="text/css" href="../styles/themes/material-dark.css" />
 	<script type="text/javascript" src="../scripts/modules.js" defer></script>
 	<script type="text/javascript" src="../scripts/structure.js" defer></script>
-	<script type="text/javascript" src="../scripts/search-engine.js" defer></script>
+	<script type="text/javascript" src="../scripts/settings.js" defer></script>
 </head>
 
 <body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto;">
@@ -17,14 +17,20 @@
 		<button onclick="location.href = `./menu.html`;" style="padding: 0;">
 			<img src="../resources/return.png" class="icon" />
 		</button>
-		<h3 id="title-sheet">@title</h3>
+		<h3 id="title-sheet">Settings</h3>
 	</header>
-	<main style="overflow-y: hidden;">
-		<ol id="poles-container" style="height: 100%; padding: var(--size-gap); overflow-y: auto;"></ol>
+	<main style="overflow-y: auto;">
+		<div style="height: 100%; padding: var(--size-gap); overflow-y: auto;">
+			<section class="option">
+				<p style="grid-area: title;">Hide incorrect answers</p>
+				<input id="toggle-hide-incorrect-answers" type="checkbox" hidden>
+				<label for="toggle-hide-incorrect-answers" role="checkbox" class="depth toggle" style="grid-area: value;">
+					<span class="layer knob"></span>
+				</label>
+				<dfn style="grid-area: definition;">Show or hide incorrect answers while searching.</dfn>
+			</section>
+		</div>
 	</main>
-	<footer class="layer in-bottom" style="padding: var(--size-gap);">
-		<input id="search-field" type="text" inputmode="latin" placeholder="Input text" class="transparent" style="width: 100%;">
-	</footer>
 </body>
 
 </html>

@@ -12,27 +12,27 @@
 	<script type="text/javascript" src="../scripts/menu.js" defer></script>
 </head>
 
-<body style="position: fixed; inset: 0; display: grid; grid-template-rows: var(--size-standart-2) 1fr var(--size-standart-2);">
-	<header class="layer in-top" style="padding: var(--size-gap);">
+<body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto;">
+	<header class="layer in-top" style="display: grid; grid-template-columns: 1fr auto auto; align-items: center; padding: var(--size-gap); gap: var(--size-gap);">
 		<h3>Menu</h3>
+		<button id="import-sheet" style="display: flex; padding: 0;">
+			<img src="../resources/cloud_download.png" class="icon" />
+		</button>
+		<button onclick="location.href = `./settings.html`" style="display: flex; padding: 0;">
+			<img src="../resources/settings.png" class="icon" />
+		</button>
 	</header>
 	<main style="overflow-y: auto;">
-		<div style="height: fit-content; overflow-y: hidden; display: grid; grid-auto-rows: var(--size-standart-2); grid-template-rows: var(--size-standart-2);">
-			<div style="display: grid; grid-template-columns: var(--size-standart-2) 1fr var(--size-standart-2); gap: var(--size-gap); align-items: center;">
-				<img src="../resources/document.png" class="icon" style="padding: calc(var(--size-gap) / 2);" />
-				<span>title</span>
-				<select id="more" hidden>
-					<option value="">Edit</option>
-				</select>
-				<label for="more">
-					<img src="../resources/document.png" class="icon" style="padding: calc(var(--size-gap) / 2);" />
-				</label>
-			</div>
+		<div style="height: fit-content; overflow-y: hidden; display: grid; grid-template-rows: 1fr;">
+			<template id="sheet-template">
+				<button id="sheet-information" style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: repeat(2, 1fr); column-gap: var(--size-gap); align-items: center;">
+					<img src="../resources/document.png" class="icon" style="grid-row: auto / span 2;" />
+					<span id="sheet-title">@title</span>
+					<dfn id="sheet-date">@date</dfn>
+				</button>
+			</template>
 		</div>
 	</main>
-	<footer class="layer in-bottom" style="padding: var(--size-gap);">
-
-	</footer>
 </body>
 
 </html>

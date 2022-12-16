@@ -52,7 +52,7 @@ class Pole {
 }
 //#endregion
 //#region Sheet
-/** @typedef {{ title: String, poles: Array<PoleNotation> }} SheetNotation */
+/** @typedef {{ title: String, date: Number, poles: Array<PoleNotation> }} SheetNotation */
 class Sheet {
 	/**
 	 * 
@@ -64,6 +64,7 @@ class Sheet {
 			source.title,
 			...source.poles.map((pole) => Pole.import(pole))
 		);
+		result.#date = new Date(source.date);
 		return result;
 	}
 	/**
@@ -74,6 +75,7 @@ class Sheet {
 	static export(source) {
 		const result = (/** @type {SheetNotation} */ ({}));
 		result.title = source.#title;
+		result.date = source.#date.valueOf();
 		result.poles = source.#poles.map((notation) => Pole.export(notation));
 		return result;
 	}
@@ -84,11 +86,16 @@ class Sheet {
 	 */
 	constructor(title, ...poles) {
 		this.#title = title;
+		this.#date = new Date();
 		this.#poles = poles;
 	}
 	/** @type {String} */ #title;
 	/** @readonly */ get title() {
 		return this.#title;
+	}
+	/** @type {Date} */ #date;
+	/** @readonly */ get date() {
+		return this.#date;
 	}
 	/** @type {Array<Pole>} */ #poles;
 	/** @readonly */ get poles() {
@@ -131,5 +138,7 @@ const nameProject = `Cheatsheet`;
 /** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
 // const versionProject = (/** @type {VersionNotation} */ ({ "global": 0, "partial": 0, "local": 0 }));
 const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
+const archiveSheets = new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, (/** @type {Array<SheetNotation>} */ ([])));
+const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
 const safeMode = true;
 //#endregion

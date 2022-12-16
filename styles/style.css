@@ -1,7 +1,6 @@
 /* Main */
 :root {
-	--size-standart-1: 300px;
-	--size-standart-2: 10vmin;
+	--size-standart: 30px;
 	--size-gap: 2vmin;
 	/* --size-line: 1; */
 	--size-serpator: 0.3vmin;
@@ -18,10 +17,10 @@
 	font-family: system-ui, sans-serif;
 	text-align: start;
 	margin: 0;
-	/* padding: 0; */
+	padding: 0;
 	box-sizing: border-box;
 	resize: none;
-	/* overflow: hidden; */
+	overflow: hidden;
 	border-style: none;
 	border-width: var(--size-serpator);
 	outline-style: none;
@@ -70,6 +69,7 @@ input[type="datetime"],
 input[type="checkbox"]+label[role="checkbox"],
 input[type="radio"]+label[role="combobox"],
 select {
+	display: flex;
 	font-size: inherit;
 	font-weight: bold;
 }
@@ -108,7 +108,7 @@ select:enabled {
 
 input[type="checkbox"]+label[role="checkbox"].toggle {
 	aspect-ratio: 2;
-	width: var(--size-standart-2);
+	width: var(--size-standart);
 	display: flex;
 	border-radius: 50vmin;
 	padding: var(--size-serpator);
@@ -129,7 +129,8 @@ input[type="checkbox"]:checked+label[role="checkbox"].toggle>span.knob {
 
 img {
 	width: 100%;
-	height: 100%;
+	height: var(--size-standart);
+	/* height: 100%; */
 }
 
 table {

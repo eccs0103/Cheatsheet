@@ -156,6 +156,11 @@ select:invalid {
 	transition: var(--time-duration);
 }
 
+input[type="checkbox"]+label[role="checkbox"].toggle {
+	border-color: var(--color-foreground);
+	border-style: solid;
+}
+
 form:invalid {
 	outline-color: var(--color-highlight-negative);
 	outline-style: solid;
