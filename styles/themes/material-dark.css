@@ -47,6 +47,30 @@ body *::placeholder {
 	box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow) inset;
 }
 
+*.layer.in-top,
+*.depth.in-top {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+*.layer.in-right,
+*.depth.in-right {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+*.layer.in-bottom,
+*.depth.in-bottom {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+*.layer.in-left,
+*.depth.in-left {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
 *.transparent {
 	background-color: transparent !important;
 }
@@ -167,30 +191,6 @@ mark {
 }
 
 /* Local */
-*.layer.in-top,
-*.depth.in-top {
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-}
-
-*.layer.in-right,
-*.depth.in-right {
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-*.layer.in-bottom,
-*.depth.in-bottom {
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-*.layer.in-left,
-*.depth.in-left {
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
 img {
 	background-color: transparent;
 }

@@ -120,7 +120,7 @@ class Settings {
 		return result;
 	}
 	constructor() {
-		this.hideIncorrectAnswers = true;
+		this.hideIncorrectAnswers = false;
 	}
 	hideIncorrectAnswers;
 }
@@ -130,6 +130,6 @@ const nameDeveloper = `Adaptive Core`;
 const nameProject = `Cheatsheet`;
 /** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
 // const versionProject = (/** @type {VersionNotation} */ ({ "global": 0, "partial": 0, "local": 0 }));
-const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}`, Settings.export(new Settings()));
-const safeMode = false;
+const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
+const safeMode = true;
 //#endregion

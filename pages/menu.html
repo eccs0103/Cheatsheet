@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cheatsheet - Menu</title>
+	<link rel="stylesheet" type="text/css" href="../styles/style.css" />
+	<link rel="stylesheet" type="text/css" href="../styles/themes/material-dark.css" />
+	<script type="text/javascript" src="../scripts/modules.js" defer></script>
+	<script type="text/javascript" src="../scripts/structure.js" defer></script>
+	<script type="text/javascript" src="../scripts/menu.js" defer></script>
+</head>
+
+<body style="position: fixed; inset: 0; display: grid; grid-template-rows: var(--size-standart-2) 1fr var(--size-standart-2);">
+	<header class="layer in-top" style="padding: var(--size-gap);">
+		<h3>Menu</h3>
+	</header>
+	<main style="overflow-y: auto;">
+		<div style="height: fit-content; overflow-y: hidden; display: grid; grid-auto-rows: var(--size-standart-2); grid-template-rows: var(--size-standart-2);">
+			<div style="display: grid; grid-template-columns: var(--size-standart-2) 1fr var(--size-standart-2); gap: var(--size-gap); align-items: center;">
+				<img src="../resources/document.png" class="icon" style="padding: calc(var(--size-gap) / 2);" />
+				<span>title</span>
+				<select id="more" hidden>
+					<option value="">Edit</option>
+				</select>
+				<label for="more">
+					<img src="../resources/document.png" class="icon" style="padding: calc(var(--size-gap) / 2);" />
+				</label>
+			</div>
+		</div>
+	</main>
+	<footer class="layer in-bottom" style="padding: var(--size-gap);">
+
+	</footer>
+</body>
+
+</html>
