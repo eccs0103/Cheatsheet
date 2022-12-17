@@ -32,6 +32,7 @@ try {
 		if (url != null) {
 			if (url == `/storage -clear`) {
 				archiveSheets.data = [];
+				configureSheets();
 			} else {
 				Manager.queryText(url).then((text) => {
 					archiveSheets.change((sheets) => {
