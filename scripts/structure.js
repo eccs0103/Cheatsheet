@@ -56,6 +56,45 @@ class Pole {
 class Sheet {
 	/**
 	 * 
+	 * @param {any} source 
+	 */
+	static parse(source) {
+		/**
+		 * 
+		 * @param {any} property 
+		 * @param {`number` | `string` | `object` | `array`} type 
+		 * @param {any?} value
+		 */
+		function tryParse(property, type, value = null) {
+			const condition = type == `array` ? property instanceof Array : typeof (property) == type;
+			if (property != null || property != undefined && condition) {
+				return value ?? property;
+			} else {
+				throw new TypeError(`Invalid structure.`);
+			}
+		}
+
+		const result = (/** @type {SheetNotation} */(tryParse(source, `object`, {})));
+		{
+			result.title = tryParse(source.title, `string`);
+			result.date = tryParse(source.date, `number`);
+			result.poles = tryParse(source.poles, `array`, []);
+			for (let index = 0; index < source.poles.length; index++) {
+				result.poles[index] = tryParse(source.poles[index], `object`, {});
+				{
+					result.poles[index].question = tryParse(source.poles[index].question, `string`);
+					result.poles[index].answer = tryParse(source.poles[index].answer, `number`);
+					result.poles[index].cases = tryParse(source.poles[index].cases, `array`, []);
+					for (let index2 = 0; index2 < source.poles[index].cases.length; index2++) {
+						result.poles[index].cases[index2] = tryParse(source.poles[index].cases[index2], `string`);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	/**
+	 * 
 	 * @param {SheetNotation} source 
 	 * @returns 
 	 */

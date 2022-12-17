@@ -1,6 +1,6 @@
 /* Main */
 :root {
-	--size-standart: 30px;
+	--size-standart: 8vmin;
 	--size-gap: 2vmin;
 	/* --size-line: 1; */
 	--size-serpator: 0.3vmin;
@@ -108,7 +108,7 @@ select:enabled {
 
 input[type="checkbox"]+label[role="checkbox"].toggle {
 	aspect-ratio: 2;
-	width: var(--size-standart);
+	height: 1.2rem;
 	display: flex;
 	border-radius: 50vmin;
 	padding: var(--size-serpator);

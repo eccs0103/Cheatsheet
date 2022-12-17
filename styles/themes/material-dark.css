@@ -104,7 +104,7 @@ select {
 	transition: var(--time-duration);
 }
 
-button:enabled:hover,
+/* button:enabled:hover,
 input:enabled:hover,
 input[type="text"]:enabled:hover,
 textarea:enabled:hover,
@@ -114,9 +114,9 @@ input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:hover,
 select:enabled:hover {
 	filter: invert(0.1);
 	transition: var(--time-duration);
-}
+} */
 
-button:enabled:active,
+/* button:enabled:active,
 input:enabled:active,
 input[type="text"]:enabled:not(:read-only):active,
 textarea:enabled:not(:read-only):active,
@@ -126,7 +126,7 @@ input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:active,
 select:enabled:active {
 	filter: invert(0.2);
 	transition: var(--time-duration);
-}
+} */
 
 *.checked,
 input[type="checkbox"]:checked+label[role="checkbox"],
