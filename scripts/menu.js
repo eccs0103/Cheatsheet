@@ -30,15 +30,19 @@ try {
 	buttonImportSheet.addEventListener(`click`, (event) => {
 		const url = window.prompt(`Enter the url.`);
 		if (url != null) {
-			Manager.queryText(url).then((text) => {
-				archiveSheets.change((sheets) => {
-					sheets.push(Sheet.parse(JSON.parse(text)));
-					return sheets;
+			if (url == `/storage -clear`) {
+				archiveSheets.data = [];
+			} else {
+				Manager.queryText(url).then((text) => {
+					archiveSheets.change((sheets) => {
+						sheets.push(Sheet.parse(JSON.parse(text)));
+						return sheets;
+					});
+					configureSheets();
+				}).catch((reason) => {
+					window.alert(`Operation failed with message: "${reason}".`);
 				});
-				configureSheets();
-			}).catch((reason) => {
-				window.alert(`Operation failed with message: "${reason}".`);
-			});
+			}
 		}
 	});
 } catch (error) {
