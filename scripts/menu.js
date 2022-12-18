@@ -40,8 +40,16 @@ try {
 						return sheets;
 					});
 					configureSheets();
-				}).catch((reason) => {
-					window.alert(`Operation failed with message: "${reason}".`);
+					return null;
+				}).catch((error) => {
+					if (safeMode) {
+						if (error instanceof Error) {
+							window.alert(`'${error.name}' detected - ${error.message}\n${error.stack ?? ``}`);
+						} else {
+							window.alert(`Invalid exception type.`);
+						}
+					}
+					console.error(error);
 				});
 			}
 		}

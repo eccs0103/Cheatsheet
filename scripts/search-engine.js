@@ -38,9 +38,7 @@ try {
 		inputSeachField.addEventListener(`input`, (event) => {
 			search(inputSeachField.value);
 		});
-	}/*  else {
-		throw new ReferenceError(``);
-	} */
+	}
 } catch (error) {
 	if (safeMode) {
 		if (error instanceof Error) {
