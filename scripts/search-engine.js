@@ -4,6 +4,7 @@ try {
 	const h3TitleSheet = (/** @type {HTMLHeadingElement} */ (document.querySelector(`h3#title-sheet`)));
 	h3TitleSheet.innerText = ``;
 
+	const inputSeachField = (/** @type {HTMLInputElement} */ (document.querySelector(`input#search-field`)));
 	if (archivePreview.data) {
 		const sheet = Sheet.import(archivePreview.data);
 		h3TitleSheet.innerText = sheet.title;
@@ -33,12 +34,18 @@ try {
 			}
 		}
 
-		const inputSeachField = (/** @type {HTMLInputElement} */ (document.querySelector(`input#search-field`)));
 		search(inputSeachField.value);
 		inputSeachField.addEventListener(`input`, (event) => {
 			search(inputSeachField.value);
 		});
 	}
+
+	window.addEventListener(`keydown`, (event) => {
+		if (event.ctrlKey && event.code == `KeyF`) {
+			event.preventDefault();
+			inputSeachField.focus({ preventScroll: true });
+		}
+	});
 } catch (error) {
 	if (safeMode) {
 		if (error instanceof Error) {
