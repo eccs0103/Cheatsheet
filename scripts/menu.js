@@ -1,7 +1,7 @@
 try {
 	function configureSheets() {
-		const templateSheetTemplate = (/** @type {HTMLTemplateElement} */ (document.querySelector(`template#sheet-template`)));
-		const container = (() => {
+		var templateSheetTemplate = (/** @type {HTMLTemplateElement} */ (document.querySelector(`template#sheet-template`)));
+		var container = (() => {
 			if (templateSheetTemplate.parentElement) {
 				return templateSheetTemplate.parentElement;
 			} else {
@@ -9,16 +9,16 @@ try {
 			}
 		})();
 		[...container.querySelectorAll(`*:not(template#sheet-template)`)].forEach((element) => element.remove());
-		for (const sheet of archiveSheets.data.map((notation) => Sheet.import(notation))) {
-			const buttonSheetInformation = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`button#sheet-information`))));
+		for (var sheet of archiveSheets.data.map((notation) => Sheet.import(notation))) {
+			var buttonSheetInformation = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`button#sheet-information`))));
 			buttonSheetInformation.addEventListener(`click`, (event) => {
 				archivePreview.data = Sheet.export(sheet);
 				location.href = `./search-engine.html`;
 			});
 			{
-				const spanSheetTitle = (/** @type {HTMLSpanElement} */ (buttonSheetInformation.querySelector(`span#sheet-title`)));
+				var spanSheetTitle = (/** @type {HTMLSpanElement} */ (buttonSheetInformation.querySelector(`span#sheet-title`)));
 				spanSheetTitle.innerText = sheet.title;
-				const dfnSheetDate = (/** @type {HTMLElement} */ (buttonSheetInformation.querySelector(`dfn#sheet-date`)));
+				var dfnSheetDate = (/** @type {HTMLElement} */ (buttonSheetInformation.querySelector(`dfn#sheet-date`)));
 				dfnSheetDate.innerText = sheet.date.toLocaleString();
 			}
 		}
@@ -26,9 +26,9 @@ try {
 
 	configureSheets();
 
-	const buttonImportSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#import-sheet`)));
+	var buttonImportSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#import-sheet`)));
 	buttonImportSheet.addEventListener(`click`, (event) => {
-		const url = window.prompt(`Enter the url.`);
+		var url = window.prompt(`Enter the url.`);
 		if (url != null) {
 			if (url == `/storage -clear`) {
 				archiveSheets.data = [];
