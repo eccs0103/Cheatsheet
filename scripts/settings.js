@@ -5,7 +5,7 @@ window.addEventListener(`beforeunload`, (event) => {
 
 try {
 	//#region Hide Incorrect Answers
-	const inputToggleHideIncorrectAnswers = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-hide-incorrect-answers`)));
+	var inputToggleHideIncorrectAnswers = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-hide-incorrect-answers`)));
 	inputToggleHideIncorrectAnswers.checked = archiveSettings.data.hideIncorrectAnswers;
 	inputToggleHideIncorrectAnswers.addEventListener(`change`, (event) => {
 		settings.hideIncorrectAnswers = inputToggleHideIncorrectAnswers.checked;
