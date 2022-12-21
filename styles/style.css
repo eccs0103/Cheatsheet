@@ -1,9 +1,67 @@
 /* Main */
 :root {
-	--size-standart: 8vmin;
-	--size-gap: 2vmin;
-	/* --size-line: 1; */
 	--size-serpator: 0.3vmin;
+	--size-standart: 4vmin;
+}
+
+@media screen {
+	@media (orientation: portrait) {
+		@media (min-height: 640px) {
+			/* Mobile */
+
+			:root {
+				--size-standart: 8vmin;
+				--size-gap: 2vmin;
+			}
+		}
+
+		@media (min-height: 960px) {
+			/* Tablet */
+
+			:root {
+				--size-standart: 6vmin;
+				--size-gap: 1.5vmin;
+			}
+		}
+
+		@media (min-height: 1100px) {
+			/* Desktop */
+
+			:root {
+				--size-standart: 4vmin;
+				--size-gap: 1vmin;
+			}
+		}
+	}
+
+	@media (orientation: landscape) {
+		@media (min-width: 640px) {
+			/* Mobile */
+
+			:root {
+				--size-standart: 8vmin;
+				--size-gap: 2vmin;
+			}
+		}
+
+		@media (min-width: 960px) {
+			/* Tablet */
+
+			:root {
+				--size-standart: 6vmin;
+				--size-gap: 1.5vmin;
+			}
+		}
+
+		@media (min-width: 1100px) {
+			/* Desktop */
+
+			:root {
+				--size-standart: 4vmin;
+				--size-gap: 1vmin;
+			}
+		}
+	}
 }
 
 @supports(user-select: none) {
@@ -15,7 +73,7 @@
 
 * {
 	font-family: system-ui, sans-serif;
-	text-align: start;
+	text-align: inherit;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -33,8 +91,61 @@
 }
 
 body {
-	font-size: 14px;
 	font-weight: normal;
+}
+
+@media screen {
+	@media (orientation: portrait) {
+		@media (min-height: 640px) {
+			/* Mobile */
+
+			body {
+				font-size: 3.6vmin;
+			}
+		}
+
+		@media (min-height: 960px) {
+			/* Tablet */
+
+			body {
+				font-size: 2.7vmin;
+			}
+		}
+
+		@media (min-height: 1100px) {
+			/* Desktop */
+
+			body {
+				font-size: 1.8vmin;
+			}
+		}
+	}
+
+	@media (orientation: landscape) {
+		@media (min-width: 640px) {
+			/* Mobile */
+
+			body {
+				font-size: 3.6vmin;
+			}
+		}
+
+		@media (min-width: 960px) {
+			/* Tablet */
+
+			body {
+				font-size: 2.7vmin;
+			}
+		}
+
+		@media (min-width: 1100px) {
+			/* Desktop */
+
+			body {
+				font-size: 1.8vmin;
+			}
+		}
+	}
 }
 
 section.option {
@@ -53,10 +164,6 @@ section.option>section.option {
 	grid-column: auto / span 2;
 }
 
-/* section.option>section.option > h3::before {
-	content: "└ ";
-} */
-
 section.option>input:not(:checked)~section.option {
 	display: none !important;
 }
@@ -69,7 +176,6 @@ input[type="datetime"],
 input[type="checkbox"]+label[role="checkbox"],
 input[type="radio"]+label[role="combobox"],
 select {
-	display: flex;
 	font-size: inherit;
 	font-weight: bold;
 }
@@ -84,7 +190,11 @@ input[type="text"],
 textarea,
 input[type="datetime"],
 select {
+	width: fit-content;
 	height: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding: calc(var(--size-gap) / 1.25) var(--size-gap);
 }
 
@@ -169,6 +279,10 @@ kbd {
 	margin: calc(var(--size-gap) / 4) calc(var(--size-gap) / 2);
 	padding: calc(var(--size-gap) / 2) var(--size-gap);
 	border-radius: 3px;
+}
+
+::-webkit-scrollbar {
+	width: calc(var(--size-serpator) * 4);
 }
 
 /* Local */

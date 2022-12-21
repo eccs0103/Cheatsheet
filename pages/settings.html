@@ -21,17 +21,28 @@
 		<h3 id="title-sheet">Settings</h3>
 	</header>
 	<main style="overflow-y: auto;">
-		<div style="height: 100%; padding: var(--size-gap); overflow-y: auto;">
+		<div style="display: flex; flex-direction: column; height: 100%; padding: var(--size-gap); overflow-y: auto;">
 			<section class="option">
 				<p style="grid-area: title;">Hide incorrect answers</p>
 				<input id="toggle-hide-incorrect-answers" type="checkbox" hidden>
 				<label for="toggle-hide-incorrect-answers" role="checkbox" class="depth toggle" style="grid-area: value;">
 					<span class="layer knob"></span>
 				</label>
-				<dfn style="grid-area: definition;">Show or hide incorrect answers while searching.</dfn>
+				<dfn style="grid-area: definition;">Show or hide incorrect cases while searching. Hiding will also make it easier for the CPU to work.</dfn>
+			</section>
+			<br />
+			<section class="option" style="text-align: center; grid-template: unset;">
+				<h3>Project developed by...</h3>
+				<dfn><a href="https://t.me/eccs0103" target="_blank" rel="noopener noreferrer">Սարգսյան Արման</a> is the <b>programmer</b>.</dfn>
+			</section>
+			<section class="option" style="text-align: center; grid-template: unset;">
+				<h3>Special thanks to...</h3>
+				<dfn><a target="_blank" rel="noopener noreferrer">Իսրայելյան Էլեն</a> for <b>assembling the database</b></dfn>
+				<dfn><a target="_blank" rel="noopener noreferrer">Բարխուդարյան Միքայել</a> for <b>testing</b></dfn>
+				<dfn><a target="_blank" rel="noopener noreferrer">Հովհաննիսյան Վալերի</a> for <b>testing</b></dfn>
 			</section>
 		</div>
-		<dfn style="position: absolute; bottom: var(--size-gap); right: 0; left: 0; text-align: center;">Thanks <a href="mailto:elen.04.08.04@mail.ru">elen.04.08.04@mail.ru</a> for help.</dfn>
+		<!-- <dfn style="position: absolute; bottom: var(--size-gap); right: 0; left: 0; text-align: center;"></dfn> -->
 	</main>
 </body>
 

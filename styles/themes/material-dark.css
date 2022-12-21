@@ -35,7 +35,8 @@ body *::placeholder {
 }
 
 /* Global */
-*.layer {
+*.layer,
+::-webkit-scrollbar-thumb {
 	background-color: var(--color-foreground);
 	border-radius: var(--size-radius);
 	box-shadow: 0 0 var(--size-shadow) 0px var(--color-shadow);
@@ -71,7 +72,8 @@ body *::placeholder {
 	border-bottom-left-radius: 0;
 }
 
-*.transparent {
+*.transparent,
+::-webkit-scrollbar {
 	background-color: transparent !important;
 }
 
@@ -104,29 +106,32 @@ select {
 	transition: var(--time-duration);
 }
 
-/* button:enabled:hover,
-input:enabled:hover,
-input[type="text"]:enabled:hover,
-textarea:enabled:hover,
-input[type="datetime"]:enabled:hover,
-input[type="checkbox"]:enabled+label[role="checkbox"]:hover,
-input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:hover,
-select:enabled:hover {
-	filter: invert(0.1);
-	transition: var(--time-duration);
-} */
+@media (hover:hover) {
 
-/* button:enabled:active,
-input:enabled:active,
-input[type="text"]:enabled:not(:read-only):active,
-textarea:enabled:not(:read-only):active,
-input[type="datetime"]:not(:read-only):active,
-input[type="checkbox"]:enabled+label[role="checkbox"]:active,
-input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:active,
-select:enabled:active {
-	filter: invert(0.2);
-	transition: var(--time-duration);
-} */
+	button:enabled:hover,
+	input:enabled:hover,
+	input[type="text"]:enabled:hover,
+	textarea:enabled:hover,
+	input[type="datetime"]:enabled:hover,
+	input[type="checkbox"]:enabled+label[role="checkbox"]:hover,
+	input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:hover,
+	select:enabled:hover {
+		filter: invert(0.1);
+		transition: var(--time-duration);
+	}
+
+	button:enabled:active,
+	input:enabled:active,
+	input[type="text"]:enabled:not(:read-only):active,
+	textarea:enabled:not(:read-only):active,
+	input[type="datetime"]:not(:read-only):active,
+	input[type="checkbox"]:enabled+label[role="checkbox"]:active,
+	input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:active,
+	select:enabled:active {
+		filter: invert(0.2);
+		transition: var(--time-duration);
+	}
+}
 
 *.checked,
 input[type="checkbox"]:checked+label[role="checkbox"],
@@ -178,7 +183,7 @@ hr {
 	color: var(--color-highlight);
 }
 
-a {
+a:any-link {
 	text-decoration: none;
 	color: var(--color-highlight);
 }

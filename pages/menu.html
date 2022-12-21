@@ -13,24 +13,29 @@
 	<script type="text/javascript" src="../scripts/menu.js" defer></script>
 </head>
 
-<body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto;">
-	<header class="layer in-top" style="display: grid; grid-template-columns: 1fr auto auto; align-items: center; padding: var(--size-gap); gap: var(--size-gap);">
-		<h3>Menu</h3>
-		<button id="import-sheet" style="display: flex; padding: 0;">
+<body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr;">
+	<header class="layer in-top" style="display: grid; grid-template-columns: repeat(2, 1fr); align-items: center; padding: var(--size-gap); gap: var(--size-gap);">
+		<button id="import-sheet" style="justify-self: start; gap: var(--size-gap); padding: 0;">
 			<img src="../resources/cloud_download.png" class="icon" />
+			<span>Import</span>
 		</button>
-		<button onclick="location.href = `./settings.html`" style="display: flex; padding: 0;">
+		<button onclick="location.href = `./settings.html`" style="justify-self: end; padding: 0;">
 			<img src="../resources/settings.png" class="icon" />
 		</button>
 	</header>
 	<main style="overflow-y: auto;">
 		<div style="height: fit-content; overflow-y: hidden; display: grid; grid-template-rows: 1fr;">
 			<template id="sheet-template">
-				<button id="sheet-information" style="display: grid; grid-template: repeat(2, 1fr) / auto 1fr; column-gap: var(--size-gap); align-items: center;">
-					<img src="../resources/document.png" class="icon" style="grid-area: 1 / 1 / 3 / 2;" />
-					<span id="sheet-title" style="grid-area: 1 / 2 / 2 / 3;">@title</span>
-					<dfn id="sheet-date" style="grid-area: 2 / 2 / 3 / 3;">@date</dfn>
-				</button>
+				<div id="sheet-cell" style="display: grid; grid-template-columns: 1fr auto;">
+					<button id="sheet-information" style="width: 100%; display: grid; grid-template: repeat(2, 1fr) / auto 1fr; column-gap: var(--size-gap); align-items: center;">
+						<img src="../resources/document.png" class="icon" style="grid-area: 1 / 1 / 3 / 2;" />
+						<span id="sheet-title" style="grid-area: 1 / 2 / 2 / 3;">@title</span>
+						<dfn id="sheet-date" style="grid-area: 2 / 2 / 3 / 3;">@date</dfn>
+					</button>
+					<button id="remove-sheet" style="width: 100%;">
+						<img src="../resources/delete.png" class="icon" />
+					</button>
+				</div>
 			</template>
 		</div>
 	</main>
