@@ -217,11 +217,13 @@ select:enabled {
 }
 
 input[type="checkbox"]+label[role="checkbox"].toggle {
+	overflow: visible;
 	aspect-ratio: 2;
 	height: 1.2rem;
 	display: flex;
 	border-radius: 50vmin;
 	padding: var(--size-serpator);
+	margin-inline: var(--size-gap);
 }
 
 input[type="checkbox"]+label[role="checkbox"].toggle>span.knob {

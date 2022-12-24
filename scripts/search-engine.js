@@ -1,12 +1,12 @@
 try {
-	var settings = Settings.import(archiveSettings.data);
+	const settings = Settings.import(archiveSettings.data);
 
-	var h3TitleSheet = (/** @type {HTMLHeadingElement} */ (document.querySelector(`h3#title-sheet`)));
+	const h3TitleSheet = (/** @type {HTMLHeadingElement} */ (document.querySelector(`h3#title-sheet`)));
 	h3TitleSheet.innerText = ``;
 
-	var inputSeachField = (/** @type {HTMLInputElement} */ (document.querySelector(`input#search-field`)));
+	const inputSeachField = (/** @type {HTMLInputElement} */ (document.querySelector(`input#search-field`)));
 	if (archivePreview.data) {
-		var sheet = Sheet.import(archivePreview.data);
+		const sheet = Sheet.import(archivePreview.data);
 		h3TitleSheet.innerText = sheet.title;
 
 		/**
@@ -14,19 +14,19 @@ try {
 		 * @param {String} pattern 
 		 */
 		function search(pattern) {
-			var regex = new RegExp(pattern.replace(/[\$\^\*\(\)\{\}\+\?\[\]\.\?\,\|\\\/\`\_]/, (substring) => `\\${substring}`), `gmi`);
-			var olPolesContainer = (/** @type {HTMLOListElement} */ (document.querySelector(`ol#poles-container`)));
+			const regex = new RegExp(pattern.replace(/[\$\^\*\(\)\{\}\+\?\[\]\.\?\,\|\\\/\`\_]/, (substring) => `\\${substring}`), `gmi`);
+			const olPolesContainer = (/** @type {HTMLOListElement} */ (document.querySelector(`ol#poles-container`)));
 			olPolesContainer.innerHTML = ``;
-			for (var pole of sheet.poles.filter((pole) => regex.test(pole.question))) {
-				var liPole = olPolesContainer.appendChild(document.createElement(`li`));
-				var bQuestion = liPole.appendChild(document.createElement(`b`));
+			for (const pole of sheet.poles.filter((pole) => regex.test(pole.question))) {
+				const liPole = olPolesContainer.appendChild(document.createElement(`li`));
+				const bQuestion = liPole.appendChild(document.createElement(`b`));
 				bQuestion.innerHTML = pattern == `` ? `${pole.question}` : `${pole.question.replace(regex, (substring) => `<mark>${substring}</mark>`)}`;
-				var ulCasesContainer = liPole.appendChild(document.createElement(`ul`));
+				const ulCasesContainer = liPole.appendChild(document.createElement(`ul`));
 				for (let index = 0; index < pole.cases.length; index++) {
 					if (!settings.hideIncorrectAnswers || index == pole.answer) {
-						var _case = pole.cases[index];
-						var liCase = ulCasesContainer.appendChild(document.createElement(`li`));
-						var spanCase = liCase.appendChild(document.createElement(`span`));
+						const _case = pole.cases[index];
+						const liCase = ulCasesContainer.appendChild(document.createElement(`li`));
+						const spanCase = liCase.appendChild(document.createElement(`span`));
 						spanCase.classList.add(index == pole.answer ? `highlight` : `alert`);
 						spanCase.innerText = `${_case}`;
 					}

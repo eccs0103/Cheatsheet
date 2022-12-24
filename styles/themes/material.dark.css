@@ -86,7 +86,7 @@ body *::placeholder {
 	color: var(--color-text-reverse);
 }
 
-button,
+/* button,
 input,
 input[type="text"],
 textarea,
@@ -95,14 +95,14 @@ input[type="checkbox"]+label[role="checkbox"],
 input[type="radio"]+label[role="combobox"],
 select {
 	border-radius: var(--size-radius);
-}
+} */
 
 input:enabled,
 input[type="text"]:enabled,
 textarea:enabled,
 input[type="datetime"]:enabled,
 select {
-	background-color: var(--color-background);
+	/* background-color: var(--color-background); */
 	transition: var(--time-duration);
 }
 

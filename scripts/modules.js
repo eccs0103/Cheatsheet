@@ -38,7 +38,7 @@ class Archive {
 	}
 	/** @type {String} */ #path;
 	get data() {
-		var item = localStorage.getItem(this.#path);
+		const item = localStorage.getItem(this.#path);
 		if (item) {
 			return (/** @type {Notation} */ (JSON.parse(item)));
 		} else {
