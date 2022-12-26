@@ -1,3 +1,4 @@
+`use strict`;
 //#region Pole
 /** @typedef {{ question: String, answer: Number, cases: Array<String> }} PoleNotation */
 class Pole {
@@ -7,7 +8,7 @@ class Pole {
 	 * @returns 
 	 */
 	static import(source) {
-		var result = new Pole(
+		const result = new Pole(
 			source.question,
 			source.answer,
 			...source.cases
@@ -20,7 +21,7 @@ class Pole {
 	 * @returns 
 	 */
 	static export(source) {
-		var result = (/** @type {PoleNotation} */ ({}));
+		const result = (/** @type {PoleNotation} */ ({}));
 		result.question = source.#question;
 		result.answer = source.#answer;
 		result.cases = source.#cases;
@@ -66,7 +67,7 @@ class Sheet {
 		 * @param {any?} value
 		 */
 		function tryParse(property, type, value = null) {
-			var condition = type == `array` ? property instanceof Array : typeof (property) == type;
+			const condition = type == `array` ? property instanceof Array : typeof (property) == type;
 			if (property != null || property != undefined && condition) {
 				return value ?? property;
 			} else {
@@ -74,7 +75,7 @@ class Sheet {
 			}
 		}
 
-		var result = (/** @type {SheetNotation} */(tryParse(source, `object`, {})));
+		const result = (/** @type {SheetNotation} */(tryParse(source, `object`, {})));
 		{
 			result.title = tryParse(source.title, `string`);
 			result.date = tryParse(source.date, `number`);
@@ -99,7 +100,7 @@ class Sheet {
 	 * @returns 
 	 */
 	static import(source) {
-		var result = new Sheet(
+		const result = new Sheet(
 			source.title,
 			...source.poles.map((pole) => Pole.import(pole))
 		);
@@ -112,7 +113,7 @@ class Sheet {
 	 * @returns 
 	 */
 	static export(source) {
-		var result = (/** @type {SheetNotation} */ ({}));
+		const result = (/** @type {SheetNotation} */ ({}));
 		result.title = source.#title;
 		result.date = source.#date.valueOf();
 		result.poles = source.#poles.map((notation) => Pole.export(notation));
@@ -151,7 +152,7 @@ class Settings {
 	 * @returns 
 	 */
 	static import(source) {
-		var result = new Settings();
+		const result = new Settings();
 		result.hideIncorrectAnswers = source.hideIncorrectAnswers;
 		return result;
 	}
@@ -161,7 +162,7 @@ class Settings {
 	 * @returns 
 	 */
 	static export(source) {
-		var result = (/** @type {SettingsNotation} */ ({}));
+		const result = (/** @type {SettingsNotation} */ ({}));
 		result.hideIncorrectAnswers = source.hideIncorrectAnswers;
 		return result;
 	}
@@ -172,12 +173,12 @@ class Settings {
 }
 //#endregion
 //#region Metadata
-var nameDeveloper = `Adaptive Core`;
-var nameProject = `Cheatsheet`;
+const nameDeveloper = `Adaptive Core`;
+const nameProject = `Cheatsheet`;
 /** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
-// var versionProject = (/** @type {VersionNotation} */ ({ "global": 0, "partial": 0, "local": 0 }));
-var archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
-var archiveSheets = new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, (/** @type {Array<SheetNotation>} */ ([])));
-var archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
-var safeMode = true;
+// const versionProject = (/** @type {VersionNotation} */ ({ "global": 0, "partial": 0, "local": 0 }));
+const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
+const archiveSheets = new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, (/** @type {Array<SheetNotation>} */ ([])));
+const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
+const safeMode = true;
 //#endregion

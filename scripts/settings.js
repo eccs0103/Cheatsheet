@@ -1,3 +1,4 @@
+`use strict`;
 let settings = Settings.import(archiveSettings.data);
 window.addEventListener(`beforeunload`, (event) => {
 	archiveSettings.data = Settings.export(settings);
@@ -5,7 +6,7 @@ window.addEventListener(`beforeunload`, (event) => {
 
 try {
 	//#region Hide Incorrect Answers
-	var inputToggleHideIncorrectAnswers = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-hide-incorrect-answers`)));
+	const inputToggleHideIncorrectAnswers = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-hide-incorrect-answers`)));
 	inputToggleHideIncorrectAnswers.checked = archiveSettings.data.hideIncorrectAnswers;
 	inputToggleHideIncorrectAnswers.addEventListener(`change`, (event) => {
 		settings.hideIncorrectAnswers = inputToggleHideIncorrectAnswers.checked;
