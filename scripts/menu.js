@@ -1,4 +1,4 @@
-`use strict`;
+"use strict";
 try {
 	function configureSheets() {
 		const templateSheetTemplate = (/** @type {HTMLTemplateElement} */ (document.querySelector(`template#sheet-template`)));

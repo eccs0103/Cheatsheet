@@ -1,4 +1,4 @@
-`use strict`;
+"use strict";
 //#region Pole
 /** @typedef {{ question: String, answer: Number, cases: Array<String> }} PoleNotation */
 class Pole {

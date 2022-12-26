@@ -1,4 +1,4 @@
-`use strict`;
+"use strict";
 try {
 	const settings = Settings.import(archiveSettings.data);
 

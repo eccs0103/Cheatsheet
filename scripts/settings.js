@@ -1,4 +1,4 @@
-`use strict`;
+"use strict";
 let settings = Settings.import(archiveSettings.data);
 window.addEventListener(`beforeunload`, (event) => {
 	archiveSettings.data = Settings.export(settings);
