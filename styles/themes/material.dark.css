@@ -24,7 +24,7 @@ body {
 }
 
 body * {
-	background-color: inherit;
+	background-color: initial;
 	color: inherit;
 	outline-color: inherit;
 }
@@ -86,47 +86,33 @@ body *::placeholder {
 	color: var(--color-text-reverse);
 }
 
-/* button,
-input,
-input[type="text"],
-textarea,
-input[type="datetime"],
-input[type="checkbox"]+label[role="checkbox"],
-input[type="radio"]+label[role="combobox"],
-select {
-	border-radius: var(--size-radius);
-} */
-
 input:enabled,
-input[type="text"]:enabled,
 textarea:enabled,
-input[type="datetime"]:enabled,
 select {
-	/* background-color: var(--color-background); */
 	transition: var(--time-duration);
 }
 
 @media (hover:hover) {
 
 	button:enabled:hover,
+	a.button:hover,
 	input:enabled:hover,
-	input[type="text"]:enabled:hover,
-	textarea:enabled:hover,
-	input[type="datetime"]:enabled:hover,
+	input[type="file"]:enabled+label[role="button"]:hover,
 	input[type="checkbox"]:enabled+label[role="checkbox"]:hover,
 	input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:hover,
+	textarea:enabled:hover,
 	select:enabled:hover {
 		filter: invert(0.1);
 		transition: var(--time-duration);
 	}
 
 	button:enabled:active,
+	a.button:active,
 	input:enabled:active,
-	input[type="text"]:enabled:not(:read-only):active,
-	textarea:enabled:not(:read-only):active,
-	input[type="datetime"]:not(:read-only):active,
+	input[type="file"]:enabled+label[role="button"]:active,
 	input[type="checkbox"]:enabled+label[role="checkbox"]:active,
 	input[type="radio"]:enabled:not(:checked)+label[role="combobox"]:active,
+	textarea:enabled:not(:read-only):active,
 	select:enabled:active {
 		filter: invert(0.2);
 		transition: var(--time-duration);
@@ -142,20 +128,17 @@ input[type="radio"]:checked+label[role="combobox"] {
 
 button:disabled,
 input:disabled,
-input[type="text"]:disabled,
-textarea:disabled,
-input[type="datetime"]:disabled,
+input[type="file"]:disabled+label[role="button"],
 input[type="checkbox"]:disabled+label[role="checkbox"],
 input[type="radio"]:disabled+label[role="combobox"],
+textarea:disabled,
 select:disabled {
 	filter: opacity(0.5);
 	transition: var(--time-duration);
 }
 
 input:invalid,
-input[type="text"]:invalid,
 textarea:invalid,
-input[type="datetime"]:invalid,
 select:invalid {
 	color: var(--color-text-negative);
 	transition: var(--time-duration);
@@ -173,6 +156,10 @@ form:invalid {
 
 hr {
 	background-color: var(--color-background);
+}
+
+dialog::backdrop {
+	background-color: rgba(0, 0, 0, 50%);
 }
 
 *.alert {

@@ -35,37 +35,73 @@ try {
 
 	configureSheets();
 
-	const buttonImportSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#import-sheet`)));
-	buttonImportSheet.addEventListener(`click`, (event) => {
-		const input = window.prompt(`Enter the url.`);
-		if (input != null) {
-			Manager.queryText(input).then((text) => {
+	const buttonOpenInsertDialog = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#open-insert-dialog`)));
+	const dialogInsertSheet = (/** @type {HTMLDialogElement} */ (document.querySelector(`dialog#insert-sheet`)));
+	buttonOpenInsertDialog.addEventListener(`click`, (event) => {
+		dialogInsertSheet.showModal();
+		dialogInsertSheet.addEventListener(`click`, (event) => {
+			if (event.target == dialogInsertSheet) {
+				dialogInsertSheet.close();
+			}
+		});
+	});
+
+	const inputUploadSheet = (/** @type {HTMLInputElement} */ (document.querySelector(`input#upload-sheet`)));
+	inputUploadSheet.addEventListener(`change`, async (event) => {
+		try {
+			const files = inputUploadSheet.files;
+			if (files) {
+				const file = files[0];
+				const text = await file.text()
+					.then((value) => value)
+					.catch((reason) => {
+						throw (reason instanceof Error ? reason : new Error(reason));
+					});
 				archiveSheets.change((sheets) => {
 					sheets.push(Sheet.parse(JSON.parse(text)));
 					return sheets;
 				});
 				configureSheets();
-				return null;
-			}).catch((error) => {
-				if (safeMode) {
-					if (error instanceof Error) {
-						window.alert(`'${error.name}' detected - ${error.message}\n${error.stack ?? ``}`);
-					} else {
-						window.alert(`Invalid exception type.`);
-					}
-				}
-				console.error(error);
-			});
+			}
+		} catch (error) {
+			if (safeMode) {
+				window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
+				location.reload();
+			} else console.error(error);
+		}
+	});
+
+	const buttonImportSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#import-sheet`)));
+	buttonImportSheet.addEventListener(`click`, async (event) => {
+		try {
+			const input = window.prompt(`Enter the url.`);
+			if (input != null) {
+				const response = await fetch(input)
+					.then((value) => value)
+					.catch((reason) => {
+						throw (reason instanceof Error ? reason : new Error(reason));
+					});
+				const text = await response.text()
+					.then((value) => value)
+					.catch((reason) => {
+						throw (reason instanceof Error ? reason : new Error(reason));
+					});
+				archiveSheets.change((sheets) => {
+					sheets.push(Sheet.parse(JSON.parse(text)));
+					return sheets;
+				});
+				configureSheets();
+			}
+		} catch (error) {
+			if (safeMode) {
+				window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
+				location.reload();
+			} else console.error(error);
 		}
 	});
 } catch (error) {
 	if (safeMode) {
-		if (error instanceof Error) {
-			window.alert(`'${error.name}' detected - ${error.message}\n${error.stack ?? ``}`);
-		} else {
-			window.alert(`Invalid exception type.`);
-		}
+		window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
 		location.reload();
-	}
-	console.error(error);
+	} else console.error(error);
 }

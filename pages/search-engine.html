@@ -2,16 +2,16 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
 	<meta name="application-name" content="Cheatsheet">
 	<meta name="author" content="Adaptivde Core">
 	<meta name="description" content="Program for solving tests.">
 	<meta name="keywords" content="cheatsheet, test, answers">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Cheatsheet - Search engine</title>
-	<link rel="shortcut icon" type="image/x-icon" href="../resources/search.png" />
-	<link rel="stylesheet" type="text/css" href="../styles/style.css" />
-	<link rel="stylesheet" type="text/css" href="../styles/themes/material.dark.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="../resources/search.png">
+	<link rel="stylesheet" type="text/css" href="../styles/style.css">
+	<link rel="stylesheet" type="text/css" href="../styles/themes/material.dark.css">
 	<script type="text/javascript" src="../scripts/modules.js" defer></script>
 	<script type="text/javascript" src="../scripts/structure.js" defer></script>
 	<script type="text/javascript" src="../scripts/search-engine.js" defer></script>
@@ -19,16 +19,16 @@
 
 <body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto;">
 	<header class="layer in-top" style="display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--size-gap);">
-		<button onclick="location.href = `./menu.html`;">
-			<img src="../resources/return.png" class="icon" />
-		</button>
+		<a href="./menu.html" class="button" style="padding: var(--size-gap);">
+			<img src="../resources/return.png" class="icon">
+		</a>
 		<h3 id="title-sheet">@title</h3>
 	</header>
 	<main style="overflow-y: hidden;">
 		<ol id="poles-container" style="height: 100%; padding: var(--size-gap); overflow-y: auto;"></ol>
 	</main>
 	<footer class="layer in-bottom" style="padding: var(--size-gap);">
-		<input id="search-field" type="text" inputmode="latin" placeholder="Input text" autofocus class="transparent" style="width: 100%;">
+		<input id="search-field" type="text" inputmode="latin" placeholder="Input text" autofocus class="transparent" style="width: 100%; padding: var(--size-gap);">
 	</footer>
 </body>
 

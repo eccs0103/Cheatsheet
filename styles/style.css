@@ -73,12 +73,9 @@
 
 * {
 	font-family: system-ui, sans-serif;
-	text-align: inherit;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	resize: none;
-	overflow: hidden;
 	border-style: none;
 	border-width: var(--size-serpator);
 	outline-style: none;
@@ -169,12 +166,12 @@ section.option>input:not(:checked)~section.option {
 }
 
 button,
+a.button,
 input,
-input[type="text"],
-textarea,
-input[type="datetime"],
+input[type="file"]+label[role="button"],
 input[type="checkbox"]+label[role="checkbox"],
 input[type="radio"]+label[role="combobox"],
+textarea,
 select {
 	font-size: inherit;
 	font-weight: bold;
@@ -185,45 +182,39 @@ select {
 }
 
 button,
+a.button,
 input,
-input[type="text"],
 textarea,
-input[type="datetime"],
 select {
 	width: fit-content;
 	height: fit-content;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: calc(var(--size-gap) / 1.25) var(--size-gap);
 }
 
 input:enabled,
-input[type="text"]:enabled,
-textarea:enabled,
-input[type="datetime"]:enabled {
+textarea:enabled {
 	cursor: text;
 }
 
 button:enabled,
+a.button,
 input:enabled:read-only,
-input[type="text"]:enabled:read-only,
-textarea:enabled:read-only,
-input[type="datetime"]:enabled:read-only,
+input[type="file"]:enabled+label[role="button"],
 input[type="checkbox"]:enabled+label[role="checkbox"],
 input[type="radio"]:enabled:not(:checked)+label[role="combobox"],
+textarea:enabled:read-only,
 select:enabled {
 	cursor: pointer;
 }
 
 input[type="checkbox"]+label[role="checkbox"].toggle {
-	overflow: visible;
 	aspect-ratio: 2;
 	height: 1.2rem;
 	display: flex;
 	border-radius: 50vmin;
 	padding: var(--size-serpator);
-	margin-inline: var(--size-gap);
 }
 
 input[type="checkbox"]+label[role="checkbox"].toggle>span.knob {
@@ -238,6 +229,8 @@ input[type="checkbox"]:checked+label[role="checkbox"].toggle>span.knob {
 	margin-left: auto;
 	margin-right: 0;
 }
+
+/*  */
 
 img {
 	aspect-ratio: 1;
@@ -257,6 +250,10 @@ ol,
 ul {
 	list-style-position: inside;
 	padding-inline-start: 0;
+}
+
+ul {
+	list-style-type: " • ";
 }
 
 ol ol,

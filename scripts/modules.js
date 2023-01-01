@@ -62,10 +62,3 @@ class Archive {
 	}
 }
 //#endregion
-//#region Manager
-class Manager {
-	static async queryText(/** @type {String} */ url) {
-		return fetch(url).then(response => response.text());
-	}
-}
-//#endregion
