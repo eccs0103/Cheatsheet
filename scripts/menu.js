@@ -39,8 +39,8 @@ try {
 	const dialogInsertSheet = (/** @type {HTMLDialogElement} */ (document.querySelector(`dialog#insert-sheet`)));
 	buttonOpenInsertDialog.addEventListener(`click`, (event) => {
 		dialogInsertSheet.showModal();
-		dialogInsertSheet.addEventListener(`click`, (event) => {
-			if (event.target == dialogInsertSheet) {
+		dialogInsertSheet.addEventListener(`click`, (event2) => {
+			if (event2.target == dialogInsertSheet) {
 				dialogInsertSheet.close();
 			}
 		});
@@ -68,6 +68,8 @@ try {
 				window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
 				location.reload();
 			} else console.error(error);
+		} finally {
+			dialogInsertSheet.close();
 		}
 	});
 
@@ -97,6 +99,9 @@ try {
 				window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
 				location.reload();
 			} else console.error(error);
+		}
+		finally {
+			dialogInsertSheet.close();
 		}
 	});
 } catch (error) {
