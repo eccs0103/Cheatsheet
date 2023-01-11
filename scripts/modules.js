@@ -34,7 +34,7 @@ class Archive {
 	constructor(path, initial = undefined) {
 		this.#path = path;
 		if (!localStorage.getItem(path) && initial) {
-			localStorage.setItem(path, JSON.stringify(initial, undefined, " "));
+			localStorage.setItem(path, JSON.stringify(initial, undefined, ` `));
 		}
 	}
 	/** @type {String} */ #path;
@@ -51,7 +51,7 @@ class Archive {
 	 * @param {Notation} value 
 	 */
 	set data(value) {
-		localStorage.setItem(this.#path, JSON.stringify(value, undefined, " "));
+		localStorage.setItem(this.#path, JSON.stringify(value, undefined, ` `));
 	}
 	/**
 	 * 

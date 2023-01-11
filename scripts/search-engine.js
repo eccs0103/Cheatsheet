@@ -19,15 +19,20 @@ try {
 			const olPolesContainer = (/** @type {HTMLOListElement} */ (document.querySelector(`ol#poles-container`)));
 			olPolesContainer.innerHTML = ``;
 			for (const pole of sheet.poles.filter((pole) => regex.test(pole.question))) {
-				const liPole = olPolesContainer.appendChild(document.createElement(`li`));
-				const bQuestion = liPole.appendChild(document.createElement(`b`));
-				bQuestion.innerHTML = pattern == `` ? `${pole.question}` : `${pole.question.replace(regex, (substring) => `<mark>${substring}</mark>`)}`;
-				const ulCasesContainer = liPole.appendChild(document.createElement(`ul`));
+				const sectionPole = olPolesContainer.appendChild(document.createElement(`section`));
+				sectionPole.classList.add(`pole`);
+				const liPoleIndex = sectionPole.appendChild(document.createElement(`li`));
+				liPoleIndex.classList.add(`pole-index`);
+				const spanQuestion = sectionPole.appendChild(document.createElement(`span`));
+				spanQuestion.innerHTML = pattern == `` ? `${pole.question}` : `${pole.question.replace(regex, (substring) => `<mark>${substring}</mark>`)}`;
+				const ulCasesContainer = sectionPole.appendChild(document.createElement(`ul`));
 				for (let index = 0; index < pole.cases.length; index++) {
 					if (!settings.hideIncorrectAnswers || index == pole.answer) {
 						const _case = pole.cases[index];
-						const liCase = ulCasesContainer.appendChild(document.createElement(`li`));
-						const spanCase = liCase.appendChild(document.createElement(`span`));
+						const sectionCase = ulCasesContainer.appendChild(document.createElement(`section`));
+						sectionCase.classList.add(`case`);
+						const liCaseIndex = sectionCase.appendChild(document.createElement(`li`));
+						const spanCase = sectionCase.appendChild(document.createElement(`span`));
 						spanCase.classList.add(index == pole.answer ? `highlight` : `alert`);
 						spanCase.innerText = `${_case}`;
 					}
