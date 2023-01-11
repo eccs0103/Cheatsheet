@@ -10,7 +10,7 @@ try {
 			}
 		})();
 		Array.from(container.querySelectorAll(`*:not(template#sheet-template)`)).forEach((element) => element.remove());
-		archiveSheets.data.map((notation) => Sheet.import(notation)).forEach((sheet, index) => {
+		archiveSheets.data.map(({ date, sheet }) => ({ date: new Date(date), sheet: Sheet.import(sheet) })).forEach(({ date, sheet }, index) => {
 			const divSheetCell = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`div#sheet-cell`))));
 			{
 				const buttonSheetInformation = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#sheet-information`)));
@@ -21,7 +21,7 @@ try {
 				const spanSheetTitle = (/** @type {HTMLSpanElement} */ (divSheetCell.querySelector(`span#sheet-title`)));
 				spanSheetTitle.innerText = sheet.title;
 				const dfnSheetDate = (/** @type {HTMLElement} */ (divSheetCell.querySelector(`dfn#sheet-date`)));
-				dfnSheetDate.innerText = sheet.date.toLocaleString();
+				dfnSheetDate.innerText = date.toLocaleString();
 				const buttonRemoveSheet = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#remove-sheet`)));
 				buttonRemoveSheet.addEventListener(`click`, (event) => {
 					if (window.confirm(`Sheet '${sheet.title}' cant be restored. Are you sure to delete it?`)) {
@@ -58,7 +58,7 @@ try {
 						throw (reason instanceof Error ? reason : new Error(reason));
 					});
 				archiveSheets.change((sheets) => {
-					sheets.push(Sheet.export(Sheet.import(JSON.parse(text))));
+					sheets.push({ date: Date.now(), sheet: Sheet.export(Sheet.import(JSON.parse(text))) });
 					return sheets;
 				});
 				configureSheets();
@@ -88,7 +88,7 @@ try {
 						throw (reason instanceof Error ? reason : new Error(reason));
 					});
 				archiveSheets.change((sheets) => {
-					sheets.push(Sheet.export(Sheet.import(JSON.parse(text))));
+					sheets.push({ date: Date.now(), sheet: Sheet.export(Sheet.import(JSON.parse(text))) });
 					return sheets;
 				});
 				configureSheets();

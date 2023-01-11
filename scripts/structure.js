@@ -97,11 +97,11 @@ class Pole {
 }
 //#endregion
 //#region Sheet
-/** @typedef {{ title: String, date: Number, poles: Array<PoleNotation> }} SheetNotation */
+/** @typedef {{ title: String, poles: Array<PoleNotation> }} SheetNotation */
 class Sheet {
 	/**
 	 * 
-	 * @param {SheetNotation} source 
+	 * @param {any} source 
 	 * @returns 
 	 */
 	static import(source) {
@@ -133,20 +133,20 @@ class Sheet {
 			}
 		})();
 		const result = new Sheet(title, ...poles);
-		const date = (() => {
-			const property = Reflect.get(source, `date`);
-			if (property == undefined) {
-				throw new TypeError(`Source must have a 'date' property.`);
-			}
-			if (typeof (property) != `number`) {
-				throw new TypeError(`Source 'date' property must be a 'Number' type.`);
-			}
-			if (!Number.isFinite(property)) {
-				throw new TypeError(`Source 'date' property must be a finite number.`);
-			}
-			return property;
-		})();
-		result.#date = new Date(date);
+		// const date = (() => {
+		// 	const property = Reflect.get(source, `date`);
+		// 	if (property == undefined) {
+		// 		throw new TypeError(`Source must have a 'date' property.`);
+		// 	}
+		// 	if (typeof (property) != `number`) {
+		// 		throw new TypeError(`Source 'date' property must be a 'Number' type.`);
+		// 	}
+		// 	if (!Number.isFinite(property)) {
+		// 		throw new TypeError(`Source 'date' property must be a finite number.`);
+		// 	}
+		// 	return property;
+		// })();
+		// result.#date = new Date(date);
 		return result;
 	}
 	/**
@@ -157,7 +157,7 @@ class Sheet {
 	static export(source) {
 		const result = (/** @type {SheetNotation} */ ({}));
 		result.title = source.#title;
-		result.date = source.#date.valueOf();
+		// result.date = source.#date.valueOf();
 		result.poles = source.#poles.map((notation) => Pole.export(notation));
 		return result;
 	}
@@ -168,17 +168,17 @@ class Sheet {
 	 */
 	constructor(title, ...poles) {
 		this.#title = title;
-		this.#date = new Date();
+		// this.#date = new Date();
 		this.#poles = poles;
 	}
 	/** @type {String} */ #title;
 	/** @readonly */ get title() {
 		return this.#title;
 	}
-	/** @type {Date} */ #date;
-	/** @readonly */ get date() {
-		return this.#date;
-	}
+	// /** @type {Date} */ #date;
+	// /** @readonly */ get date() {
+	// 	return this.#date;
+	// }
 	/** @type {Array<Pole>} */ #poles;
 	/** @readonly */ get poles() {
 		return Object.freeze(this.#poles);
@@ -219,8 +219,8 @@ const nameDeveloper = `Adaptive Core`;
 const nameProject = `Cheatsheet`;
 /** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
 // const versionProject = (/** @type {VersionNotation} */ ({ "global": 0, "partial": 0, "local": 0 }));
-const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
-const archiveSheets = new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, (/** @type {Array<SheetNotation>} */ ([])));
+const archiveSettings = (/** @type {Archive<SettingsNotation>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()))));
+const archiveSheets = (/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, [])));
 const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
 const safeMode = true;
 //#endregion

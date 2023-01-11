@@ -7,7 +7,6 @@
 ```lang-js
 {
 	title: String,
-	date: Number,
 	poles: Array<{
 		question: String,
 		answer: Number,
