@@ -125,8 +125,7 @@ class Sheet {
 					try {
 						return Pole.import(item);
 					} catch (error) {
-						// @ts-ignore
-						throw new TypeError(`Item with index '${index}' of source 'poles' property must be a 'Pole' type.`, { cause: error });
+						throw new TypeError(`Error while scaning pole with index '${index}'${error instanceof Error ? `:\n${error.message}` : `.`}`);
 					}
 				});
 			} else {
@@ -223,5 +222,5 @@ const nameProject = `Cheatsheet`;
 const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
 const archiveSheets = new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, (/** @type {Array<SheetNotation>} */ ([])));
 const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
-const safeMode = false;
+const safeMode = true;
 //#endregion
