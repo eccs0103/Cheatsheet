@@ -147,10 +147,7 @@ body {
 
 section.option {
 	display: grid;
-	grid-template-columns: 1fr auto;
-	grid-template-areas:
-		'title			value'
-		'definition		value';
+	grid: 'title value' 1fr 'definition value' auto;
 	align-items: center;
 	column-gap: var(--size-gap);
 	padding-top: var(--size-gap);
@@ -228,6 +225,11 @@ input[type="checkbox"]+label[role="checkbox"].toggle>span.knob {
 input[type="checkbox"]:checked+label[role="checkbox"].toggle>span.knob {
 	margin-left: auto;
 	margin-right: 0;
+}
+
+dialog {
+	margin: auto;
+	padding: var(--size-gap);
 }
 
 /*  */

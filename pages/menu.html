@@ -19,10 +19,8 @@
 
 <body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr;">
 	<header class="layer in-top" style="display: grid; grid-template-columns: 1fr auto; align-items: center;">
-		<div style="padding: var(--size-gap);">
-			<h3 id="title-sheet" style="justify-self: start;">Menu</h3>
-		</div>
-		<a href="./settings.html" class="button" style="justify-self: end; padding: var(--size-gap);">
+		<h3 id="title-sheet" style="padding: 0 var(--size-gap);">Menu</h3>
+		<a href="./settings.html" class="button" style="padding: var(--size-gap);">
 			<img src="../resources/settings.png" class="icon">
 		</a>
 	</header>
@@ -49,13 +47,13 @@
 	<button id="open-insert-dialog" class="layer" style="position: absolute; right: calc(var(--size-gap) * 2); bottom: calc(var(--size-gap) * 2); border-radius: 50%; padding: calc(var(--size-gap) * 1);">
 		<img src="../resources/add.png" class="icon" style="height: calc(var(--size-standart) * 2);">
 	</button>
-	<dialog id="insert-sheet" class="layer" style="inset: 0; margin: auto; padding: var(--size-gap);">
+	<dialog id="insert-sheet">
 		<input type="file" id="upload-sheet" accept=".json" hidden>
-		<label for="upload-sheet" role="button" style="display: flex; justify-content: center; align-items: center; gap: var(--size-gap); padding: var(--size-gap);">
+		<label for="upload-sheet" role="button" style="display: flex; align-items: center; gap: var(--size-gap); padding: var(--size-gap);">
 			<img src="../resources/devices.png" class="icon">
 			<span>Upload from device</span>
 		</label>
-		<button id="import-sheet" style="display: flex; justify-content: center; align-items: center; gap: var(--size-gap); padding: var(--size-gap);">
+		<button id="import-sheet" style="display: flex; align-items: center; gap: var(--size-gap); padding: var(--size-gap);">
 			<img src="../resources/cloud_download.png" class="icon">
 			<span>Import from cloud</span>
 		</button>

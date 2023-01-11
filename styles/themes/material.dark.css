@@ -36,6 +36,7 @@ body *::placeholder {
 
 /* Global */
 *.layer,
+dialog,
 ::-webkit-scrollbar-thumb {
 	background-color: var(--color-foreground);
 	border-radius: var(--size-radius);
@@ -170,8 +171,11 @@ dialog::backdrop {
 	color: var(--color-highlight);
 }
 
-a:any-link {
+a {
 	text-decoration: none;
+}
+
+a:not(.button):any-link {
 	color: var(--color-highlight);
 }
 

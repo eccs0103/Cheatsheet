@@ -4,15 +4,59 @@
 class Pole {
 	/**
 	 * 
-	 * @param {PoleNotation} source 
+	 * @param {any} source 
 	 * @returns 
 	 */
 	static import(source) {
-		const result = new Pole(
-			source.question,
-			source.answer,
-			...source.cases
-		);
+		const question = (() => {
+			const property = Reflect.get(source, `question`);
+			if (property == undefined) {
+				throw new TypeError(`Source must have a 'question' property.`);
+			}
+			if (typeof (property) != `string`) {
+				throw new TypeError(`Source 'question' property must be a 'String' type.`);
+			}
+			return property;
+		})();
+		const answer = (() => {
+			const property = Reflect.get(source, `answer`);
+			if (property == undefined) {
+				throw new TypeError(`Source must have a 'answer' property.`);
+			}
+			if (typeof (property) != `number`) {
+				throw new TypeError(`Source 'answer' property must be a 'Number' type.`);
+			}
+			if (!Number.isFinite(property) && Number.isInteger(property)) {
+				throw new TypeError(`Source 'answer' property must be a finite, integer number.`);
+			}
+			if (property < 0) {
+				throw new TypeError(`Source 'answer' property must equal or higher than 0.`);
+			}
+			return property;
+		})();
+		const cases = (() => {
+			const property = Reflect.get(source, `cases`);
+			if (property == undefined) {
+				throw new TypeError(`Source must have a 'cases' property.`);
+			}
+			if (typeof (property) == `string`) {
+				return [property];
+			} else if (typeof (property) == `object` && property instanceof Array) {
+				return property.map((item, index) => {
+					if (typeof (item) != `string`) {
+						throw new TypeError(`Item with index '${index}' of source 'cases' property must be a 'String' type.`);
+					} else {
+						return item;
+					}
+				});
+			} else {
+				throw new TypeError(`Source 'cases' property must be a 'String | Array' type.`);
+			}
+		})();
+		if (cases[answer] == undefined) {
+			throw new TypeError(`There is no case at '${answer}' index.`);
+		}
+		const result = new Pole(question, answer, ...cases);
 		return result;
 	}
 	/**
@@ -26,7 +70,7 @@ class Pole {
 		result.answer = source.#answer;
 		result.cases = source.#cases;
 		return result;
-	}
+	};
 	/**
 	 * 
 	 * @param {String} question 
@@ -57,54 +101,53 @@ class Pole {
 class Sheet {
 	/**
 	 * 
-	 * @param {any} source 
-	 */
-	static parse(source) {
-		/**
-		 * 
-		 * @param {any} property 
-		 * @param {`number` | `string` | `object` | `array`} type 
-		 * @param {any?} value
-		 */
-		function tryParse(property, type, value = null) {
-			const condition = type == `array` ? property instanceof Array : typeof (property) == type;
-			if (property != null || property != undefined && condition) {
-				return value ?? property;
-			} else {
-				throw new TypeError(`Invalid structure.`);
-			}
-		}
-
-		const result = (/** @type {SheetNotation} */(tryParse(source, `object`, {})));
-		{
-			result.title = tryParse(source.title, `string`);
-			result.date = tryParse(source.date, `number`);
-			result.poles = tryParse(source.poles, `array`, []);
-			for (let index = 0; index < source.poles.length; index++) {
-				result.poles[index] = tryParse(source.poles[index], `object`, {});
-				{
-					result.poles[index].question = tryParse(source.poles[index].question, `string`);
-					result.poles[index].answer = tryParse(source.poles[index].answer, `number`);
-					result.poles[index].cases = tryParse(source.poles[index].cases, `array`, []);
-					for (let index2 = 0; index2 < source.poles[index].cases.length; index2++) {
-						result.poles[index].cases[index2] = tryParse(source.poles[index].cases[index2], `string`);
-					}
-				}
-			}
-		}
-		return result;
-	}
-	/**
-	 * 
 	 * @param {SheetNotation} source 
 	 * @returns 
 	 */
 	static import(source) {
-		const result = new Sheet(
-			source.title,
-			...source.poles.map((pole) => Pole.import(pole))
-		);
-		result.#date = new Date(source.date);
+		const title = (() => {
+			const property = Reflect.get(source, `title`);
+			if (property == undefined) {
+				throw new TypeError(`Source must have a 'title' property.`);
+			}
+			if (typeof (property) != `string`) {
+				throw new TypeError(`Source 'title' property must be a 'String' type.`);
+			}
+			return property;
+		})();
+		const poles = (() => {
+			const property = Reflect.get(source, `poles`);
+			if (property == undefined) {
+				throw new TypeError(`Source must have a 'poles' property.`);
+			}
+			if (typeof (property) == `object` && property instanceof Array) {
+				return property.map((item, index) => {
+					try {
+						return Pole.import(item);
+					} catch (error) {
+						// @ts-ignore
+						throw new TypeError(`Item with index '${index}' of source 'poles' property must be a 'Pole' type.`, { cause: error });
+					}
+				});
+			} else {
+				throw new TypeError(`Source 'poles' property must be a 'Array' type.`);
+			}
+		})();
+		const result = new Sheet(title, ...poles);
+		const date = (() => {
+			const property = Reflect.get(source, `date`);
+			if (property == undefined) {
+				throw new TypeError(`Source must have a 'date' property.`);
+			}
+			if (typeof (property) != `number`) {
+				throw new TypeError(`Source 'date' property must be a 'Number' type.`);
+			}
+			if (!Number.isFinite(property)) {
+				throw new TypeError(`Source 'date' property must be a finite number.`);
+			}
+			return property;
+		})();
+		result.#date = new Date(date);
 		return result;
 	}
 	/**
@@ -167,7 +210,7 @@ class Settings {
 		return result;
 	}
 	constructor() {
-		this.hideIncorrectAnswers = false;
+		this.hideIncorrectAnswers = true;
 	}
 	hideIncorrectAnswers;
 }
@@ -180,5 +223,5 @@ const nameProject = `Cheatsheet`;
 const archiveSettings = new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()));
 const archiveSheets = new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, (/** @type {Array<SheetNotation>} */ ([])));
 const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
-const safeMode = true;
+const safeMode = false;
 //#endregion

@@ -9,7 +9,7 @@ try {
 				throw new ReferenceError(`Parent element cant be found.`);
 			}
 		})();
-		[...container.querySelectorAll(`*:not(template#sheet-template)`)].forEach((element) => element.remove());
+		Array.from(container.querySelectorAll(`*:not(template#sheet-template)`)).forEach((element) => element.remove());
 		archiveSheets.data.map((notation) => Sheet.import(notation)).forEach((sheet, index) => {
 			const divSheetCell = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`div#sheet-cell`))));
 			{
@@ -37,7 +37,7 @@ try {
 
 	const buttonOpenInsertDialog = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#open-insert-dialog`)));
 	const dialogInsertSheet = (/** @type {HTMLDialogElement} */ (document.querySelector(`dialog#insert-sheet`)));
-	buttonOpenInsertDialog.addEventListener(`click`, (event) => {
+	buttonOpenInsertDialog.addEventListener(`click`, async (event) => {
 		dialogInsertSheet.showModal();
 		dialogInsertSheet.addEventListener(`click`, (event2) => {
 			if (event2.target == dialogInsertSheet) {
@@ -58,18 +58,17 @@ try {
 						throw (reason instanceof Error ? reason : new Error(reason));
 					});
 				archiveSheets.change((sheets) => {
-					sheets.push(Sheet.parse(JSON.parse(text)));
+					sheets.push(Sheet.export(Sheet.import(JSON.parse(text))));
 					return sheets;
 				});
 				configureSheets();
+				dialogInsertSheet.close();
 			}
 		} catch (error) {
 			if (safeMode) {
 				window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
 				location.reload();
 			} else console.error(error);
-		} finally {
-			dialogInsertSheet.close();
 		}
 	});
 
@@ -89,19 +88,17 @@ try {
 						throw (reason instanceof Error ? reason : new Error(reason));
 					});
 				archiveSheets.change((sheets) => {
-					sheets.push(Sheet.parse(JSON.parse(text)));
+					sheets.push(Sheet.export(Sheet.import(JSON.parse(text))));
 					return sheets;
 				});
 				configureSheets();
+				dialogInsertSheet.close();
 			}
 		} catch (error) {
 			if (safeMode) {
 				window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
 				location.reload();
 			} else console.error(error);
-		}
-		finally {
-			dialogInsertSheet.close();
 		}
 	});
 } catch (error) {

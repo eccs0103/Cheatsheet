@@ -49,12 +49,7 @@ try {
 	});
 } catch (error) {
 	if (safeMode) {
-		if (error instanceof Error) {
-			window.alert(`'${error.name}' detected - ${error.message}\n${error.stack ?? ``}`);
-		} else {
-			window.alert(`Invalid exception type.`);
-		}
+		window.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`);
 		location.reload();
-	}
-	console.error(error);
+	} else console.error(error);
 }
