@@ -151,7 +151,7 @@ section.serpator {
 
 section.option {
 	display: grid;
-	grid: 'title value' 1fr 'definition value' auto;
+	grid: 'title value' 1fr 'definition value' max-content / 1fr max-content;
 	align-items: center;
 	column-gap: var(--size-gap);
 	padding-top: var(--size-gap);

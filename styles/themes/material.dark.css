@@ -192,10 +192,14 @@ mark {
 }
 
 /* Local */
-img {
-	background-color: transparent;
-}
-
 img.icon {
 	filter: invert(1);
+}
+
+input[type="checkbox"]:checked+label[role="checkbox"].checkbox {
+	background-color: unset;
+}
+
+input[type="checkbox"]:checked+label[role="checkbox"].checkbox>img.checkmark {
+	content: url(../../resources/checkmark.png);
 }
