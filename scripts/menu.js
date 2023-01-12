@@ -10,32 +10,35 @@ try {
 			}
 		})();
 		Array.from(container.querySelectorAll(`*:not(template#sheet-template)`)).forEach((element) => element.remove());
-		archiveSheets.data.map(({ date, sheet }) => ({ date: new Date(date), sheet: Sheet.import(sheet) })).forEach(({ date, sheet }, index) => {
-			try {
-				const divSheetCell = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`div#sheet-cell`))));
-				{
-					const buttonSheetInformation = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#sheet-information`)));
-					buttonSheetInformation.addEventListener(`click`, (event) => {
-						archivePreview.data = Sheet.export(sheet);
-						location.href = `./search-engine.html`;
-					});
-					const spanSheetTitle = (/** @type {HTMLSpanElement} */ (divSheetCell.querySelector(`span#sheet-title`)));
-					spanSheetTitle.innerText = sheet.title;
-					const dfnSheetDate = (/** @type {HTMLElement} */ (divSheetCell.querySelector(`dfn#sheet-date`)));
-					dfnSheetDate.innerText = date.toLocaleString();
-					const buttonRemoveSheet = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#remove-sheet`)));
-					buttonRemoveSheet.addEventListener(`click`, (event) => {
-						if (window.confirm(`Sheet '${sheet.title}' cant be restored. Are you sure to delete it?`)) {
-							archiveSheets.change((sheets) => sheets.filter((sheet, index2) => index2 != index));
-							configureSheets();
-						}
-					});
-				}
-			} catch (error) {
-				if (window.confirm(`The sheet is not compatible with the version. Do you want to remove it to avoid version conflicts?`)) {
-					archiveSheets.change((sheets) => sheets.filter((sheet, index2) => index2 != index));
-				}
-				location.reload();
+		archiveSheets.data.map((item) => {
+			const date = item[`date`];
+			const sheet = item[`sheet`];
+			if (date == undefined || sheet == undefined) {
+				const oldSheet = (/** @type {SheetNotation} */ (item));
+				window.alert(`Found sheet - '${oldSheet.title}' with old data format. The old formats are no longer supported, so they will be converted to the new one.`);
+				return { date: new Date(), sheet: Sheet.import(oldSheet) };
+			} else {
+				return { date: new Date(date), sheet: Sheet.import(sheet) };
+			}
+		}).forEach(({ date, sheet }, index) => {
+			const divSheetCell = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`div#sheet-cell`))));
+			{
+				const buttonSheetInformation = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#sheet-information`)));
+				buttonSheetInformation.addEventListener(`click`, (event) => {
+					archivePreview.data = Sheet.export(sheet);
+					location.href = `./search-engine.html`;
+				});
+				const spanSheetTitle = (/** @type {HTMLSpanElement} */ (divSheetCell.querySelector(`span#sheet-title`)));
+				spanSheetTitle.innerText = sheet.title;
+				const dfnSheetDate = (/** @type {HTMLElement} */ (divSheetCell.querySelector(`dfn#sheet-date`)));
+				dfnSheetDate.innerText = date.toLocaleString();
+				const buttonRemoveSheet = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#remove-sheet`)));
+				buttonRemoveSheet.addEventListener(`click`, (event) => {
+					if (window.confirm(`Sheet '${sheet.title}' cant be restored. Are you sure to delete it?`)) {
+						archiveSheets.change((sheets) => sheets.filter((sheet, index2) => index2 != index));
+						configureSheets();
+					}
+				});
 			}
 		});
 	}
