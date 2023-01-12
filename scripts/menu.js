@@ -1,5 +1,14 @@
 "use strict";
 try {
+	archiveSheets.change((data) => data.map((item) => {
+		try {
+			const sheet = Sheet.import(item);
+			window.alert(`Found sheet '${sheet.title}' with old data format. The old formats are no longer supported, so tey will be converted to the new one.`);
+			return { date: Date.now(), sheet: Sheet.export(sheet) };
+		} catch (error) {
+			return item;
+		}
+	}));
 	function configureSheets() {
 		const templateSheetTemplate = (/** @type {HTMLTemplateElement} */ (document.querySelector(`template#sheet-template`)));
 		const container = (() => {
@@ -10,17 +19,7 @@ try {
 			}
 		})();
 		Array.from(container.querySelectorAll(`*:not(template#sheet-template)`)).forEach((element) => element.remove());
-		archiveSheets.data.map((item) => {
-			const date = item[`date`];
-			const sheet = item[`sheet`];
-			if (date == undefined || sheet == undefined) {
-				const oldSheet = (/** @type {SheetNotation} */ (item));
-				window.alert(`Found sheet - '${oldSheet.title}' with old data format. The old formats are no longer supported, so they will be converted to the new one.`);
-				return { date: new Date(), sheet: Sheet.import(oldSheet) };
-			} else {
-				return { date: new Date(date), sheet: Sheet.import(sheet) };
-			}
-		}).forEach(({ date, sheet }, index) => {
+		archiveSheets.data.map(({ date, sheet }) => ({ date: new Date(date), sheet: Sheet.import(sheet) })).forEach(({ date, sheet }, index) => {
 			const divSheetCell = container.appendChild((/** @type {HTMLButtonElement} */ ((/** @type {DocumentFragment} */ (templateSheetTemplate.content.cloneNode(true))).querySelector(`div#sheet-cell`))));
 			{
 				const buttonSheetInformation = (/** @type {HTMLButtonElement} */ (divSheetCell.querySelector(`button#sheet-information`)));
