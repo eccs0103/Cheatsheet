@@ -5,12 +5,14 @@
 ## Руководство
 Для работы программы требуется лист. Лист должен быть файл JSON со структурой:  
 ```js
-title: String,
-poles: Array<{
-	question: String,
-	answer: Number,
-	cases: String | Array<String>,
-}>,
+{
+	"title": String,
+	"poles": Array<{
+		"question": String,
+		"answer": Number,
+		"cases": String | Array<String>,
+	}>,
+}
 ```
 и может быть загружен с устройства или импортирован с помощью ссылки.
 - - -
