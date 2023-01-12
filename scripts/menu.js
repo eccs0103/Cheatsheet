@@ -142,7 +142,7 @@ try {
 	const buttonDownloadSheets = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#download-sheets`)));
 	buttonDownloadSheets.addEventListener(`click`, (event) => {
 		selection.forEach((data) => {
-			Manager.download(new File([JSON.stringify(Sheet.export(data.sheet))], `${data.sheet.title}.json`, {
+			Manager.download(new File([JSON.stringify(Sheet.export(data.sheet), undefined, `\t`)], `${data.sheet.title}.json`, {
 				type: `text/json`,
 			}));
 		});
