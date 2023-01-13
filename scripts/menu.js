@@ -170,6 +170,7 @@ try {
 		const sheets = selection().map((index) => database[index].sheet);
 		if (await Program.confirm(`Sheet(s) '${sheets.map((sheet) => sheet.title).join(`', '`)}' cant be restored. Are you sure to delete it (them)?`)) {
 			database = database.filter((data, index) => !indexes.includes(index));
+			archiveSheets.data = database.map(({ date, sheet }) => ({ date: date.valueOf(), sheet: Sheet.export(sheet) }));
 			configureSheets();
 			inputAllSheetsMark.checked = false;
 			buttonOpenMoreDialog.hidden = true;
