@@ -232,8 +232,46 @@ input[type="checkbox"]:checked+label[role="checkbox"].toggle>span.knob {
 }
 
 dialog {
+	max-width: min(calc(var(--size-standart) * 15), calc((100% - var(--size-gap)) - 2em));
+	max-height: calc((100% - var(--size-gap)) - 2em);
 	margin: auto;
 	padding: var(--size-gap);
+}
+
+dialog.pop-up {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--size-gap);
+	overflow: hidden;
+}
+
+dialog.pop-up.confirm {
+	display: grid;
+	justify-items: center;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: max-content 1fr max-content;
+}
+
+dialog.pop-up>div {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+dialog.pop-up>input,
+dialog.pop-up>button,
+dialog.pop-up>div {
+	padding: var(--size-gap);
+}
+
+dialog.pop-up.confirm>h3,
+dialog.pop-up.confirm>div {
+	grid-column: auto / span 2;
+}
+
+dialog.pop-up>div>span {
+	word-break: break-word;
 }
 
 /*  */

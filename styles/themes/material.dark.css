@@ -163,12 +163,16 @@ dialog::backdrop {
 	background-color: rgba(0, 0, 0, 50%);
 }
 
-*.alert {
-	color: var(--color-text-negative);
-}
-
 *.highlight {
 	color: var(--color-highlight);
+}
+
+*.warn {
+	color: var(--color-warn);
+}
+
+*.alert {
+	color: var(--color-text-negative);
 }
 
 a {

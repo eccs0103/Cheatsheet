@@ -218,7 +218,7 @@ class Settings {
 const nameDeveloper = `Adaptive Core`;
 const nameProject = `Cheatsheet`;
 /** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
-const versionProject = (/** @type {VersionNotation} */ ({ "global": 1, "partial": 1, "local": 7 }));
+const versionProject = (/** @type {VersionNotation} */ ({ "global": 1, "partial": 1, "local": 10 }));
 const archiveSettings = (/** @type {Archive<SettingsNotation>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()))));
 const archiveSheets = (/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, [])));
 const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));

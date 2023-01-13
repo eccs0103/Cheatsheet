@@ -18,7 +18,11 @@
 </head>
 
 <body style="position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr;">
-	<header class="layer in-top" style="display: grid; grid-template-columns: 1fr max-content max-content; align-items: center;">
+	<header class="layer in-top" style="display: grid; grid-template-columns: max-content 1fr max-content max-content; align-items: center;">
+		<input id="all-sheets-mark" type="checkbox" hidden>
+		<label for="all-sheets-mark" role="checkbox" class="checkbox" style="height: 100%; display: flex; place-items: center; padding: var(--size-gap);">
+			<img src="../resources/checkbox.png" class="icon checkmark">
+		</label>
 		<h3 id="title-sheet" style="padding: 0 var(--size-gap);">Menu</h3>
 		<button id="open-more-dialog" hidden style="padding: var(--size-gap);">
 			<img src="../resources/menu.png" class="icon">
