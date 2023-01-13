@@ -171,6 +171,7 @@ try {
 		if (await Program.confirm(`Sheet(s) '${sheets.map((sheet) => sheet.title).join(`', '`)}' cant be restored. Are you sure to delete it (them)?`)) {
 			database = database.filter((data, index) => !indexes.includes(index));
 			configureSheets();
+			inputAllSheetsMark.checked = false;
 			buttonOpenMoreDialog.hidden = true;
 		}
 		dialogMoreActions.close();
