@@ -34,12 +34,12 @@ class Archive {
 	/**
 	 * 
 	 * @param {String} path 
-	 * @param {Notation | undefined} initial 
+	 * @param {Notation?} initial 
 	 */
-	constructor(path, initial = undefined) {
+	constructor(path, initial = null) {
 		this.#path = path;
 		if (!localStorage.getItem(path) && initial) {
-			localStorage.setItem(path, JSON.stringify(initial, undefined, ` `));
+			localStorage.setItem(path, JSON.stringify(initial, undefined, `\t`));
 		}
 	}
 	//#endregion
@@ -60,7 +60,7 @@ class Archive {
 	 * @param {Notation} value 
 	 */
 	set data(value) {
-		localStorage.setItem(this.#path, JSON.stringify(value, undefined, ` `));
+		localStorage.setItem(this.#path, JSON.stringify(value, undefined, `\t`));
 	}
 	//#endregion
 	//#region change()
