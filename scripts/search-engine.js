@@ -67,7 +67,7 @@ try {
 	//#endregion
 } catch (error) {
 	if (safeMode) {
-		Program.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`, MessageType.error)
+		Program.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`, MessageType.error)
 			.then(() => location.reload());
 	} else console.error(error);
 }

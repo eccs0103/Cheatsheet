@@ -34,6 +34,7 @@ try {
 	const buttonOpenMoreDialog = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#open-more-dialog`)));
 
 	let database = archiveSheets.data.map(({ date, sheet }) => ({ date: new Date(date), sheet: Sheet.import(sheet) }));
+
 	//#region Configuration
 	function configureSheets() {
 		Array.from(container.querySelectorAll(`*:not(template#sheet-template)`)).forEach((element) => element.remove());
@@ -99,7 +100,7 @@ try {
 			}
 		} catch (error) {
 			if (safeMode) {
-				Program.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`, MessageType.error)
+				Program.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`, MessageType.error)
 					.then(() => location.reload());
 			} else console.error(error);
 		}
@@ -127,7 +128,7 @@ try {
 			}
 		} catch (error) {
 			if (safeMode) {
-				Program.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`, MessageType.error)
+				Program.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`, MessageType.error)
 					.then(() => location.reload());
 			} else console.error(error);
 		}
@@ -181,7 +182,7 @@ try {
 	//#endregion
 } catch (error) {
 	if (safeMode) {
-		Program.alert(error instanceof Error ? `'${error.name}' detected\n${error.message}\n${error.stack ?? ``}` : `Invalid exception type.`, MessageType.error)
+		Program.alert(error instanceof Error ? error.stack ?? `${error.name}: ${error.message}` : `Invalid exception type.`, MessageType.error)
 			.then(() => location.reload());
 	} else console.error(error);
 }

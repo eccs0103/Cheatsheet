@@ -82,12 +82,12 @@ class Manager {
 	 * @param {File} file 
 	 */
 	static download(file) {
-		const aLink = document.body.appendChild(document.createElement(`a`));
+		const aLink = document.createElement(`a`);
 		aLink.download = file.name;
 		aLink.href = URL.createObjectURL(file);
 		aLink.click();
 		URL.revokeObjectURL(aLink.href);
-		document.body.removeChild(aLink);
+		aLink.remove();
 	}
 	//#endregion
 }
