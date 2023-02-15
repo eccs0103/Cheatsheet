@@ -1,40 +1,63 @@
 "use strict";
 //#region Random
+/**
+ * A class that manages with randomness.
+ */
 class Random {
-	//#region number()
 	/**
-	 * 
-	 * @param {Number} min 
-	 * @param {Number} max 
-	 * @returns 
+	 * Gives a random number between min and max exclusively.
+	 * @param {Number} min A minimum value.
+	 * @param {Number} max A maximum value.
+	 * @returns A random float float.
 	 */
 	static number(min, max) {
 		return Math.random() * (max - min) + min;
 	}
-	//#endregion
-	//#region element()
 	/**
-	 * 
-	 * @template Type
-	 * @param {Array<Type>} array 
-	 * @returns 
+	 * Gives a random element from an array.
+	 * @template Type Elements type.
+	 * @param {Array<Type>} array Given array.
+	 * @returns An array element.
 	 */
 	static element(array) {
 		return array[Math.floor(Random.number(0, array.length))];
 	}
-	//#endregion
+	/**
+	 * A function that returns random variant from cases.
+	 * @template Type Case type.
+	 * @param {Map<Type, Number>} cases Map of cases.
+	 * @returns Random case.
+	 */
+	static case(cases) {
+		const summary = Array.from(cases).reduce((previous, current) => previous + current[1], 0);
+		const random = Random.number(0, summary);
+		let selection = undefined;
+		let start = 0;
+		for (const entry of cases) {
+			const end = start + entry[1];
+			if (start <= random && random < end) {
+				selection = entry[0];
+				break;
+			}
+			start = end;
+		}
+		if (typeof (selection) == `undefined`) {
+			throw new ReferenceError(`Can't select value. Maybe stack is empty.`);
+		} else {
+			return selection;
+		}
+	}
 }
 //#endregion
 //#region Archive
-/** 
- * @template Notation
+/**
+ * A class for convenient data storage in local storage.
+ * @template Notation Data type stored in archive.
  */
 class Archive {
-	//#region constructor()
 	/**
-	 * 
-	 * @param {String} path 
-	 * @param {Notation?} initial 
+	 * @param {String} path The path where the data should be stored.
+	 * @param {Notation?} initial Initial data.
 	 */
 	constructor(path, initial = null) {
 		this.#path = path;
@@ -42,11 +65,10 @@ class Archive {
 			localStorage.setItem(path, JSON.stringify(initial, undefined, `\t`));
 		}
 	}
-	//#endregion
-	//#region #path
 	/** @type {String} */ #path;
-	//#endregion
-	//#region data
+	/**
+	 * The data stored in the archive.
+	 */
 	get data() {
 		const item = localStorage.getItem(this.#path);
 		if (item) {
@@ -56,222 +78,17 @@ class Archive {
 		}
 	}
 	/**
-	 * 
-	 * @param {Notation} value 
+	 * The data stored in the archive.
 	 */
 	set data(value) {
 		localStorage.setItem(this.#path, JSON.stringify(value, undefined, `\t`));
 	}
-	//#endregion
-	//#region change()
 	/**
-	 * 
-	 * @param {(value: Notation) => Notation} action 
+	 * Function for receiving and transmitting data. Frequent use is not recommended based on optimization.
+	 * @param {(value: Notation) => Notation} action A function that transforms the results.
 	 */
 	change(action) {
 		this.data = action(this.data);
 	}
-	//#endregion
-}
-//#endregion
-//#region Manager
-class Manager {
-	//#region download()
-	/**
-	 * 
-	 * @param {File} file 
-	 */
-	static download(file) {
-		const aLink = document.createElement(`a`);
-		aLink.download = file.name;
-		aLink.href = URL.createObjectURL(file);
-		aLink.click();
-		URL.revokeObjectURL(aLink.href);
-		aLink.remove();
-	}
-	//#endregion
-}
-//#endregion
-//#region Program
-/** @enum {Number} */ const MessageType = {
-	/** @readonly */ log: 0,
-	/** @readonly */ warn: 1,
-	/** @readonly */ error: 2,
-};
-class Program {
-	//#region alert()
-	/**
-	 * 
-	 * @param {String} message 
-	 * @param {MessageType} type 
-	 */
-	static async alert(message, type = MessageType.log) {
-		const dialog = document.body.appendChild(document.createElement(`dialog`));
-		dialog.classList.add(`pop-up`);
-		dialog.showModal();
-		{
-			const h3 = dialog.appendChild(document.createElement(`h3`));
-			switch (type) {
-				case MessageType.log: {
-					h3.innerText = `Message`;
-					h3.classList.add(`highlight`);
-				} break;
-				case MessageType.warn: {
-					h3.innerText = `Warning`;
-					h3.classList.add(`warn`);
-				} break;
-				case MessageType.error: {
-					h3.innerText = `Error`;
-					h3.classList.add(`alert`);
-				} break;
-				default: {
-					throw new TypeError(`Invalid message type.`);
-				} break;
-			}
-			{ }
-			const div = dialog.appendChild(document.createElement(`div`));
-			{
-				const span = div.appendChild(document.createElement(`span`));
-				span.innerText = `${message}`;
-				{ }
-			}
-			const promise = new Promise((/** @type {(value: void) => void} */ resolve) => {
-				dialog.addEventListener(`click`, (event) => {
-					if (event.target == dialog) {
-						resolve();
-						dialog.remove();
-					}
-				});
-			});
-			return promise;
-		}
-	}
-	//#endregion
-	//#region confirm()
-	/**
-	 * 
-	 * @param {String} message 
-	 * @param {MessageType} type 
-	 */
-	static async confirm(message, type = MessageType.log) {
-		const dialog = document.body.appendChild(document.createElement(`dialog`));
-		dialog.classList.add(`pop-up`);
-		dialog.classList.add(`confirm`);
-		dialog.showModal();
-		{
-			const h3 = dialog.appendChild(document.createElement(`h3`));
-			switch (type) {
-				case MessageType.log: {
-					h3.innerText = `Message`;
-					h3.classList.add(`highlight`);
-				} break;
-				case MessageType.warn: {
-					h3.innerText = `Warning`;
-					h3.classList.add(`warn`);
-				} break;
-				case MessageType.error: {
-					h3.innerText = `Error`;
-					h3.classList.add(`alert`);
-				} break;
-				default: {
-					throw new TypeError(`Invalid message type.`);
-				} break;
-			}
-			{ }
-			const div = dialog.appendChild(document.createElement(`div`));
-			{
-				const span = div.appendChild(document.createElement(`span`));
-				span.innerText = `${message}`;
-				{ }
-			}
-			const buttonAccept = dialog.appendChild(document.createElement(`button`));
-			buttonAccept.innerText = `Accept`;
-			buttonAccept.classList.add(`highlight`);
-			{ }
-			const buttonDecline = dialog.appendChild(document.createElement(`button`));
-			buttonDecline.innerText = `Decline`;
-			buttonDecline.classList.add(`alert`);
-			{ }
-			const promise = new Promise((/** @type {(value: Boolean) => void} */ resolve) => {
-				buttonAccept.addEventListener(`click`, (event) => {
-					resolve(true);
-					dialog.remove();
-				});
-				buttonDecline.addEventListener(`click`, (event) => {
-					resolve(false);
-					dialog.remove();
-				});
-				dialog.addEventListener(`click`, (event) => {
-					if (event.target == dialog) {
-						resolve(false);
-						dialog.remove();
-					}
-				});
-			});
-			return promise;
-		}
-	}
-	//#endregion
-	//#region prompt()
-	/**
-	 * 
-	 * @param {String} message 
-	 * @param {MessageType} type 
-	 */
-	static async prompt(message, type = MessageType.log) {
-		const dialog = document.body.appendChild(document.createElement(`dialog`));
-		dialog.classList.add(`pop-up`);
-		dialog.showModal();
-		{
-			const h3 = dialog.appendChild(document.createElement(`h3`));
-			switch (type) {
-				case MessageType.log: {
-					h3.innerText = `Message`;
-					h3.classList.add(`highlight`);
-				} break;
-				case MessageType.warn: {
-					h3.innerText = `Warning`;
-					h3.classList.add(`warn`);
-				} break;
-				case MessageType.error: {
-					h3.innerText = `Error`;
-					h3.classList.add(`alert`);
-				} break;
-				default: {
-					throw new TypeError(`Invalid message type.`);
-				} break;
-			}
-			{ }
-			const div = dialog.appendChild(document.createElement(`div`));
-			{
-				const span = div.appendChild(document.createElement(`span`));
-				span.innerText = `${message}`;
-				{ }
-			}
-			const input = dialog.appendChild(document.createElement(`input`));
-			input.type = `text`;
-			input.placeholder = `Enter text`;
-			input.inputMode = `url`;
-			input.classList.add(`depth`);
-			{ }
-			const button = dialog.appendChild(document.createElement(`button`));
-			button.innerText = `Continue`;
-			{ }
-			const promise = new Promise((/** @type {(value: String | null) => void} */ resolve) => {
-				button.addEventListener(`click`, (event) => {
-					resolve(input.value);
-					dialog.remove();
-				});
-				dialog.addEventListener(`click`, (event) => {
-					if (event.target == dialog) {
-						resolve(null);
-						dialog.remove();
-					}
-				});
-			});
-			return promise;
-		}
-	}
-	//#endregion
 }
 //#endregion

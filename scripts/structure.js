@@ -1,6 +1,11 @@
 "use strict";
 //#region Pole
-/** @typedef {{ question: String, answer: Number, cases: Array<String> }} PoleNotation */
+/**
+ * @typedef PoleNotation
+ * @property {String} question
+ * @property {Number} answer
+ * @property {Array<String>} cases
+ */
 class Pole {
 	/**
 	 * 
@@ -97,7 +102,11 @@ class Pole {
 }
 //#endregion
 //#region Sheet
-/** @typedef {{ title: String, poles: Array<PoleNotation> }} SheetNotation */
+/**
+ * @typedef SheetNotation
+ * @property {String} title
+ * @property {Array<PoleNotation>} poles
+ */
 class Sheet {
 	/**
 	 * 
@@ -133,20 +142,6 @@ class Sheet {
 			}
 		})();
 		const result = new Sheet(title, ...poles);
-		// const date = (() => {
-		// 	const property = Reflect.get(source, `date`);
-		// 	if (property == undefined) {
-		// 		throw new TypeError(`Source must have a 'date' property.`);
-		// 	}
-		// 	if (typeof (property) != `number`) {
-		// 		throw new TypeError(`Source 'date' property must be a 'Number' type.`);
-		// 	}
-		// 	if (!Number.isFinite(property)) {
-		// 		throw new TypeError(`Source 'date' property must be a finite number.`);
-		// 	}
-		// 	return property;
-		// })();
-		// result.#date = new Date(date);
 		return result;
 	}
 	/**
@@ -157,7 +152,6 @@ class Sheet {
 	static export(source) {
 		const result = (/** @type {SheetNotation} */ ({}));
 		result.title = source.#title;
-		// result.date = source.#date.valueOf();
 		result.poles = source.#poles.map((notation) => Pole.export(notation));
 		return result;
 	}
@@ -168,25 +162,206 @@ class Sheet {
 	 */
 	constructor(title, ...poles) {
 		this.#title = title;
-		// this.#date = new Date();
 		this.#poles = poles;
 	}
 	/** @type {String} */ #title;
 	/** @readonly */ get title() {
 		return this.#title;
 	}
-	// /** @type {Date} */ #date;
-	// /** @readonly */ get date() {
-	// 	return this.#date;
-	// }
 	/** @type {Array<Pole>} */ #poles;
 	/** @readonly */ get poles() {
 		return Object.freeze(this.#poles);
 	}
 }
 //#endregion
+//#region Application
+/** @enum {Number} */ const MessageType = {
+	/** @readonly */ log: 0,
+	/** @readonly */ warn: 1,
+	/** @readonly */ error: 2,
+};
+class Application {
+	//#region download()
+	/**
+	 * 
+	 * @param {File} file 
+	 */
+	static download(file) {
+		const aLink = document.createElement(`a`);
+		aLink.download = file.name;
+		aLink.href = URL.createObjectURL(file);
+		aLink.click();
+		URL.revokeObjectURL(aLink.href);
+		aLink.remove();
+	}
+	//#endregion
+	//#region #popup()
+	/**
+	 * @param {MessageType} type 
+	 */
+	static #popup(type) {
+		const dialog = document.body.appendChild(document.createElement(`dialog`));
+		dialog.classList.add(`layer`, `pop-up`);
+		dialog.showModal();
+		{
+			const divHeader = dialog.appendChild(document.createElement(`div`));
+			divHeader.classList.add(`header`, `flex`);
+			{
+				const h3Title = divHeader.appendChild(document.createElement(`h3`));
+				switch (type) {
+					case MessageType.log: {
+						h3Title.innerText = `Message`;
+						h3Title.classList.add(`highlight`);
+					} break;
+					case MessageType.warn: {
+						h3Title.innerText = `Warning`;
+						h3Title.classList.add(`warn`);
+					} break;
+					case MessageType.error: {
+						h3Title.innerText = `Error`;
+						h3Title.classList.add(`alert`);
+					} break;
+					default: throw new TypeError(`Invalid message type.`);
+				}
+				{ }
+			}
+			const divMain = dialog.appendChild(document.createElement(`div`));
+			divMain.classList.add(`main`);
+			{ }
+			const divFooter = dialog.appendChild(document.createElement(`div`));
+			divFooter.classList.add(`footer`, `flex`);
+			{ }
+		}
+		return dialog;
+	}
+	//#endregion
+	//#region alert()
+	/**
+	 * 
+	 * @param {String} message 
+	 * @param {MessageType} type 
+	 */
+	static async alert(message, type = MessageType.log) {
+		const dialog = this.#popup(type);
+		{
+			const divMain = (/** @type {HTMLDivElement} */ (dialog.querySelector(`div.main`)));
+			{
+				divMain.innerText = message;
+			}
+			return (/** @type {Promise<void>} */ (new Promise((resolve) => {
+				dialog.addEventListener(`click`, (event) => {
+					if (event.target == dialog) {
+						resolve();
+						dialog.remove();
+					}
+				});
+			})));
+		}
+	}
+	//#endregion
+	//#region confirm()
+	/**
+	 * 
+	 * @param {String} message 
+	 * @param {MessageType} type 
+	 */
+	static confirm(message, type = MessageType.log) {
+		const dialog = this.#popup(type);
+		{
+			const divMain = (/** @type {HTMLDivElement} */ (dialog.querySelector(`div.main`)));
+			{
+				divMain.innerText = message;
+			}
+			const divFooter = (/** @type {HTMLDivElement} */ (dialog.querySelector(`div.footer`)));
+			{
+				const buttonAccept = divFooter.appendChild(document.createElement(`button`));
+				buttonAccept.innerText = `Accept`;
+				buttonAccept.classList.add(`layer`, `transparent`, `highlight`);
+				{ }
+				const buttonDecline = divFooter.appendChild(document.createElement(`button`));
+				buttonDecline.innerText = `Decline`;
+				buttonDecline.classList.add(`layer`, `transparent`, `alert`);
+				{ }
+				return (/** @type {Promise<Boolean>} */ (new Promise((resolve) => {
+					dialog.addEventListener(`click`, (event) => {
+						if (event.target == dialog) {
+							resolve(false);
+							dialog.remove();
+						}
+					});
+					buttonAccept.addEventListener(`click`, (event) => {
+						resolve(true);
+						dialog.remove();
+					});
+					buttonDecline.addEventListener(`click`, (event) => {
+						resolve(false);
+						dialog.remove();
+					});
+				})));
+			}
+		}
+	}
+	//#endregion
+	//#region prompt()
+	/**
+	 * 
+	 * @param {String} message 
+	 * @param {MessageType} type 
+	 */
+	static async prompt(message, type = MessageType.log) {
+		const dialog = this.#popup(type);
+		{
+			const divMain = (/** @type {HTMLDivElement} */ (dialog.querySelector(`div.main`)));
+			{
+				divMain.innerText = message;
+			}
+			const divFooter = (/** @type {HTMLDivElement} */ (dialog.querySelector(`div.footer`)));
+			{
+				const inputPrompt = divFooter.appendChild(document.createElement(`input`));
+				inputPrompt.type = `text`;
+				inputPrompt.placeholder = `Enter text`;
+				inputPrompt.classList.add(`depth`);
+				{ }
+				const buttonContinue = divFooter.appendChild(document.createElement(`button`));
+				buttonContinue.innerText = `Continue`;
+				buttonContinue.classList.add(`layer`, `transparent`, `highlight`);
+				{ }
+				return (/** @type {Promise<String?>} */ (new Promise((resolve) => {
+					dialog.addEventListener(`click`, (event) => {
+						if (event.target == dialog) {
+							resolve(null);
+							dialog.remove();
+						}
+					});
+					buttonContinue.addEventListener(`click`, (event) => {
+						resolve(inputPrompt.value);
+						dialog.remove();
+					});
+				})));
+			}
+		}
+	}
+	//#endregion
+	//#region stabilize()
+	/**
+	 * @param {any} exception
+	 */
+	static stabilize(exception) {
+		if (locked) {
+			Application.alert(exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`, MessageType.error)
+				.then(() => location.reload());
+		} else console.error(exception);
+	}
+	//#endregion
+}
+//#endregion
 //#region Settings
-/** @typedef {{ hideIncorrectAnswers: Boolean }} SettingsNotation */
+/**
+ * @typedef SettingsNotation
+ * @property {Boolean | undefined} incorrectCases
+ * @property {Boolean | undefined} ignoreCase
+ * @property {Boolean | undefined} skipWords
+*/
 class Settings {
 	/**
 	 * 
@@ -195,7 +370,9 @@ class Settings {
 	 */
 	static import(source) {
 		const result = new Settings();
-		result.hideIncorrectAnswers = source.hideIncorrectAnswers;
+		if (source.incorrectCases !== undefined) result.incorrectCases = source.incorrectCases;
+		if (source.ignoreCase !== undefined) result.ignoreCase = source.ignoreCase;
+		if (source.skipWords !== undefined) result.skipWords = source.skipWords;
 		return result;
 	}
 	/**
@@ -205,23 +382,26 @@ class Settings {
 	 */
 	static export(source) {
 		const result = (/** @type {SettingsNotation} */ ({}));
-		result.hideIncorrectAnswers = source.hideIncorrectAnswers;
+		result.incorrectCases = source.incorrectCases;
+		result.ignoreCase = source.ignoreCase;
+		result.skipWords = source.skipWords;
 		return result;
 	}
 	constructor() {
-		this.hideIncorrectAnswers = true;
+		this.incorrectCases = false;
+		this.ignoreCase = true;
+		this.skipWords = false;
 	}
-	hideIncorrectAnswers;
+	incorrectCases;
+	ignoreCase;
+	skipWords;
 }
 //#endregion
 //#region Metadata
 const nameDeveloper = `Adaptive Core`;
 const nameProject = `Cheatsheet`;
-/** @typedef {{ global: Number, partial: Number , local: Number }} VersionNotation */
-const versionProject = (/** @type {VersionNotation} */ ({ "global": 1, "partial": 1, "local": 10 }));
 const archiveSettings = (/** @type {Archive<SettingsNotation>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()))));
 const archiveSheets = (/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, [])));
 const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
-const safeMode = true;
-console.log(`Visit https://github.com/eccs0103/Cheatsheet for more information.`);
+const locked = true;
 //#endregion
