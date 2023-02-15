@@ -117,8 +117,10 @@ input[type="checkbox"]:checked + label[role="checkbox"].toggle > span.knob {
 dialog {
 	min-width: 60vmin;
 	max-width: calc(100vmin - 4 * var(--size-gap));
+	width: fit-content;
 	min-height: var(--size-standart);
 	max-height: calc(100vh - 4 * var(--size-gap));
+	height: fit-content;
 	margin: auto;
 	padding: var(--size-gap);
 }
@@ -285,4 +287,8 @@ section.case {
 	display: grid;
 	grid: max-content / max-content 1fr;
 	column-gap: var(--size-gap);
+}
+
+section.-information > dfn {
+	font-size: smaller;
 }
