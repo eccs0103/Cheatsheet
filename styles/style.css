@@ -207,8 +207,8 @@ code > span {
 }
 
 code > span::before {
-	counter-increment: index;
-	content: counters(index, '.', decimal) '	|';
+	counter-increment: line;
+	content: counter(line) '	|';
 }
 
 ::-webkit-scrollbar {
@@ -265,30 +265,36 @@ dialog.pop-up div.footer:empty {
 	display: none;
 }
 
-li {
-	list-style-position: inside;
+div#poles-container {
+	counter-reset: pole;
 }
 
-ul li {
-	list-style-type: "•";
+div#poles-container > section.pole {
+	display: grid;
+	grid: 'index question' max-content 'index cases' 1fr / max-content 1fr;
+	column-gap: var(--size-gap);
 }
 
-section.pole {
+div#poles-container > section.pole::before {
+	grid-area: index;
+	counter-increment: pole;
+	content: counter(pole) '. ';
+}
+
+div#poles-container > section.pole > span.question {
+	grid-area: question;
+}
+
+div#poles-container > section.pole > div.cases {
+	grid-area: cases;
+}
+
+div#poles-container > section.pole > div.cases > section.case {
 	display: grid;
 	grid: max-content / max-content 1fr;
 	column-gap: var(--size-gap);
 }
 
-li.pole-index {
-	grid-row: auto / span 2;
-}
-
-section.case {
-	display: grid;
-	grid: max-content / max-content 1fr;
-	column-gap: var(--size-gap);
-}
-
-section.-information > dfn {
-	font-size: smaller;
+div#poles-container > section.pole > div.cases > section.case::before {
+	content: '•';
 }
