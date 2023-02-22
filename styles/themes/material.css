@@ -182,3 +182,15 @@ time {
 }
 
 /* Local */
+input[type="checkbox"] + label[role="checkbox"].toggle {
+	border-style: solid;
+	border-color: var(--color-foreground);
+}
+
+input[type="checkbox"]:checked + label[role="checkbox"].-checkbox {
+	background-color: unset;
+}
+
+input[type="checkbox"]:checked + label[role="checkbox"].-checkbox > img.-checkmark {
+	content: url(../../../resources/checkmark.png);
+}

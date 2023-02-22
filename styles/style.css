@@ -222,3 +222,79 @@ code > span::before {
 }
 
 /* Local */
+input[type="checkbox"]#edit-sheets:checked + label[role="checkbox"][for="edit-sheets"],
+input[type="checkbox"]#all-sheets-mark:checked + label[role="checkbox"][for="all-sheets-mark"],
+input[type="checkbox"][id^="sheet-mark-"]:checked + label[role="checkbox"][for^="sheet-mark-"] {
+	background-color: unset;
+}
+
+input[type="checkbox"]#edit-sheets:checked + label[role="checkbox"][for="edit-sheets"] > img.icon {
+	content: url(../resources/close.png);
+}
+
+input[type="checkbox"]#all-sheets-mark:checked + label[role="checkbox"][for="all-sheets-mark"] > img.icon,
+input[type="checkbox"][id^="sheet-mark-"]:checked + label[role="checkbox"][for^="sheet-mark-"] > img.icon {
+	content: url(../resources/checkmark.png);
+}
+
+dialog.pop-up {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-gap);
+}
+
+dialog.pop-up div.header {
+	justify-content: center;
+}
+
+dialog.pop-up div.header:empty {
+	display: none;
+}
+
+dialog.pop-up div.main {
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+dialog.pop-up div.footer {
+	justify-content: center;
+	gap: var(--size-gap);
+}
+
+dialog.pop-up div.footer:empty {
+	display: none;
+}
+
+div#poles-container {
+	counter-reset: pole;
+}
+
+div#poles-container > section.pole {
+	display: grid;
+	grid: 'index question' max-content 'index cases' 1fr / max-content 1fr;
+	column-gap: var(--size-gap);
+}
+
+div#poles-container > section.pole::before {
+	grid-area: index;
+	counter-increment: pole;
+	content: counter(pole) '. ';
+}
+
+div#poles-container > section.pole > span.question {
+	grid-area: question;
+}
+
+div#poles-container > section.pole > div.cases {
+	grid-area: cases;
+}
+
+div#poles-container > section.pole > div.cases > section.case {
+	display: grid;
+	grid: max-content / max-content 1fr;
+	column-gap: var(--size-gap);
+}
+
+div#poles-container > section.pole > div.cases > section.case::before {
+	content: '•';
+}

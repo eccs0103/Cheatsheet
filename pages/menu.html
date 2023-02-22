@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="application-name" content="Cheatsheet">
+	<meta name="author" content="Adaptivde Core">
+	<meta name="description" content="Program for solving tests.">
+	<meta name="keywords" content="cheatsheet, test, answers">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cheatsheet - Menu</title>
+	<link rel="shortcut icon" href="../resources/menu.png" media="(prefers-color-scheme: light)">
+	<link rel="shortcut icon" href="../resources/menu (inverted).png" media="(prefers-color-scheme: dark)">
+	<link rel="stylesheet" href="../styles/style.css">
+	<link rel="stylesheet" href="../styles/themes/material.css">
+	<script src="../scripts/modules.js" defer></script>
+	<script src="../scripts/structure.js" defer></script>
+	<script src="../scripts/menu.js" defer></script>
+</head>
+
+<body style="position: fixed; inset: 0; display: grid; grid-template-rows: max-content 1fr;">
+	<header class="layer in-top flex" style="padding: 0;">
+		<input id="all-sheets-mark" type="checkbox" hidden>
+		<label for="all-sheets-mark" role="checkbox" hidden class="flex" style="padding: var(--size-gap);">
+			<img src="../resources/checkbox.png" alt="Mark" class="icon">
+		</label>
+		<nav style="width: 100%; display: grid; grid-template-columns: 1fr max-content max-content; align-items: center;">
+			<h3 style="padding: 0 var(--size-gap);">Menu</h3>
+			<input id="edit-sheets" type="checkbox" hidden>
+			<label for="edit-sheets" role="checkbox" class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/edit.png" alt="Mark" class="icon">
+			</label>
+			<a href="./settings.html" role="button" class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/settings.png" alt="Settings" class="icon">
+			</a>
+		</nav>
+	</header>
+	<main style="display: flex; flex-direction: column; overflow-y: auto;">
+		<template id="sheet-container-prototype">
+			<div class="-sheet-container" class="flex" style="display: flex;">
+				<input id="sheet-mark" type="checkbox" hidden>
+				<label for="sheet-mark" role="checkbox" hidden class="flex" style="padding: var(--size-gap);">
+					<img src="../resources/checkbox.png" alt="Mark" class="icon">
+				</label>
+				<button class="-sheet-information" style="width: 100%; display: grid; grid: 'icon title' 1fr 'icon date' 1fr / max-content 1fr;">
+					<div class="flex" style="grid-area: icon; padding: var(--size-gap);">
+						<img src="../resources/document.png" alt="Document" class="icon">
+					</div>
+					<span class="-sheet-title" style="grid-area: title; align-self: end; text-align: left;">@title</span>
+					<time class="-sheet-date" style="grid-area: date; align-self: start; text-align: left;">@date</time>
+				</button>
+			</div>
+		</template>
+		<button id="main-action" class="layer flex" style="position: absolute; inset: auto calc(var(--size-gap) * 2) calc(var(--size-gap) * 2) auto; border-radius: 50%;">
+			<img src="../resources/add.png" alt="Add" class="icon" style="height: calc(var(--size-standart) * 2);">
+		</button>
+	</main>
+	<dialog id="insert-sheet" class="layer" style="display: grid;">
+		<button hidden style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+			<div class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/construction.png" alt="Create via constructor" class="icon">
+			</div>
+			<span style="padding: 0 var(--size-gap); text-align: left;">Create via constructor</span>
+		</button>
+		<input id="upload-sheet" type="file" multiple hidden>
+		<label for="upload-sheet" role="button" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+			<div class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/devices.png" alt="Upload from device" class="icon">
+			</div>
+			<span style="padding: 0 var(--size-gap); text-align: left;">Upload from device</span>
+		</label>
+		<button id="import-sheet" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+			<div class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/cloud_download.png" alt="Import from cloud" class="icon">
+			</div>
+			<span style="padding: 0 var(--size-gap); text-align: left;">Import from cloud</span>
+		</button>
+	</dialog>
+	<dialog id="more-actions" class="layer" style="display: grid;">
+		<button id="download-sheets" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+			<div class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/download.png" alt="Download selection" class="icon">
+			</div>
+			<span style="padding: 0 var(--size-gap); text-align: left;">Download selection</span>
+		</button>
+		<button id="delete-sheets" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+			<div class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/delete.png" alt="Delete selection" class="icon">
+			</div>
+			<span class="alert" style="padding: 0 var(--size-gap); text-align: left;">Delete selection</span>
+		</button>
+	</dialog>
+</body>
+
+</html>
