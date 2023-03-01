@@ -174,13 +174,13 @@ class Sheet {
 	}
 }
 //#endregion
-//#region Application
+//#region Program
 /** @enum {Number} */ const MessageType = {
 	/** @readonly */ log: 0,
 	/** @readonly */ warn: 1,
 	/** @readonly */ error: 2,
 };
-class Application {
+class Program {
 	//#region download()
 	/**
 	 * 
@@ -342,17 +342,6 @@ class Application {
 		}
 	}
 	//#endregion
-	//#region stabilize()
-	/**
-	 * @param {any} exception
-	 */
-	static stabilize(exception) {
-		if (locked) {
-			Application.alert(exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`, MessageType.error)
-				.then(() => location.reload());
-		} else console.error(exception);
-	}
-	//#endregion
 }
 //#endregion
 //#region Settings
@@ -398,10 +387,7 @@ class Settings {
 }
 //#endregion
 //#region Metadata
-const nameDeveloper = `Adaptive Core`;
-const nameProject = `Cheatsheet`;
-const archiveSettings = (/** @type {Archive<SettingsNotation>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Settings`, Settings.export(new Settings()))));
-const archiveSheets = (/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Sheets`, [])));
-const archivePreview = (/** @type {Archive<SheetNotation?>} */ (new Archive(`${nameDeveloper}\\${nameProject}\\Preview`, null)));
-const locked = true;
+/** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${Application.developer}\\${Application.project}\\Settings`, Settings.export(new Settings()));
+/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ const archiveSheets = new Archive(`${Application.developer}\\${Application.project}\\Sheets`, []);
+/** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${Application.developer}\\${Application.project}\\Memory`, null);
 //#endregion

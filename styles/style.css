@@ -44,6 +44,8 @@
 
 :root {
 	--size-gap: calc(var(--size-standart) / 4);
+	--size-large-standart: calc(var(--size-standart) * 2);
+	--size-large-gap: calc(var(--size-gap) * 2);
 	--size-serpator: 0.25vmin;
 }
 
@@ -116,10 +118,10 @@ input[type="checkbox"]:checked + label[role="checkbox"].toggle > span.knob {
 
 dialog {
 	min-width: 60vmin;
-	max-width: calc(100vmin - 4 * var(--size-gap));
+	max-width: calc(100vmin - 2 * var(--size-large-gap));
 	width: fit-content;
-	min-height: var(--size-standart);
-	max-height: calc(100vh - 4 * var(--size-gap));
+	/* min-height: var(--size-standart); */
+	max-height: calc(100vh - 2 * var(--size-large-gap));
 	height: fit-content;
 	margin: auto;
 	padding: var(--size-gap);
@@ -297,4 +299,8 @@ div#poles-container > section.pole > div.cases > section.case {
 
 div#poles-container > section.pole > div.cases > section.case::before {
 	content: '•';
+}
+
+section.-information dfn {
+	font-size: small;
 }

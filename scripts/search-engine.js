@@ -7,9 +7,9 @@ try {
 	h3TitleSheet.innerText = ``;
 
 	const inputSeachField = (/** @type {HTMLInputElement} */ (document.querySelector(`input#search-field`)));
-	if (archivePreview.data) {
+	if (archiveMemory.data) {
 		//#region If sheet exists
-		const sheet = Sheet.import(archivePreview.data);
+		const sheet = Sheet.import(archiveMemory.data);
 		h3TitleSheet.innerText = sheet.title;
 		//#region Structure preload
 		const divPolesContainer = (/** @type {HTMLOListElement} */ (document.querySelector(`div#poles-container`)));
@@ -81,5 +81,5 @@ try {
 	});
 	//#endregion
 } catch (exception) {
-	Application.stabilize(exception);
+	Application.prevent(exception);
 }

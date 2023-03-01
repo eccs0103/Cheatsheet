@@ -29,7 +29,7 @@ try {
 	//#region Reset settings
 	const buttonResetSettings = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#reset-settings`)));
 	buttonResetSettings.addEventListener(`click`, async (event) => {
-		if (await Application.confirm(`The settings will be reset to factory defaults. Are you sure?`, MessageType.log)) {
+		if (await Program.confirm(`The settings will be reset to factory defaults. Are you sure?`, MessageType.log)) {
 			settings = new Settings();
 			inputToggleIncorrecCases.checked = settings.incorrectCases;
 			inputToggleIgnoreCase.checked = settings.ignoreCase;
@@ -38,5 +38,5 @@ try {
 	});
 	//#endregion
 } catch (exception) {
-	Application.stabilize(exception);
+	Application.prevent(exception);
 }
