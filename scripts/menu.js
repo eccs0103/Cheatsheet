@@ -4,7 +4,7 @@ try {
 	archiveSheets.change((data) => data.map((item) => {
 		try {
 			const sheet = Sheet.import(item);
-			Program.alert(`Found sheet '${sheet.title}' with old data format. The old formats are no longer supported, so tey will be converted to the new one.`, MessageType.warn);
+			Application.alert(`Found sheet '${sheet.title}' with old data format. The old formats are no longer supported, so tey will be converted to the new one.`, MessageType.warn);
 			return { date: Date.now(), sheet: Sheet.export(sheet) };
 		} catch (error) {
 			return item;
@@ -128,7 +128,7 @@ try {
 	const buttonImportSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#import-sheet`)));
 	buttonImportSheet.addEventListener(`click`, async (event) => {
 		try {
-			const input = await Program.prompt(`Enter the download link. You will also need a stable connection before the download is complete.`);
+			const input = await Application.prompt(`Enter the download link. You will also need a stable connection before the download is complete.`);
 			if (input !== null) {
 				const response = await fetch(input);
 				const text = await response.text();
@@ -158,7 +158,7 @@ try {
 	buttonDeleteSheets.addEventListener(`click`, async (event) => {
 		const indexes = selection();
 		const sheets = selection().map((index) => database[index].sheet);
-		if (await Program.confirm(`Sheet(s) '${sheets.map((sheet) => sheet.title).join(`', '`)}' cant be restored. Are you sure to delete it (them)?`)) {
+		if (await Application.confirm(`Sheet(s) '${sheets.map((sheet) => sheet.title).join(`', '`)}' cant be restored. Are you sure to delete it (them)?`)) {
 			database = database.filter((data, index) => !indexes.includes(index));
 			archiveSheets.data = database.map(({ date, sheet }) => ({ date: date.valueOf(), sheet: Sheet.export(sheet) }));
 			configureSheets();
