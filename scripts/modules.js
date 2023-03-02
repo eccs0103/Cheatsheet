@@ -142,7 +142,7 @@ class Application {
 	/** @readonly */ static get developer() {
 		return this.#developer;
 	}
-	/** @type {String} */ static #project = `Visualizer`;
+	/** @type {String} */ static #project = `Cheatsheet`;
 	/** @readonly */ static get project() {
 		return this.#project;
 	}
