@@ -1,10 +1,24 @@
 "use strict";
 let settings = Settings.import(archiveSettings.data);
+document.documentElement.dataset[`theme`] = settings.theme;
 window.addEventListener(`beforeunload`, (event) => {
 	archiveSettings.data = Settings.export(settings);
 });
 
 try {
+	//#region Theme
+	const selectDropdownTheme = (/** @type {HTMLSelectElement} */ (document.querySelector(`select#dropdown-theme`)));
+	for (const theme in ThemeType) {
+		const option = selectDropdownTheme.appendChild(document.createElement(`option`));
+		option.value = `${theme}`;
+		option.innerText = `${theme.replace(/\b\w/, (letter) => letter.toUpperCase())}`;
+	}
+	selectDropdownTheme.value = `${settings.theme}`;
+	selectDropdownTheme.addEventListener(`change`, (event) => {
+		settings.theme = selectDropdownTheme.value;
+		document.documentElement.dataset[`theme`] = settings.theme;
+	});
+	//#endregion
 	//#region Incorrect cases
 	const inputToggleIncorrecCases = (/** @type {HTMLInputElement} */ (document.querySelector(`input#toggle-incorrect-cases`)));
 	inputToggleIncorrecCases.checked = settings.incorrectCases;

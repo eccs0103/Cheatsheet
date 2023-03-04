@@ -13,6 +13,7 @@ try {
 	//#endregion
 	//#region Initialize
 	const settings = Settings.import(archiveSettings.data);
+	document.documentElement.dataset[`theme`] = settings.theme;
 
 	const inputAllSheetsMark = (/** @type {HTMLInputElement} */ (document.querySelector(`input#all-sheets-mark`)));
 	inputAllSheetsMark.addEventListener(`change`, (event) => {

@@ -193,8 +193,14 @@ class Program {
 }
 //#endregion
 //#region Settings
+/** @enum {String} */ const ThemeType = {
+	/** @readonly */ system: `system`,
+	/** @readonly */ light: `light`,
+	/** @readonly */ dark: `dark`,
+};
 /**
  * @typedef SettingsNotation
+ * @property {ThemeType | undefined} theme
  * @property {Boolean | undefined} incorrectCases
  * @property {Boolean | undefined} ignoreCase
  * @property {Boolean | undefined} skipWords
@@ -207,6 +213,7 @@ class Settings {
 	 */
 	static import(source) {
 		const result = new Settings();
+		if (source.theme !== undefined) result.theme = source.theme;
 		if (source.incorrectCases !== undefined) result.incorrectCases = source.incorrectCases;
 		if (source.ignoreCase !== undefined) result.ignoreCase = source.ignoreCase;
 		if (source.skipWords !== undefined) result.skipWords = source.skipWords;
@@ -219,16 +226,19 @@ class Settings {
 	 */
 	static export(source) {
 		const result = (/** @type {SettingsNotation} */ ({}));
+		result.theme = source.theme;
 		result.incorrectCases = source.incorrectCases;
 		result.ignoreCase = source.ignoreCase;
 		result.skipWords = source.skipWords;
 		return result;
 	}
 	constructor() {
+		this.theme = ThemeType.system;
 		this.incorrectCases = false;
 		this.ignoreCase = true;
 		this.skipWords = false;
 	}
+	theme;
 	incorrectCases;
 	ignoreCase;
 	skipWords;

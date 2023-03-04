@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="system">
 
 <head>
 	<meta charset="UTF-8">
@@ -28,6 +28,11 @@
 		</nav>
 	</header>
 	<main style="display: flex; flex-direction: column; overflow-y: auto; padding: 0 var(--size-gap);">
+		<section class="option">
+			<h3 class="title">Theme</h3>
+			<dfn class="definition">External design of the page: color scheme, background and foreground, font.</dfn>
+			<select id="dropdown-theme" class="value flex depth" required></select>
+		</section>
 		<section class="option">
 			<h3 class="title">Incorrect cases</h3>
 			<dfn class="definition">Show or hide incorrect cases while searching.<br><b>Enabling this option increases the CPU load.</b></dfn>

@@ -2,6 +2,7 @@
 try {
 	//#region Initialize
 	const settings = Settings.import(archiveSettings.data);
+	document.documentElement.dataset[`theme`] = settings.theme;
 
 	const h3TitleSheet = (/** @type {HTMLHeadingElement} */ (document.querySelector(`h3#title-sheet`)));
 	h3TitleSheet.innerText = ``;
