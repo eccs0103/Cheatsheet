@@ -134,7 +134,8 @@ class Sheet {
 					try {
 						return Pole.import(item);
 					} catch (error) {
-						throw new TypeError(`Error while scaning pole with index '${index}'${error instanceof Error ? `:\n${error.message}` : `.`}`);
+						Application.prevent(error);
+						throw error;
 					}
 				});
 			} else {
@@ -245,7 +246,7 @@ class Settings {
 }
 //#endregion
 //#region Metadata
-/** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${Application.developer}\\${Application.project}\\Settings`, Settings.export(new Settings()));
-/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ const archiveSheets = new Archive(`${Application.developer}\\${Application.project}\\Sheets`, []);
-/** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${Application.developer}\\${Application.project}\\Memory`, null);
+/** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${Application.developer}\\${Application.title}\\Settings`, Settings.export(new Settings()));
+/** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ const archiveSheets = new Archive(`${Application.developer}\\${Application.title}\\Sheets`, []);
+/** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${Application.developer}\\${Application.title}\\Memory`, null);
 //#endregion
