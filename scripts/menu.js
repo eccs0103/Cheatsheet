@@ -149,7 +149,7 @@ try {
 	buttonDownloadSheets.addEventListener(`click`, (event) => {
 		const sheets = selection().map((index) => database[index].sheet);
 		sheets.forEach((sheet) => {
-			Program.download(new File([JSON.stringify(Sheet.export(sheet), undefined, `\t`)], `${sheet.title}.json`, {
+			Application.download(new File([JSON.stringify(Sheet.export(sheet), undefined, `\t`)], `${sheet.title}.json`, {
 				type: `text/json`,
 			}));
 		});

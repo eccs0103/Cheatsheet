@@ -36,9 +36,9 @@
 			</a>
 		</nav>
 	</header>
-	<main style="display: flex; flex-direction: column; overflow-y: auto;">
+	<main class="depth" style="display: flex; flex-direction: column; gap: var(--size-gap); overflow-y: auto;">
 		<template id="sheet-container-prototype">
-			<div class="-sheet-container" class="flex" style="display: flex;">
+			<div class="layer -sheet-container" class="flex" style="display: flex; padding: 0;">
 				<input id="sheet-mark" type="checkbox" hidden>
 				<label for="sheet-mark" role="checkbox" hidden class="flex" style="padding: var(--size-gap);">
 					<img src="../resources/checkbox.png" alt="Mark" class="icon">
@@ -57,12 +57,12 @@
 		</button>
 	</main>
 	<dialog id="insert-sheet" class="layer" style="display: grid;">
-		<button hidden style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+		<a role="button" aria-disabled="true" href="./constructor.html" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
 			<div class="flex" style="padding: var(--size-gap);">
 				<img src="../resources/construction.png" alt="Create via constructor" class="icon">
 			</div>
 			<span style="padding: 0 var(--size-gap); text-align: left;">Create via constructor</span>
-		</button>
+		</a>
 		<input id="upload-sheet" type="file" multiple hidden>
 		<label for="upload-sheet" role="button" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
 			<div class="flex" style="padding: var(--size-gap);">

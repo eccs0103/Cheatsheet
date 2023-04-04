@@ -14,12 +14,22 @@ class Application {
 		return this.#title;
 	}
 	static #locked = true;
-	static #search = new Map(window.decodeURI(location.search.replace(/^\??/, ``)).split(`&`).filter(item => item).map((item) => {
-		const [key, value] = item.split(`=`);
-		return [key, value];
-	}));
 	/** @readonly */ static get search() {
-		return this.#search;
+		return new Map(window.decodeURI(location.search.replace(/^\??/, ``)).split(`&`).filter(item => item).map((item) => {
+			const [key, value] = item.split(`=`);
+			return [key, value];
+		}));
+	}
+	/**
+	 * @param {File} file 
+	 */
+	static download(file) {
+		const aLink = document.createElement(`a`);
+		aLink.download = file.name;
+		aLink.href = URL.createObjectURL(file);
+		aLink.click();
+		URL.revokeObjectURL(aLink.href);
+		aLink.remove();
 	}
 	/**
 	 * @param {MessageType} type 
@@ -155,6 +165,23 @@ class Application {
 					});
 				})));
 			}
+		}
+	}
+	/** @type {HTMLDivElement} */ static #debug;
+	static {
+		const debug = document.body.appendChild(document.createElement(`div`));
+		debug.id = `debug`;
+		debug.classList.add(`layer`, `in-top`, `in-right`);
+		debug.hidden = true;
+		Application.#debug = debug;
+	}
+	/**
+	 * @param  {Array<any>} data 
+	 */
+	static debug(...data) {
+		Application.#debug.innerText = data.join(`\n`);
+		if (Application.#debug.hidden) {
+			Application.#debug.hidden = false;
 		}
 	}
 	/**

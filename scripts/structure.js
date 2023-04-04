@@ -175,24 +175,6 @@ class Sheet {
 	}
 }
 //#endregion
-//#region Program
-class Program {
-	//#region download()
-	/**
-	 * 
-	 * @param {File} file 
-	 */
-	static download(file) {
-		const aLink = document.createElement(`a`);
-		aLink.download = file.name;
-		aLink.href = URL.createObjectURL(file);
-		aLink.click();
-		URL.revokeObjectURL(aLink.href);
-		aLink.remove();
-	}
-	//#endregion
-}
-//#endregion
 //#region Settings
 /** @enum {String} */ const ThemeType = {
 	/** @readonly */ system: `system`,
