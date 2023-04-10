@@ -15,23 +15,26 @@ class Pole {
 	static import(source) {
 		const question = (() => {
 			const property = Reflect.get(source, `question`);
-			if (property == undefined) {
+			if (property === undefined) {
 				throw new TypeError(`Source must have a 'question' property.`);
 			}
-			if (typeof (property) != `string`) {
+			if (typeof (property) !== `string`) {
 				throw new TypeError(`Source 'question' property must be a 'String' type.`);
+			}
+			if (property === ``) {
+				throw new TypeError(`Source 'question' property can't be empty.`);
 			}
 			return property;
 		})();
 		const answer = (() => {
 			const property = Reflect.get(source, `answer`);
-			if (property == undefined) {
+			if (property === undefined) {
 				throw new TypeError(`Source must have a 'answer' property.`);
 			}
-			if (typeof (property) != `number`) {
+			if (typeof (property) !== `number`) {
 				throw new TypeError(`Source 'answer' property must be a 'Number' type.`);
 			}
-			if (!Number.isFinite(property) && Number.isInteger(property)) {
+			if (!Number.isFinite(property) || !Number.isInteger(property)) {
 				throw new TypeError(`Source 'answer' property must be a finite, integer number.`);
 			}
 			if (property < 0) {
@@ -41,24 +44,29 @@ class Pole {
 		})();
 		const cases = (() => {
 			const property = Reflect.get(source, `cases`);
-			if (property == undefined) {
+			if (property === undefined) {
 				throw new TypeError(`Source must have a 'cases' property.`);
 			}
-			if (typeof (property) == `string`) {
+			if (typeof (property) === `string`) {
+				if (property === ``) {
+					throw new TypeError(`Source 'cases' property can't be empty.`);
+				}
 				return [property];
-			} else if (typeof (property) == `object` && property instanceof Array) {
+			} else if (typeof (property) === `object` && property instanceof Array) {
 				return property.map((item, index) => {
-					if (typeof (item) != `string`) {
+					if (typeof (item) !== `string`) {
 						throw new TypeError(`Item with index '${index}' of source 'cases' property must be a 'String' type.`);
-					} else {
-						return item;
 					}
+					if (item === ``) {
+						throw new TypeError(`Item with index '${index}' of source 'cases' property can't be empty.`);
+					}
+					return item;
 				});
 			} else {
-				throw new TypeError(`Source 'cases' property must be a 'String | Array' type.`);
+				throw new TypeError(`Source 'cases' property must be a 'String | Array<String>' type.`);
 			}
 		})();
-		if (cases[answer] == undefined) {
+		if (cases[answer] === undefined) {
 			throw new TypeError(`There is no case at '${answer}' index.`);
 		}
 		const result = new Pole(question, answer, ...cases);
@@ -116,20 +124,23 @@ class Sheet {
 	static import(source) {
 		const title = (() => {
 			const property = Reflect.get(source, `title`);
-			if (property == undefined) {
+			if (property === undefined) {
 				throw new TypeError(`Source must have a 'title' property.`);
 			}
-			if (typeof (property) != `string`) {
+			if (typeof (property) !== `string`) {
 				throw new TypeError(`Source 'title' property must be a 'String' type.`);
+			}
+			if (property === ``) {
+				throw new TypeError(`Source 'title' property can't be empty.`);
 			}
 			return property;
 		})();
 		const poles = (() => {
 			const property = Reflect.get(source, `poles`);
-			if (property == undefined) {
+			if (property === undefined) {
 				throw new TypeError(`Source must have a 'poles' property.`);
 			}
-			if (typeof (property) == `object` && property instanceof Array) {
+			if (typeof (property) === `object` && property instanceof Array) {
 				return property.map((item, index) => {
 					try {
 						return Pole.import(item);
@@ -139,7 +150,7 @@ class Sheet {
 					}
 				});
 			} else {
-				throw new TypeError(`Source 'poles' property must be a 'Array' type.`);
+				throw new TypeError(`Source 'poles' property must be a 'Array<Pole>' type.`);
 			}
 		})();
 		const result = new Sheet(title, ...poles);
@@ -183,6 +194,7 @@ class Sheet {
 };
 /**
  * @typedef SettingsNotation
+ * @property {Boolean | undefined} experiments
  * @property {ThemeType | undefined} theme
  * @property {Boolean | undefined} incorrectCases
  * @property {Boolean | undefined} ignoreCase
@@ -196,6 +208,7 @@ class Settings {
 	 */
 	static import(source) {
 		const result = new Settings();
+		if (source.experiments !== undefined) result.experiments = source.experiments;
 		if (source.theme !== undefined) result.theme = source.theme;
 		if (source.incorrectCases !== undefined) result.incorrectCases = source.incorrectCases;
 		if (source.ignoreCase !== undefined) result.ignoreCase = source.ignoreCase;
@@ -209,6 +222,7 @@ class Settings {
 	 */
 	static export(source) {
 		const result = (/** @type {SettingsNotation} */ ({}));
+		result.experiments = source.experiments;
 		result.theme = source.theme;
 		result.incorrectCases = source.incorrectCases;
 		result.ignoreCase = source.ignoreCase;
@@ -216,11 +230,13 @@ class Settings {
 		return result;
 	}
 	constructor() {
+		this.experiments = false;
 		this.theme = ThemeType.system;
 		this.incorrectCases = false;
 		this.ignoreCase = true;
 		this.skipWords = false;
 	}
+	experiments;
 	theme;
 	incorrectCases;
 	ignoreCase;
@@ -231,4 +247,23 @@ class Settings {
 /** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${Application.developer}\\${Application.title}\\Settings`, Settings.export(new Settings()));
 /** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ const archiveSheets = new Archive(`${Application.developer}\\${Application.title}\\Sheets`, []);
 /** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${Application.developer}\\${Application.title}\\Memory`, null);
+let settings = Settings.import(archiveSettings.data);
+//#region Experiments
+(async () => {
+	const previous = settings.experiments;
+	const current = (() => {
+		const experiments = Application.search.get(`experiments`);
+		switch (experiments) {
+			case `on`: return true;
+			case `off`: return false;
+			default: throw new TypeError(`Invalid experiments status: '${experiments}'.`);
+		}
+	})();
+	if (previous !== current && await Application.confirm(`Switching ${current ? `to` : `from`} experimental mode. Are you sure?`, MessageType.warn)) {
+		settings.experiments = current;
+		archiveSettings.data = Settings.export(settings);
+		location.assign(`../index.html`);
+	}
+})();
+//#endregion
 //#endregion

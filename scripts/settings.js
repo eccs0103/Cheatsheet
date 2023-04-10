@@ -1,5 +1,4 @@
 "use strict";
-let settings = Settings.import(archiveSettings.data);
 document.documentElement.dataset[`theme`] = settings.theme;
 window.addEventListener(`beforeunload`, (event) => {
 	archiveSettings.data = Settings.export(settings);

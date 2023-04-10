@@ -1,3 +1,11 @@
 "use strict";
-const settings = Settings.import(archiveSettings.data);
-document.documentElement.dataset[`theme`] = settings.theme;
+try {
+	document.documentElement.dataset[`theme`] = settings.theme;
+
+	const buttonSave = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#save`)));
+	buttonSave.addEventListener(`click`, (event) => {
+
+	});
+} catch (exception) {
+	Application.prevent(exception);
+}

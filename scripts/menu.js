@@ -12,7 +12,6 @@ try {
 	}));
 	//#endregion
 	//#region Initialize
-	const settings = Settings.import(archiveSettings.data);
 	document.documentElement.dataset[`theme`] = settings.theme;
 
 	const inputAllSheetsMark = (/** @type {HTMLInputElement} */ (document.querySelector(`input#all-sheets-mark`)));
@@ -93,6 +92,8 @@ try {
 	buttonMainAction.addEventListener(`click`, () => {
 		if (inputEditSheets.checked) {
 			dialogMoreActions.showModal();
+			buttonDownloadSheets.disabled = (selection().length == 0);
+			buttonDeleteSheets.disabled = (selection().length == 0);
 			dialogMoreActions.addEventListener(`click`, (event) => {
 				if (event.target == dialogMoreActions) {
 					dialogMoreActions.close();
@@ -110,6 +111,8 @@ try {
 
 	//#region Insert sheet
 	const dialogInsertSheet = (/** @type {HTMLDialogElement} */ (document.querySelector(`dialog#insert-sheet`)));
+	const aCreateConstructor = (/** @type {HTMLAnchorElement} */ (document.querySelector(`a[href="./constructor.html"]`)));
+	aCreateConstructor.hidden = !settings.experiments;
 	const inputUploadSheet = (/** @type {HTMLInputElement} */ (document.querySelector(`input#upload-sheet`)));
 	inputUploadSheet.addEventListener(`change`, async (event) => {
 		try {
