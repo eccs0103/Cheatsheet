@@ -256,10 +256,10 @@ let settings = Settings.import(archiveSettings.data);
 		switch (experiments) {
 			case `on`: return true;
 			case `off`: return false;
-			default: throw new TypeError(`Invalid experiments status: '${experiments}'.`);
+			default: return undefined;
 		}
 	})();
-	if (previous !== current && await Application.confirm(`Switching ${current ? `to` : `from`} experimental mode. Are you sure?`, MessageType.warn)) {
+	if (current !== undefined && previous !== current && await Application.confirm(`Switching ${current ? `to` : `from`} experimental mode. Are you sure?`, MessageType.warn)) {
 		settings.experiments = current;
 		archiveSettings.data = Settings.export(settings);
 		location.assign(`../index.html`);
