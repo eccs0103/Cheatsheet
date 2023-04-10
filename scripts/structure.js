@@ -248,22 +248,4 @@ class Settings {
 /** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ const archiveSheets = new Archive(`${Application.developer}\\${Application.title}\\Sheets`, []);
 /** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${Application.developer}\\${Application.title}\\Memory`, null);
 let settings = Settings.import(archiveSettings.data);
-//#region Experiments
-(async () => {
-	const previous = settings.experiments;
-	const current = (() => {
-		const experiments = Application.search.get(`experiments`);
-		switch (experiments) {
-			case `on`: return true;
-			case `off`: return false;
-			default: return undefined;
-		}
-	})();
-	if (current !== undefined && previous !== current && await Application.confirm(`Switching ${current ? `to` : `from`} experimental mode. Are you sure?`, MessageType.warn)) {
-		settings.experiments = current;
-		archiveSettings.data = Settings.export(settings);
-		location.assign(`../index.html`);
-	}
-})();
-//#endregion
 //#endregion
