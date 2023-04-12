@@ -12,30 +12,30 @@ try {
 		const sheet = Sheet.import(archiveMemory.data);
 		h3TitleSheet.innerText = sheet.title;
 		//#region Structure preload
-		const divPolesContainer = (/** @type {HTMLOListElement} */ (document.querySelector(`div#poles-container`)));
-		const [divPoles, spanQuestions] = sheet.poles.reduce((list, pole) => {
-			const divPole = divPolesContainer.appendChild(document.createElement(`div`));
-			divPole.classList.add(`pole`);
+		const divPollsContainer = (/** @type {HTMLOListElement} */ (document.querySelector(`div#polls-container`)));
+		const [divPolls, spanQuestions] = sheet.polls.reduce((list, poll) => {
+			const divPoll = divPollsContainer.appendChild(document.createElement(`div`));
+			divPoll.classList.add(`poll`);
 			{
-				const spanQuestion = divPole.appendChild(document.createElement(`span`));
+				const spanQuestion = divPoll.appendChild(document.createElement(`span`));
 				spanQuestion.classList.add(`question`);
-				spanQuestion.innerText = `${pole.question}`;
+				spanQuestion.innerText = `${poll.question}`;
 				{ }
-				const divCasesContainer = divPole.appendChild(document.createElement(`div`));
+				const divCasesContainer = divPoll.appendChild(document.createElement(`div`));
 				divCasesContainer.classList.add(`cases`);
-				pole.cases.forEach((_case, index) => {
-					if (settings.incorrectCases || index == pole.answer) {
+				poll.cases.forEach((_case, index) => {
+					if (settings.incorrectCases || index == poll.answer) {
 						const divCase = divCasesContainer.appendChild(document.createElement(`div`));
 						divCase.classList.add(`case`);
 						{
 							const spanCase = divCase.appendChild(document.createElement(`span`));
-							spanCase.classList.add(index == pole.answer ? `highlight` : `alert`);
+							spanCase.classList.add(index == poll.answer ? `highlight` : `alert`);
 							spanCase.innerText = `${_case}`;
 						}
 					}
 				});
 				{ }
-				return [[...list[0], divPole], [...list[1], spanQuestion]];
+				return [[...list[0], divPoll], [...list[1], spanQuestion]];
 			}
 		}, (/** @type {[Array<HTMLElement>, Array<HTMLElement>]} */ ([[], []])));
 		//#endregion
@@ -57,11 +57,11 @@ try {
 				pattern = pattern.replace(/ /g, `$&(\\S+ )*?`);
 			}
 			const regex = new RegExp(pattern, flags);
-			sheet.poles.forEach((pole, index) => {
-				const match = (pattern == `` || regex.test(pole.question));
-				divPoles[index].hidden = !match;
+			sheet.polls.forEach((poll, index) => {
+				const match = (pattern == `` || regex.test(poll.question));
+				divPolls[index].hidden = !match;
 				if (match) {
-					spanQuestions[index].innerHTML = pattern == `` ? `${pole.question}` : `${pole.question.replace(regex, (substring) => `<mark>${substring}</mark>`)}`;
+					spanQuestions[index].innerHTML = pattern == `` ? `${poll.question}` : `${poll.question.replace(regex, (substring) => `<mark>${substring}</mark>`)}`;
 				}
 			});
 		}

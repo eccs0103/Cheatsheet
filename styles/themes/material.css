@@ -226,3 +226,11 @@ input[type="checkbox"]:checked + label[role="checkbox"].-checkbox {
 input[type="checkbox"]:checked + label[role="checkbox"].-checkbox > img.-checkmark {
 	content: url(../../../resources/checkmark.png);
 }
+
+input[type="radio"][id^="case-mark-"] ~ span {
+	color: var(--color-error);
+}
+
+input[type="radio"][id^="case-mark-"]:checked ~ span {
+	color: var(--color-highlight);
+}

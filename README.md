@@ -7,7 +7,7 @@
 ```js
 {
 	"title": String,
-	"poles": Array<{
+	"polls": Array<{
 		"question": String,
 		"answer": Number,
 		"cases": String | Array<String>,

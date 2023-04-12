@@ -26,7 +26,7 @@
 				<img src="../resources/return.png" alt="Return" class="icon">
 			</a>
 			<label style="width: 100%; display: grid; padding: var(--size-gap);">
-				<input type="text" placeholder="Input the title" autofocus style="height: var(--size-standart);">
+				<input id="sheet-title" type="text" placeholder="Input the title" autofocus required style="height: var(--size-standart);">
 			</label>
 			<button id="save" class="flex" style="padding: var(--size-gap);">
 				<img src="../resources/save.png" alt="Return" class="icon">
@@ -34,37 +34,7 @@
 		</nav>
 	</header>
 	<main class="depth" style="display: flex; flex-direction: column; overflow-y: auto;">
-		<div id="poles-container" class="layer" style="display: grid; grid-template-columns: 1fr max-content; padding: var(--size-gap);">
-			<button style="display: grid; grid-template-columns: 1fr max-content; align-items: center; grid-column: 1 / -1;">
-				<span>Add pole</span>
-				<img src="../resources/add.png" class="icon">
-			</button>
-			<hr class="depth grid-line">
-			<div class="pole" style="grid-column: 1 / 2;">
-				<span class="question">1866 թվականին էկոլոգիա տերմինը գիտական գործածության մեջ է մտցրել</span>
-				<div class="cases">
-					<div class="case"><span class="alert">Կ. Ռուլյեն</span></div>
-					<div class="case"><span class="alert">Վ. Դոկուչաևը</span></div>
-					<div class="case"><span class="highlight">Է. Հեկկելը</span></div>
-					<div class="case"><span class="alert">Ա. Հումբոլդտը</span></div>
-				</div>
-			</div>
-			<button class="flex" style="align-items: center; grid-column: -2 / -1;">
-				<img src="../resources/delete.png" class="icon">
-			</button>
-			<div class="pole" style="grid-column: 1 / 2;">
-				<span class="question">Էկոլոգիան չի ուսումնասիրում</span>
-				<div class="cases">
-					<div class="case"><span class="highlight">կյանքի կազմավորման բջջային մակարդակը</span></div>
-					<div class="case"><span class="alert">կյանքի կազմավորման օրգանիզմային մակարդակը</span></div>
-					<div class="case"><span class="alert">կյանքի կազմավորման պոպուլյացիաների մակարդակը</span></div>
-					<div class="case"><span class="alert">կյանքի կազմավորման տեսակային մակարդակը</span></div>
-				</div>
-			</div>
-			<button class="flex" style="align-items: center; grid-column: -2 / -1;">
-				<img src="../resources/delete.png" class="icon">
-			</button>
-		</div>
+		<div id="polls-constructor" class="layer" style="gap: var(--size-gap);"></div>
 	</main>
 </body>
 

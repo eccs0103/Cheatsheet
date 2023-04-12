@@ -1,12 +1,12 @@
 "use strict";
-//#region Pole
+//#region Poll
 /**
- * @typedef PoleNotation
+ * @typedef PollNotation
  * @property {String} question
  * @property {Number} answer
  * @property {Array<String>} cases
  */
-class Pole {
+class Poll {
 	/**
 	 * 
 	 * @param {any} source 
@@ -69,16 +69,16 @@ class Pole {
 		if (cases[answer] === undefined) {
 			throw new TypeError(`There is no case at '${answer}' index.`);
 		}
-		const result = new Pole(question, answer, ...cases);
+		const result = new Poll(question, answer, ...cases);
 		return result;
 	}
 	/**
 	 * 
-	 * @param {Pole} source 
+	 * @param {Poll} source 
 	 * @returns 
 	 */
 	static export(source) {
-		const result = (/** @type {PoleNotation} */ ({}));
+		const result = (/** @type {PollNotation} */ ({}));
 		result.question = source.#question;
 		result.answer = source.#answer;
 		result.cases = source.#cases;
@@ -113,7 +113,7 @@ class Pole {
 /**
  * @typedef SheetNotation
  * @property {String} title
- * @property {Array<PoleNotation>} poles
+ * @property {Array<PollNotation>} polls
  */
 class Sheet {
 	/**
@@ -135,25 +135,25 @@ class Sheet {
 			}
 			return property;
 		})();
-		const poles = (() => {
-			const property = Reflect.get(source, `poles`);
+		const polls = (() => {
+			const property = Reflect.get(source, `polls`);
 			if (property === undefined) {
-				throw new TypeError(`Source must have a 'poles' property.`);
+				throw new TypeError(`Source must have a 'polls' property.`);
 			}
 			if (typeof (property) === `object` && property instanceof Array) {
 				return property.map((item, index) => {
 					try {
-						return Pole.import(item);
+						return Poll.import(item);
 					} catch (error) {
 						Application.prevent(error);
 						throw error;
 					}
 				});
 			} else {
-				throw new TypeError(`Source 'poles' property must be a 'Array<Pole>' type.`);
+				throw new TypeError(`Source 'polls' property must be a 'Array<Poll>' type.`);
 			}
 		})();
-		const result = new Sheet(title, ...poles);
+		const result = new Sheet(title, ...polls);
 		return result;
 	}
 	/**
@@ -164,25 +164,25 @@ class Sheet {
 	static export(source) {
 		const result = (/** @type {SheetNotation} */ ({}));
 		result.title = source.#title;
-		result.poles = source.#poles.map((notation) => Pole.export(notation));
+		result.polls = source.#polls.map((notation) => Poll.export(notation));
 		return result;
 	}
 	/**
 	 * 
 	 * @param {String} title 
-	 * @param {Array<Pole>} poles 
+	 * @param {Array<Poll>} polls 
 	 */
-	constructor(title, ...poles) {
+	constructor(title, ...polls) {
 		this.#title = title;
-		this.#poles = poles;
+		this.#polls = polls;
 	}
 	/** @type {String} */ #title;
 	/** @readonly */ get title() {
 		return this.#title;
 	}
-	/** @type {Array<Pole>} */ #poles;
-	/** @readonly */ get poles() {
-		return Object.freeze(this.#poles);
+	/** @type {Array<Poll>} */ #polls;
+	/** @readonly */ get polls() {
+		return Object.freeze(this.#polls);
 	}
 }
 //#endregion

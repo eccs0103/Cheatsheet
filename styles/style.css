@@ -295,6 +295,12 @@ main {
 	margin: 0 auto;
 }
 
+textarea {
+	resize: none;
+}
+
+/* Menu */
+
 input[type="checkbox"]#edit-sheets:checked + label[role="checkbox"][for="edit-sheets"],
 input[type="checkbox"]#all-sheets-mark:checked + label[role="checkbox"][for="all-sheets-mark"],
 input[type="checkbox"][id^="sheet-mark-"]:checked + label[role="checkbox"][for^="sheet-mark-"] {
@@ -310,44 +316,85 @@ input[type="checkbox"][id^="sheet-mark-"]:checked + label[role="checkbox"][for^=
 	content: url(../resources/checkmark.png);
 }
 
-div#poles-container {
-	counter-reset: pole;
+div#polls-container {
+	counter-reset: poll;
 }
 
-div#poles-container > div.pole {
+div#polls-container div.poll {
 	display: grid;
 	grid: 'index question' max-content 'index cases' 1fr / max-content 1fr;
 	column-gap: var(--size-gap);
 }
 
-div#poles-container > div.pole::before {
+div#polls-container div.poll::before {
 	grid-area: index;
-	counter-increment: pole;
-	content: counter(pole) '. ';
+	counter-increment: poll;
+	content: counter(poll) '. ';
 }
 
-div#poles-container > div.pole > span.question {
+div#polls-container div.poll > span.question {
 	grid-area: question;
 }
 
-div#poles-container > div.pole > div.cases {
+div#polls-container div.poll > div.cases {
 	grid-area: cases;
 }
 
-div#poles-container > div.pole > div.cases > div.case {
+div#polls-container div.poll > div.cases > div.case {
 	display: grid;
 	grid: max-content / max-content 1fr;
 	column-gap: var(--size-gap);
 }
 
-div#poles-container > div.pole > div.cases > div.case::before {
+div#polls-container div.poll > div.cases > div.case::before {
 	content: '•';
+}
+
+/* Constructor */
+
+input[type="radio"][id^="case-mark-"]:checked + label[role="combobox"][for^="case-mark-"] {
+	background-color: unset;
+}
+
+input[type="radio"][id^="case-mark-"]:checked + label[role="combobox"][for^="case-mark-"] > img.icon {
+	content: url(../resources/checkmark.png);
+}
+
+div#polls-constructor {
+	counter-reset: poll;
+	display: grid;
+	grid-template-columns: 1fr max-content;
+}
+
+div#polls-constructor div.poll {
+	display: grid;
+	grid: 'index question' max-content 'index cases' 1fr / max-content 1fr;
+	column-gap: var(--size-gap);
+}
+
+div#polls-constructor div.poll::before {
+	grid-area: index;
+	counter-increment: poll;
+	content: counter(poll) '. ';
+}
+
+div#polls-constructor div.poll > span.question {
+	grid-area: question;
+}
+
+div#polls-constructor div.poll > div.cases {
+	grid-area: cases;
+	display: grid;
+	grid-template-columns: 1fr max-content;
+}
+
+div#polls-constructor div.poll > div.cases div.case {
+	display: grid;
+	grid: max-content / max-content 1fr max-content;
+	align-items: center;
+	column-gap: var(--size-gap);
 }
 
 section.-information dfn {
 	font-size: small;
-}
-
-textarea {
-	resize: none;
 }
