@@ -136,7 +136,7 @@ class Sheet {
 			return property;
 		})();
 		const polls = (() => {
-			const property = Reflect.get(source, `polls`);
+			const property = Reflect.get(source, `polls`) ?? Reflect.get(source, `poles`);
 			if (property === undefined) {
 				throw new TypeError(`Source must have a 'polls' property.`);
 			}
