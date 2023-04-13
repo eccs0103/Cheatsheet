@@ -156,7 +156,7 @@ select:disabled {
 	transition: var(--time-duration);
 }
 
-input:invalid,
+/* input:invalid,
 select:invalid {
 	outline: solid var(--color-error);
 }
@@ -166,7 +166,7 @@ input:invalid.depth,
 select:invalid.layer,
 select:invalid.depth {
 	background-color: var(--color-error);
-}
+} */
 
 input[type="range"]::-webkit-slider-thumb {
 	transform: scale(2);
@@ -227,10 +227,10 @@ input[type="checkbox"]:checked + label[role="checkbox"].-checkbox > img.-checkma
 	content: url(../../../resources/checkmark.png);
 }
 
-input[type="radio"][id^="case-mark-"] ~ span {
+input[type="radio"][id^="case-mark-"] ~ input {
 	color: var(--color-error);
 }
 
-input[type="radio"][id^="case-mark-"]:checked ~ span {
+input[type="radio"][id^="case-mark-"]:checked ~ input {
 	color: var(--color-highlight);
 }

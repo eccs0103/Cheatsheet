@@ -3,7 +3,7 @@ try {
 	document.documentElement.dataset[`theme`] = settings.theme;
 
 	/** @type {SheetNotation} */ const sheetConstruct = {
-		title: `Title`,
+		title: ``,
 		polls: [],
 	};
 
@@ -23,12 +23,13 @@ try {
 		inputInsertPoll.type = `text`;
 		inputInsertPoll.required = true;
 		inputInsertPoll.placeholder = `Input the question`;
-		inputInsertPoll.classList.add(`flex`);
-		const poleInitialValue = `Question`;
-		inputInsertPoll.value = poleInitialValue;
+		inputInsertPoll.classList.add(`flex`, `depth`);
+		// const poleInitialValue = ``;
+		// inputInsertPoll.value = poleInitialValue;
 		{ }
 		const buttonAddPoll = formInsertPollGroup.appendChild(document.createElement(`button`));
 		buttonAddPoll.classList.add(`flex`);
+		buttonAddPoll.type = `reset`;
 		buttonAddPoll.style.gridColumn = `-2 / -1`;
 		buttonAddPoll.style.alignItems = `center`;
 		buttonAddPoll.addEventListener(`click`, (event) => {
@@ -38,7 +39,7 @@ try {
 					answer: 0,
 					cases: [],
 				}));
-				inputInsertPoll.value = poleInitialValue;
+				// inputInsertPoll.value = poleInitialValue;
 				configurePolls();
 			}
 		});
@@ -64,14 +65,19 @@ try {
 				divPoll.classList.add(`poll`);
 				divPoll.style.gridColumn = `1 / 2`;
 				{
-					const spanQuestion = divPoll.appendChild(document.createElement(`span`));
-					spanQuestion.classList.add(`question`);
-					spanQuestion.innerText = pollConstruct.question;
+					const inputQuestion = divPoll.appendChild(document.createElement(`input`));
+					inputQuestion.type = `text`;
+					inputQuestion.required = true;
+					inputQuestion.value = pollConstruct.question;
+					inputQuestion.classList.add(`question`);
+					inputQuestion.addEventListener(`change`, (event) => {
+						pollConstruct.question = inputQuestion.value;
+					});
 					{ }
-					const divCases = divPoll.appendChild(document.createElement(`div`));
-					divCases.classList.add(`cases`);
+					const divCasesConstructor = divPoll.appendChild(document.createElement(`div`));
+					divCasesConstructor.classList.add(`cases-constructor`);
 					{
-						const formInsertCaseGroup = divCases.appendChild(document.createElement(`form`));
+						const formInsertCaseGroup = divCasesConstructor.appendChild(document.createElement(`form`));
 						formInsertCaseGroup.classList.add(`contents`);
 						formInsertCaseGroup.method = `dialog`;
 						{
@@ -79,18 +85,20 @@ try {
 							inputInsertCase.type = `text`;
 							inputInsertCase.required = true;
 							inputInsertCase.placeholder = `Input the case`;
-							inputInsertCase.classList.add(`flex`);
-							const caseInitialValue = `Case`;
-							inputInsertCase.value = caseInitialValue;
+							inputInsertCase.classList.add(`flex`, `depth`);
+							inputInsertCase.style.padding = `calc(var(--size-gap) / 2)`;
+							// const caseInitialValue = ``;
+							// inputInsertCase.value = caseInitialValue;
 							{ }
-							const buttonAddCase = divCases.appendChild(document.createElement(`button`));
+							const buttonAddCase = formInsertCaseGroup.appendChild(document.createElement(`button`));
 							buttonAddCase.classList.add(`flex`);
+							buttonAddCase.type = `reset`;
 							buttonAddCase.style.gridColumn = `-2 / -1`;
 							buttonAddCase.style.alignItems = `center`;
 							buttonAddCase.addEventListener(`click`, (event) => {
-								if (formInsertPollGroup.checkValidity()) {
+								if (formInsertCaseGroup.checkValidity()) {
 									pollConstruct.cases.push(inputInsertCase.value);
-									inputInsertCase.value = caseInitialValue;
+									// inputInsertCase.value = caseInitialValue;
 									configureCases();
 								}
 							});
@@ -104,11 +112,11 @@ try {
 
 						//#region Configure Cases
 						function configureCases() {
-							divCases.querySelectorAll(`div[id^="case-group-"]`).forEach(element => {
+							divCasesConstructor.querySelectorAll(`div[id^="case-group-"]`).forEach(element => {
 								element.remove();
 							});
 							pollConstruct.cases.forEach((caseConstruct, caseIndex) => {
-								const divCaseGroup = divCases.insertBefore(document.createElement(`div`), formInsertCaseGroup);
+								const divCaseGroup = divCasesConstructor.insertBefore(document.createElement(`div`), formInsertCaseGroup);
 								divCaseGroup.id = `case-group-${caseIndex}`;
 								divCaseGroup.classList.add(`contents`);
 								{
@@ -122,6 +130,9 @@ try {
 										inputCaseMark.name = `poll-${pollIndex}`;
 										inputCaseMark.checked = (caseIndex == pollConstruct.answer);
 										inputCaseMark.hidden = true;
+										inputCaseMark.addEventListener(`change`, (event) => {
+											pollConstruct.answer = caseIndex;
+										});
 										{ }
 										const labelCaseMark = divCase.appendChild(document.createElement(`label`));
 										labelCaseMark.htmlFor = inputCaseMark.id;
@@ -134,8 +145,16 @@ try {
 											imgIcon.classList.add(`icon`, `in-line`);
 											{ }
 										}
-										const spanCase = divCase.appendChild(document.createElement(`span`));
-										spanCase.innerText = caseConstruct;
+										const inputCase = divCase.appendChild(document.createElement(`input`));
+										inputCase.type = `text`;
+										inputCase.required = true;
+										inputCase.value = caseConstruct;
+										// inputCase.classList.add(`case`);
+										inputCase.addEventListener(`change`, (event) => {
+											caseConstruct = inputCase.value;
+										});
+										// inputCase.style.wordBreak = `break-all`;
+										// inputCase.innerText = caseConstruct;
 										{ }
 									}
 									const buttonDeleteCase = divCaseGroup.appendChild(document.createElement(`button`));
@@ -189,10 +208,10 @@ try {
 	buttonSave.addEventListener(`click`, (event) => {
 		try {
 			const sheet = Sheet.import(sheetConstruct);
-			Application.alert(`Sheet assembled successfully.`);
-			// archiveSheets.change((data) => [...data, { date: Date.now(), sheet: Sheet.export(sheet) }]);
+			archiveSheets.change((data) => [...data, { date: Date.now(), sheet: Sheet.export(sheet) }]);
+			Application.alert(`Sheet assembled and saved successfully.`);
 		} catch (exception) {
-			Application.confirm(`An attempt to assemble the sheet failed. Cause:\n${exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`}\nWould you like to save the sheet as a draft?`, MessageType.warn);
+			Application.alert(`An attempt to assemble the sheet failed. Cause:\n${exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`}.`, MessageType.warn);
 		}
 	});
 } catch (exception) {

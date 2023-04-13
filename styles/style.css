@@ -364,12 +364,13 @@ div#polls-constructor {
 	counter-reset: poll;
 	display: grid;
 	grid-template-columns: 1fr max-content;
+	gap: var(--size-gap);
 }
 
 div#polls-constructor div.poll {
 	display: grid;
 	grid: 'index question' max-content 'index cases' 1fr / max-content 1fr;
-	column-gap: var(--size-gap);
+	gap: calc(var(--size-gap) / 2);
 }
 
 div#polls-constructor div.poll::before {
@@ -378,21 +379,22 @@ div#polls-constructor div.poll::before {
 	content: counter(poll) '. ';
 }
 
-div#polls-constructor div.poll > span.question {
+div#polls-constructor div.poll > input.question {
 	grid-area: question;
 }
 
-div#polls-constructor div.poll > div.cases {
+div#polls-constructor div.poll > div.cases-constructor {
 	grid-area: cases;
 	display: grid;
 	grid-template-columns: 1fr max-content;
+	gap: calc(var(--size-gap) / 2);
 }
 
-div#polls-constructor div.poll > div.cases div.case {
+div#polls-constructor div.poll > div.cases-constructor div.case {
 	display: grid;
-	grid: max-content / max-content 1fr max-content;
+	grid: 'mark case' max-content / max-content 1fr;
 	align-items: center;
-	column-gap: var(--size-gap);
+	gap: calc(var(--size-gap) / 2);
 }
 
 section.-information dfn {
