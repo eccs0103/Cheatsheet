@@ -48,7 +48,7 @@ try {
 
 	let database = archiveSheets.data.map(({ date, sheet }) => ({ date: new Date(date), sheet: Sheet.import(sheet) }));
 
-	//#region Configuration
+	//#region Configure sheets
 	function configureSheets() {
 		container.querySelectorAll(`div.-sheet-container`).forEach(element => {
 			element.remove();

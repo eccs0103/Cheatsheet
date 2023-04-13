@@ -14,7 +14,7 @@ try {
 	});
 
 	const divPollsConstructor = (/** @type {HTMLDivElement} */ (document.querySelector(`div#polls-constructor`)));
-
+	//#region Insert poll
 	const formInsertPollGroup = divPollsConstructor.appendChild(document.createElement(`form`));
 	formInsertPollGroup.classList.add(`contents`);
 	formInsertPollGroup.method = `dialog`;
@@ -24,8 +24,6 @@ try {
 		inputInsertPoll.required = true;
 		inputInsertPoll.placeholder = `Input the question`;
 		inputInsertPoll.classList.add(`flex`, `depth`);
-		// const poleInitialValue = ``;
-		// inputInsertPoll.value = poleInitialValue;
 		{ }
 		const buttonAddPoll = formInsertPollGroup.appendChild(document.createElement(`button`));
 		buttonAddPoll.classList.add(`flex`);
@@ -39,7 +37,6 @@ try {
 					answer: 0,
 					cases: [],
 				}));
-				// inputInsertPoll.value = poleInitialValue;
 				configurePolls();
 			}
 		});
@@ -50,8 +47,8 @@ try {
 			{ }
 		}
 	}
-
-	//#region Configure Polls
+	//#endregion
+	//#region Configure polls
 	function configurePolls() {
 		divPollsConstructor.querySelectorAll(`div[id^="poll-group-"]`).forEach(element => {
 			element.remove();
@@ -61,6 +58,7 @@ try {
 			divPollGroup.id = `poll-group-${pollIndex}`;
 			divPollGroup.classList.add(`contents`);
 			{
+				//#region Poll
 				const divPoll = divPollGroup.appendChild(document.createElement(`div`));
 				divPoll.classList.add(`poll`);
 				divPoll.style.gridColumn = `1 / 2`;
@@ -77,6 +75,7 @@ try {
 					const divCasesConstructor = divPoll.appendChild(document.createElement(`div`));
 					divCasesConstructor.classList.add(`cases-constructor`);
 					{
+						//#region Insert case
 						const formInsertCaseGroup = divCasesConstructor.appendChild(document.createElement(`form`));
 						formInsertCaseGroup.classList.add(`contents`);
 						formInsertCaseGroup.method = `dialog`;
@@ -87,8 +86,6 @@ try {
 							inputInsertCase.placeholder = `Input the case`;
 							inputInsertCase.classList.add(`flex`, `depth`);
 							inputInsertCase.style.padding = `calc(var(--size-gap) / 2)`;
-							// const caseInitialValue = ``;
-							// inputInsertCase.value = caseInitialValue;
 							{ }
 							const buttonAddCase = formInsertCaseGroup.appendChild(document.createElement(`button`));
 							buttonAddCase.classList.add(`flex`);
@@ -98,7 +95,6 @@ try {
 							buttonAddCase.addEventListener(`click`, (event) => {
 								if (formInsertCaseGroup.checkValidity()) {
 									pollConstruct.cases.push(inputInsertCase.value);
-									// inputInsertCase.value = caseInitialValue;
 									configureCases();
 								}
 							});
@@ -109,8 +105,8 @@ try {
 								{ }
 							}
 						}
-
-						//#region Configure Cases
+						//#endregion
+						//#region Configure cases
 						function configureCases() {
 							divCasesConstructor.querySelectorAll(`div[id^="case-group-"]`).forEach(element => {
 								element.remove();
@@ -120,6 +116,7 @@ try {
 								divCaseGroup.id = `case-group-${caseIndex}`;
 								divCaseGroup.classList.add(`contents`);
 								{
+									//#region Case
 									const divCase = divCaseGroup.appendChild(document.createElement(`div`));
 									divCase.classList.add(`case`);
 									divCase.style.gridColumn = `1 / 2`;
@@ -149,14 +146,13 @@ try {
 										inputCase.type = `text`;
 										inputCase.required = true;
 										inputCase.value = caseConstruct;
-										// inputCase.classList.add(`case`);
 										inputCase.addEventListener(`change`, (event) => {
 											caseConstruct = inputCase.value;
 										});
-										// inputCase.style.wordBreak = `break-all`;
-										// inputCase.innerText = caseConstruct;
 										{ }
 									}
+									//#endregion
+									//#region Delete case
 									const buttonDeleteCase = divCaseGroup.appendChild(document.createElement(`button`));
 									buttonDeleteCase.classList.add(`flex`);
 									buttonDeleteCase.style.gridColumn = `-2 / -1`;
@@ -173,6 +169,7 @@ try {
 										imgIcon.classList.add(`icon`, `in-line`);
 										{ }
 									}
+									//#endregion
 								}
 							});
 						}
@@ -181,6 +178,8 @@ try {
 						configureCases();
 					}
 				}
+				//#endregion
+				//#region Delete poll
 				const buttonDeletePoll = divPollGroup.appendChild(document.createElement(`button`));
 				buttonDeletePoll.classList.add(`flex`);
 				buttonDeletePoll.style.gridColumn = `-2 / -1`;
@@ -197,10 +196,11 @@ try {
 					imgIcon.src = `../resources/delete.png`;
 					{ }
 				}
+				//#endregion
 			}
 		});
-		//#endregion
 	}
+	//#endregion
 
 	configurePolls();
 
