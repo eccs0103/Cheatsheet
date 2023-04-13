@@ -92,6 +92,7 @@ try {
 	buttonMainAction.addEventListener(`click`, () => {
 		if (inputEditSheets.checked) {
 			dialogMoreActions.showModal();
+			buttonEditSheet.disabled = !(selection().length == 1);
 			buttonDownloadSheets.disabled = (selection().length == 0);
 			buttonDeleteSheets.disabled = (selection().length == 0);
 			dialogMoreActions.addEventListener(`click`, (event) => {
@@ -111,8 +112,12 @@ try {
 
 	//#region Insert sheet
 	const dialogInsertSheet = (/** @type {HTMLDialogElement} */ (document.querySelector(`dialog#insert-sheet`)));
-	const aCreateConstructor = (/** @type {HTMLAnchorElement} */ (document.querySelector(`a[href="./constructor.html"]`)));
-	aCreateConstructor.hidden = !settings.experiments;
+	const buttonConstructSheet = (/** @type {HTMLAnchorElement} */ (document.querySelector(`button#construct-sheet`)));
+	buttonConstructSheet.hidden = !settings.experiments;
+	buttonConstructSheet.addEventListener(`click`, (event) => {
+		archiveConstruct.data = null;
+		location.assign(`./constructor.html`);
+	});
 	const inputUploadSheet = (/** @type {HTMLInputElement} */ (document.querySelector(`input#upload-sheet`)));
 	inputUploadSheet.addEventListener(`change`, async (event) => {
 		try {
@@ -148,6 +153,13 @@ try {
 	//#endregion
 	//#region More actions
 	const dialogMoreActions = (/** @type {HTMLDialogElement} */ (document.querySelector(`dialog#more-actions`)));
+	const buttonEditSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#edit-sheet`)));
+	buttonEditSheet.hidden = !settings.experiments;
+	buttonEditSheet.addEventListener(`click`, (event) => {
+		const sheet = database[selection()[0]].sheet;
+		archiveConstruct.data = Sheet.export(sheet);
+		location.assign(`./constructor.html`);
+	});
 	const buttonDownloadSheets = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#download-sheets`)));
 	buttonDownloadSheets.addEventListener(`click`, (event) => {
 		const sheets = selection().map((index) => database[index].sheet);

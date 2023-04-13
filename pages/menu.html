@@ -57,12 +57,12 @@
 		</button>
 	</main>
 	<dialog id="insert-sheet" class="layer" style="display: grid;">
-		<a role="button" href="./constructor.html" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+		<button id="construct-sheet" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
 			<div class="flex" style="padding: var(--size-gap);">
 				<img src="../resources/construction.png" alt="Create via constructor" class="icon">
 			</div>
 			<span style="padding: 0 var(--size-gap); text-align: left;">Create via constructor</span>
-		</a>
+		</button>
 		<input id="upload-sheet" type="file" multiple hidden>
 		<label for="upload-sheet" role="button" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
 			<div class="flex" style="padding: var(--size-gap);">
@@ -78,6 +78,12 @@
 		</button>
 	</dialog>
 	<dialog id="more-actions" class="layer" style="display: grid;">
+		<button id="edit-sheet" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
+			<div class="flex" style="padding: var(--size-gap);">
+				<img src="../resources/edit.png" alt="Edit via constructor" class="icon">
+			</div>
+			<span style="padding: 0 var(--size-gap); text-align: left;">Edit via constructor</span>
+		</button>
 		<button id="download-sheets" style="display: grid; grid-template-columns: max-content 1fr; align-items: center;">
 			<div class="flex" style="padding: var(--size-gap);">
 				<img src="../resources/download.png" alt="Download selection" class="icon">

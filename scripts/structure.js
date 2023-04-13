@@ -247,5 +247,6 @@ class Settings {
 /** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${Application.developer}\\${Application.title}\\Settings`, Settings.export(new Settings()));
 /** @type {Archive<Array<{ date: Number, sheet: SheetNotation }>>} */ const archiveSheets = new Archive(`${Application.developer}\\${Application.title}\\Sheets`, []);
 /** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${Application.developer}\\${Application.title}\\Memory`, null);
+/** @type {Archive<SheetNotation?>} */ const archiveConstruct = new Archive(`${Application.developer}\\${Application.title}\\Construct`, null);
 let settings = Settings.import(archiveSettings.data);
 //#endregion

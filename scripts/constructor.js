@@ -2,10 +2,10 @@
 try {
 	document.documentElement.dataset[`theme`] = settings.theme;
 
-	/** @type {SheetNotation} */ const sheetConstruct = {
+	const sheetConstruct = archiveConstruct.data ?? (/** @type {SheetNotation} */ ({
 		title: ``,
 		polls: [],
-	};
+	}));
 
 	const inputSheetTitle = (/** @type {HTMLInputElement} */ (document.querySelector(`input#sheet-title`)));
 	inputSheetTitle.value = sheetConstruct.title;
