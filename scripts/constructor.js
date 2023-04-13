@@ -205,13 +205,14 @@ try {
 	configurePolls();
 
 	const buttonSave = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#save`)));
-	buttonSave.addEventListener(`click`, (event) => {
+	buttonSave.addEventListener(`click`, async (event) => {
 		try {
 			const sheet = Sheet.import(sheetConstruct);
 			archiveSheets.change((data) => [...data, { date: Date.now(), sheet: Sheet.export(sheet) }]);
-			Application.alert(`Sheet assembled and saved successfully.`);
+			await Application.alert(`Sheet assembled and saved successfully.`);
+			location.assign(`./menu.html`);
 		} catch (exception) {
-			Application.alert(`An attempt to assemble the sheet failed. Cause:\n${exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`}.`, MessageType.warn);
+			await Application.alert(`An attempt to assemble the sheet failed. Cause:\n${exception instanceof Error ? exception.stack ?? `${exception.name}: ${exception.message}` : `Invalid exception type.`}.`, MessageType.warn);
 		}
 	});
 } catch (exception) {
