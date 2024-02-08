@@ -1,10 +1,13 @@
 "use strict";
+
+import { Sheet, archiveConstruct, archiveMemory, archiveSheets, settings } from "../Scripts/Structure.js";
+
 try {
 	//#region Converting to a new version
 	archiveSheets.change((data) => data.map((item) => {
 		try {
 			const sheet = Sheet.import(item);
-			Application.alert(`Found sheet '${sheet.title}' with old data format. The old formats are no longer supported, so tey will be converted to the new one.`, MessageType.warn);
+			window.alertAsync(`Found sheet '${sheet.title}' with old data format. The old formats are no longer supported, so tey will be converted to the new one.`, `Warning`);
 			return { date: Date.now(), sheet: Sheet.export(sheet) };
 		} catch (error) {
 			return item;
@@ -131,13 +134,13 @@ try {
 				dialogInsertSheet.close();
 			}
 		} catch (exception) {
-			Application.prevent(exception);
+			window.stabilize(exception);
 		}
 	});
 	const buttonImportSheet = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#import-sheet`)));
 	buttonImportSheet.addEventListener(`click`, async (event) => {
 		try {
-			const input = await Application.prompt(`Enter the download link. You will also need a stable connection before the download is complete.`);
+			const input = await window.promptAsync(`Enter the download link. You will also need a stable connection before the download is complete.`);
 			if (input !== null) {
 				const response = await fetch(input);
 				const text = await response.text();
@@ -147,7 +150,7 @@ try {
 				dialogInsertSheet.close();
 			}
 		} catch (exception) {
-			Application.prevent(exception);
+			window.stabilize(exception);
 		}
 	});
 	//#endregion
@@ -164,7 +167,7 @@ try {
 	buttonDownloadSheets.addEventListener(`click`, (event) => {
 		const sheets = selection().map((index) => database[index].sheet);
 		sheets.forEach((sheet) => {
-			Application.download(new File([JSON.stringify(Sheet.export(sheet), undefined, `\t`)], `${sheet.title}.json`, {
+			navigator.download(new File([JSON.stringify(Sheet.export(sheet), undefined, `\t`)], `${sheet.title}.json`, {
 				type: `text/json`,
 			}));
 		});
@@ -174,7 +177,7 @@ try {
 	buttonDeleteSheets.addEventListener(`click`, async (event) => {
 		const indexes = selection();
 		const sheets = selection().map((index) => database[index].sheet);
-		if (await Application.confirm(`Sheet(s) '${sheets.map((sheet) => sheet.title).join(`', '`)}' cant be restored. Are you sure to delete it (them)?`)) {
+		if (await window.confirmAsync(`Sheet(s) '${sheets.map((sheet) => sheet.title).join(`', '`)}' cant be restored. Are you sure to delete it (them)?`)) {
 			database = database.filter((data, index) => !indexes.includes(index));
 			archiveSheets.data = database.map(({ date, sheet }) => ({ date: date.valueOf(), sheet: Sheet.export(sheet) }));
 			configureSheets();
@@ -184,6 +187,6 @@ try {
 	});
 	//#endregion
 	//#endregion
-} catch (exception) {
-	Application.prevent(exception);
+} catch (error) {
+	await window.stabilize(Error.generate(error));
 }
