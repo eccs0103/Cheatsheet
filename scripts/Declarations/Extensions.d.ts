@@ -60,7 +60,7 @@ interface ErrorConstructor {
 	generate(error: any): Error;
 }
 
-interface HTMLElement {
+interface Element {
 	/**
 	 * Retrieves an element of the specified type and selectors.
 	 * @template T
@@ -69,7 +69,7 @@ interface HTMLElement {
 	 * @returns The element instance.
 	 * @throws If the element is missing or has an invalid type.
 	 */
-	getElement<T extends typeof HTMLElement>(type: T, selectors: string): InstanceType<T>;
+	getElement<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
 	/**
 	 * Tries to retrieve an element of the specified type and selectors.
 	 * @template T
@@ -79,7 +79,7 @@ interface HTMLElement {
 	 * @returns A promise that resolves to the element instance.
 	 * @throws If the element is missing or has an invalid type and strict mode is enabled.
 	 */
-	tryGetElement<T extends typeof HTMLElement>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
+	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 	/**
 	 * Retrieves elements of the specified type and selectors.
 	 * @template T
@@ -88,7 +88,7 @@ interface HTMLElement {
 	 * @returns The NodeList of element instances.
 	 * @throws If any element is missing or has an invalid type.
 	 */
-	getElements<T extends typeof HTMLElement>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
+	getElements<T extends typeof Element>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
 	/**
 	 * Tries to retrieve elements of the specified type and selectors.
 	 * @template T
@@ -98,7 +98,7 @@ interface HTMLElement {
 	 * @returns A promise that resolves to the NodeList of element instances.
 	 * @throws If any element is missing or has an invalid type and strict mode is enabled.
 	 */
-	tryGetElements<T extends typeof HTMLElement>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
+	tryGetElements<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
 }
 
 interface Document {
@@ -110,7 +110,7 @@ interface Document {
 	 * @returns The element instance.
 	 * @throws If the element is missing or has an invalid type.
 	 */
-	getElement<T extends typeof HTMLElement>(type: T, selectors: string): InstanceType<T>;
+	getElement<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
 	/**
 	 * Tries to retrieve an element of the specified type and selectors.
 	 * @template T
@@ -120,7 +120,7 @@ interface Document {
 	 * @returns A promise that resolves to the element instance.
 	 * @throws If the element is missing or has an invalid type and strict mode is enabled.
 	 */
-	tryGetElement<T extends typeof HTMLElement>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
+	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 	/**
 	 * Retrieves elements of the specified type and selectors.
 	 * @template T
@@ -129,7 +129,7 @@ interface Document {
 	 * @returns The NodeList of element instances.
 	 * @throws If any element is missing or has an invalid type.
 	 */
-	getElements<T extends typeof HTMLElement>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
+	getElements<T extends typeof Element>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
 	/**
 	 * Tries to retrieve elements of the specified type and selectors.
 	 * @template T
@@ -139,7 +139,7 @@ interface Document {
 	 * @returns A promise that resolves to the NodeList of element instances.
 	 * @throws If any element is missing or has an invalid type and strict mode is enabled.
 	 */
-	tryGetElements<T extends typeof HTMLElement>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
+	tryGetElements<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
 }
 
 interface Window {
@@ -180,11 +180,6 @@ interface Window {
 	 * @returns A promise that resolves once the error handling is complete.
 	 */
 	stabilize(error: Error, locked?: boolean): Promise<void>;
-	/**
-	 * Logs data to the console dialog.
-	 * @param data The data to log.
-	 */
-	log(...data: any[]): void;
 }
 
 /**

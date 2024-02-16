@@ -88,16 +88,16 @@ Error.constructor.prototype.generate = function (error) {
 	return error instanceof Error ? error : new Error(`Undefined error type`);
 };
 //#endregion
-//#region HTML element
+//#region Element
 /**
  * Retrieves an element of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of element to retrieve.
  * @param {string} selectors The selectors to search for the element.
  * @returns {InstanceType<T>} The element instance.
  * @throws {TypeError} If the element is missing or has an invalid type.
  */
-HTMLElement.prototype.getElement = function (type, selectors) {
+Element.prototype.getElement = function (type, selectors) {
 	const element = this.querySelector(selectors);
 	if (element instanceof type) {
 		return (/** @type {InstanceType<T>} */ (element));
@@ -106,14 +106,14 @@ HTMLElement.prototype.getElement = function (type, selectors) {
 
 /**
  * Tries to retrieve an element of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of element to retrieve.
  * @param {string} selectors The selectors to search for the element.
  * @param {boolean} strict Whether to reject if the element is missing or has an invalid type.
  * @returns {Promise<InstanceType<T>>} A promise that resolves to the element instance.
  * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
  */
-HTMLElement.prototype.tryGetElement = function (type, selectors, strict = false) {
+Element.prototype.tryGetElement = function (type, selectors, strict = false) {
 	return new Promise((resolve, reject) => {
 		const element = this.querySelector(selectors);
 		if (element instanceof type) {
@@ -126,13 +126,13 @@ HTMLElement.prototype.tryGetElement = function (type, selectors, strict = false)
 
 /**
  * Retrieves elements of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of elements to retrieve.
  * @param {string} selectors The selectors to search for the elements.
  * @returns {NodeListOf<InstanceType<T>>} The NodeList of element instances.
  * @throws {TypeError} If any element is missing or has an invalid type.
  */
-HTMLElement.prototype.getElements = function (type, selectors) {
+Element.prototype.getElements = function (type, selectors) {
 	const elements = this.querySelectorAll(selectors);
 	if (Array.from(elements).every(element => element instanceof type)) {
 		return (/** @type {NodeListOf<InstanceType<T>>} */ (elements));
@@ -141,14 +141,14 @@ HTMLElement.prototype.getElements = function (type, selectors) {
 
 /**
  * Tries to retrieve elements of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of elements to retrieve.
  * @param {string} selectors The selectors to search for the elements.
  * @param {boolean} strict Whether to reject if any element is missing or has an invalid type.
  * @returns {Promise<NodeListOf<InstanceType<T>>>} A promise that resolves to the NodeList of element instances.
  * @throws {TypeError} If any element is missing or has an invalid type and strict mode is enabled.
  */
-HTMLElement.prototype.tryGetElements = function (type, selectors, strict = false) {
+Element.prototype.tryGetElements = function (type, selectors, strict = false) {
 	return new Promise((resolve, reject) => {
 		const elements = this.querySelectorAll(selectors);
 		if (Array.from(elements).every(element => element instanceof type)) {
@@ -162,7 +162,7 @@ HTMLElement.prototype.tryGetElements = function (type, selectors, strict = false
 //#region Document
 /**
  * Retrieves an element of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of element to retrieve.
  * @param {string} selectors The selectors to search for the element.
  * @returns {InstanceType<T>} The element instance.
@@ -174,7 +174,7 @@ Document.prototype.getElement = function (type, selectors) {
 
 /**
  * Tries to retrieve an element of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of element to retrieve.
  * @param {string} selectors The selectors to search for the element.
  * @param {boolean} strict Whether to reject if the element is missing or has an invalid type.
@@ -187,7 +187,7 @@ Document.prototype.tryGetElement = function (type, selectors, strict = false) {
 
 /**
  * Retrieves elements of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of elements to retrieve.
  * @param {string} selectors The selectors to search for the elements.
  * @returns {NodeListOf<InstanceType<T>>} The NodeList of element instances.
@@ -199,7 +199,7 @@ Document.prototype.getElements = function (type, selectors) {
 
 /**
  * Tries to retrieve elements of the specified type and selectors.
- * @template {typeof HTMLElement} T
+ * @template {typeof Element} T
  * @param {T} type The type of elements to retrieve.
  * @param {string} selectors The selectors to search for the elements.
  * @param {boolean} strict Whether to reject if any element is missing or has an invalid type.
@@ -427,37 +427,6 @@ Window.prototype.stabilize = async function (error, locked = true) {
 	} else {
 		console.error(Error.analyze(error));
 	};
-};
-
-const dialogConsole = document.getElement(HTMLDialogElement, `dialog.console`);
-/**
- * @param {any} value 
- * @returns {string}
- */
-function logify(value) {
-	switch (typeof (value)) {
-		case `string`: return value;
-		case `number`:
-		case `bigint`:
-		case `boolean`: return String(value);
-		case `object`: return Object.entries(value).map(([key, value]) => `${key}: ${logify(value)}`).join(`,\n`);
-		case `symbol`:
-		case `function`:
-		case `undefined`: throw new TypeError(`Value has invalid ${typeof (value)} type`);
-	}
-}
-/**
- * Logs data to the console dialog.
- * @param  {any[]} data The data to log.
- * @returns {void}
- */
-Window.prototype.log = function (...data) {
-	if (data.length > 0) {
-		if (!dialogConsole.open) dialogConsole.open = true;
-		dialogConsole.innerText = data.map(item => logify(item)).join(`\n`);
-	} else {
-		if (dialogConsole.open) dialogConsole.open = false;
-	}
 };
 //#endregion
 //#region Navigator
