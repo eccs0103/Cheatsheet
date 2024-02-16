@@ -5,7 +5,7 @@ import { } from "./Modules/Extensions.js";
 import { } from "./Modules/Generators.js";
 import { } from "./Modules/Measures.js";
 import { } from "./Modules/Palette.js";
-import { Archive, NotationContainer, NotationProgenitor } from "./Modules/Storage.js";
+import { NotationContainer, NotationProgenitor } from "./Modules/Storage.js";
 import { } from "./Modules/Time.js";
 
 //#region Metadata
@@ -131,9 +131,7 @@ class Settings extends NotationProgenitor {
 
 const containerSettings = new NotationContainer(Settings, `${developer}.${title}.Settings`);
 const settings = containerSettings.content;
-/** @type {Archive<{ date: Number, sheet: SheetNotation }[]>} */ const archiveSheets = new Archive(`${developer}.${title}.Sheets`, []);
-/** @type {Archive<SheetNotation?>} */ const archiveMemory = new Archive(`${developer}.${title}.Memory`, null);
-/** @type {Archive<SheetNotation?>} */ const archiveConstruct = new Archive(`${developer}.${title}.Construct`, null);
+document.documentElement.dataset[`theme`] = settings.theme;
 
 //#region Poll
 /**
@@ -150,51 +148,46 @@ class Poll extends NotationProgenitor {
 	 */
 	static import(source) {
 		if (!(typeof (source) === `object`)) {
-			throw new TypeError(`Property source has invalid ${typeof (source)} type`);
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
 		}
 		const question = (() => {
-			const property = Reflect.get(source, `question`);
-			if (property === undefined) {
-				throw new TypeError(`Source must have a 'question' property`);
+			const value = Reflect.get(source, `question`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'question' property.`);
 			}
-			if (typeof (property) !== `string`) {
-				throw new TypeError(`Source 'question' property must be a 'string' type`);
+			if (typeof (value) !== `string`) {
+				throw new TypeError(`Source's 'question' property must be a 'string' type`);
 			}
-			return property;
+			return value;
 		})();
 		const answer = (() => {
-			const property = Reflect.get(source, `answer`);
-			if (property === undefined) {
-				throw new TypeError(`Source must have a 'answer' property`);
+			const value = Reflect.get(source, `answer`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'answer' property.`);
 			}
-			if (typeof (property) !== `number`) {
-				throw new TypeError(`Source 'answer' property must be a 'number' type`);
+			if (typeof (value) !== `number`) {
+				throw new TypeError(`Source's 'answer' property must be a 'number' type`);
 			}
-			if (!Number.isFinite(property) || !Number.isInteger(property)) {
-				throw new TypeError(`Source 'answer' property must be a finite, integer number`);
+			if (!(Number.isFinite(value) && Number.isInteger(value) && value >= 0)) {
+				throw new RangeError(`Source's 'answer' property must be a finite, integer number in range [0 - +∞)`);
 			}
-			if (property < 0) {
-				throw new TypeError(`Source 'answer' property must equal or higher than 0`);
-			}
-			return property;
+			return value;
 		})();
 		const cases = (() => {
-			const property = Reflect.get(source, `cases`);
-			if (property === undefined) {
-				throw new TypeError(`Source must have a 'cases' property`);
+			const value = Reflect.get(source, `cases`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'cases' property.`);
 			}
-			if (typeof (property) === `string`) {
-				return [property];
-			} else if (typeof (property) === `object` && property instanceof Array) {
-				return property.map((item, index) => {
+			if (typeof (value) === `string`) {
+				return [value];
+			} else if (typeof (value) === `object` && value instanceof Array) {
+				return value.map((item, index) => {
 					if (typeof (item) !== `string`) {
-						throw new TypeError(`Item with index '${index}' of source 'cases' property must be a 'string' type`);
+						throw new TypeError(`Item with index '${index}' of source's 'cases' property must be a 'string' type`);
 					}
 					return item;
 				});
-			} else {
-				throw new TypeError(`Source 'cases' property must be a 'string | string[]' type`);
-			}
+			} else throw new TypeError(`Source's 'cases' property must be a 'string | string[]' type`);
 		})();
 		if (cases[answer] === undefined) {
 			throw new TypeError(`There is no case at '${answer}' index`);
@@ -250,35 +243,33 @@ class Sheet extends NotationProgenitor {
 	 */
 	static import(source) {
 		if (!(typeof (source) === `object`)) {
-			throw new TypeError(`Property source has invalid ${typeof (source)} type`);
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
 		}
 		const title = (() => {
-			const property = Reflect.get(source, `title`);
-			if (property === undefined) {
+			const value = Reflect.get(source, `title`);
+			if (value === undefined) {
 				throw new TypeError(`Source must have a 'title' property.`);
 			}
-			if (typeof (property) !== `string`) {
-				throw new TypeError(`Source 'title' property must be a 'string' type.`);
+			if (typeof (value) !== `string`) {
+				throw new TypeError(`Source's 'title' property must be a 'string' type.`);
 			}
-			return property;
+			return value;
 		})();
 		const polls = (() => {
-			const property = Reflect.get(source, `polls`) ?? Reflect.get(source, `poles`);
-			if (property === undefined) {
+			const value = Reflect.get(source, `polls`);
+			if (value === undefined) {
 				throw new TypeError(`Source must have a 'polls' property.`);
 			}
-			if (typeof (property) === `object` && property instanceof Array) {
-				return property.map((item, index) => {
-					try {
-						return Poll.import(item);
-					} catch (error) {
-						const $error = Error.generate(error);
-						throw new TypeError(`Unable to import item with index '${index}' of source 'polls' with reason\n${$error.stack ?? `${$error.name}: ${$error.message}`}`);
-					}
-				});
-			} else {
-				throw new TypeError(`Source 'polls' property must be a 'Poll[]' type.`);
+			if (!(typeof (value) === `object` && value instanceof Array)) {
+				throw new TypeError(`Source's 'polls' property must be a 'Poll[]' type.`);
 			}
+			return value.map((item, index) => {
+				try {
+					return Poll.import(item);
+				} catch (error) {
+					throw new TypeError(`Unable to import item with index '${index}' of source's 'polls' property with reason\n${Error.analyze(Error.generate(error))}`);
+				}
+			});
 		})();
 		const result = new Sheet();
 		result.title = title;
@@ -308,5 +299,192 @@ class Sheet extends NotationProgenitor {
 	}
 }
 //#endregion
+//#region Note
+/**
+ * @typedef NoteNotation
+ * @property {number} date
+ * @property {SheetNotation} sheet
+ */
 
-export { Themes, containerSettings, settings, archiveSheets, archiveMemory, archiveConstruct, Poll, Sheet };
+class Note extends NotationProgenitor {
+	/**
+	 * @param {any} source 
+	 * @returns {Note}
+	 */
+	static import(source) {
+		if (!(typeof (source) === `object`)) {
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
+		}
+		const date = (() => {
+			const value = Reflect.get(source, `date`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'date' property.`);
+			}
+			if (!(typeof (value) === `number`)) {
+				throw new TypeError(`Property date has invalid ${typeof (value)} type`);
+			}
+			return new Date(value);
+		})();
+		const sheet = (() => {
+			const value = Reflect.get(source, `sheet`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'sheet' property.`);
+			}
+			try {
+				return Sheet.import(value);
+			} catch (error) {
+				throw new TypeError(`Unable to import property of source 'sheet' with reason\n${Error.analyze(Error.generate(error))}`);
+			}
+		})();
+		const result = new Note(new Date(date), sheet);
+		return result;
+	}
+	/**
+	 * @param {Note} source 
+	 * @returns {NoteNotation}
+	 */
+	static export(source) {
+		const result = (/** @type {NoteNotation} */ ({}));
+		result.date = source.#date.valueOf();
+		result.sheet = Sheet.export(source.#sheet);
+		return result;
+	}
+	/**
+	 * @param {Date} date 
+	 * @param {Sheet} sheet 
+	 */
+	constructor(date, sheet) {
+		super();
+		this.#date = date;
+		this.#sheet = sheet;
+	}
+	/** @type {Date} */ #date;
+	get date() {
+		return this.#date;
+	}
+	set date(value) {
+		this.#date = value;
+	}
+	/** @type {Sheet} */ #sheet;
+	get sheet() {
+		return this.#sheet;
+	}
+	set sheet(value) {
+		this.#sheet = value;
+	}
+}
+//#endregion
+//#region Folder
+/**
+ * @typedef FolderNotation
+ * @property {NoteNotation[]} notes
+ */
+
+class Folder extends NotationProgenitor {
+	/**
+	 * @param {any} source 
+	 * @returns {Folder}
+	 */
+	static import(source) {
+		if (!(typeof (source) === `object`)) {
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
+		}
+		const notes = (() => {
+			const value = Reflect.get(source, `notes`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'notes' property.`);
+			}
+			if (!(typeof (value) === `object` && value instanceof Array)) {
+				throw new TypeError(`Source's 'notes' property must be a 'Note[]' type.`);
+			}
+			return value.map((item, index) => {
+				try {
+					return Note.import(item);
+				} catch (error) {
+					throw new TypeError(`Unable to import item with index '${index}' of source 'notes' with reason\n${Error.analyze(Error.generate(error))}`);
+				}
+			});
+		})();
+		const result = new Folder();
+		result.#notes = notes;
+		return result;
+	}
+	/**
+	 * @param {Folder} source 
+	 * @returns {FolderNotation}
+	 */
+	static export(source) {
+		const result = (/** @type {FolderNotation} */ ({}));
+		result.notes = source.notes.map(note => Note.export(note));
+		return result;
+	}
+	/** @type {Note[]} */ #notes = [];
+	/** @readonly */ get notes() {
+		return this.#notes;
+	}
+}
+//#endregion
+
+const containerFolder = new NotationContainer(Folder, `${developer}.${title}.Folder`);
+const folder = containerFolder.content;
+
+//#region Holder
+/**
+ * @typedef HolderNotation
+ * @property {SheetNotation?} sheet
+ */
+
+class Holder extends NotationProgenitor {
+	/**
+	 * @param {any} source 
+	 * @returns {Holder}
+	 */
+	static import(source) {
+		if (!(typeof (source) === `object`)) {
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
+		}
+		const sheet = (() => {
+			const value = Reflect.get(source, `sheet`);
+			if (value === undefined) {
+				throw new TypeError(`Source must have a 'sheet' property.`);
+			}
+			try {
+				if (value === null) {
+					return value;
+				} else {
+					return Sheet.import(value);
+				}
+			} catch (error) {
+				throw new TypeError(`Unable to import property of source 'sheet' with reason\n${Error.analyze(Error.generate(error))}`);
+			}
+		})();
+		const result = new Holder();
+		result.sheet = sheet;
+		return result;
+	}
+	/**
+	 * @param {Holder} source 
+	 * @returns {HolderNotation}
+	 */
+	static export(source) {
+		const result = (/** @type {HolderNotation} */ ({}));
+		result.sheet = source.sheet ? Sheet.export(source.sheet) : null;
+		return result;
+	}
+	/** @type {Sheet?} */ #sheet = null;
+	get sheet() {
+		return this.#sheet;
+	}
+	set sheet(value) {
+		this.#sheet = value;
+	}
+}
+//#endregion
+
+const containerMemory = new NotationContainer(Holder, `${developer}.${title}.Memory`);
+const memory = containerMemory.content;
+
+const containerConstruct = new NotationContainer(Holder, `${developer}.${title}.Construct`);
+const construct = containerConstruct.content;
+
+export { developer, title, Themes, containerSettings, settings, Poll, Sheet, Note, Folder, containerFolder, folder, Holder, containerMemory, memory, containerConstruct, construct };
