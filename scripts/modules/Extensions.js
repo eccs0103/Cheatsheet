@@ -450,18 +450,16 @@ Window.prototype.load = async function (promise, duration = 200, delay = 0) {
 };
 
 /**
- * Asynchronously handles an error, displaying it in an alert or console.
+ * Asynchronously handles an error, displaying it in an alert.
  * @param {Error} error The error to handle.
- * @param {boolean} locked Indicates whether the application should be locked after displaying the error.
+ * @param {boolean} reload Indicates whether the application should be reloaded after displaying the error.
  * @returns {Promise<void>} A promise that resolves once the error handling is complete.
  */
-Window.prototype.stabilize = async function (error, locked = true) {
-	if (locked) {
-		await window.alertAsync(Error.analyze(error), `Error`);
+Window.prototype.stabilize = async function (error, reload = true) {
+	await window.alertAsync(Error.analyze(error), `Error`);
+	if (reload) {
 		location.reload();
-	} else {
-		console.error(Error.analyze(error));
-	};
+	}
 };
 //#endregion
 //#region Navigator

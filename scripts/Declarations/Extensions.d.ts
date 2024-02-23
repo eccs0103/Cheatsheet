@@ -193,12 +193,12 @@ interface Window {
 	 */
 	load<T>(promise: Promise<T>, duration?: number, delay?: number): Promise<T>;
 	/**
-	 * Asynchronously handles an error, displaying it in an alert or console.
+	 * Asynchronously handles an error, displaying it in an alert.
 	 * @param error The error to handle.
-	 * @param locked Indicates whether the application should be locked after displaying the error.
+	 * @param reload Indicates whether the application should be reloaded after displaying the error.
 	 * @returns A promise that resolves once the error handling is complete.
 	 */
-	stabilize(error: Error, locked?: boolean): Promise<void>;
+	stabilize(error: Error, reload?: boolean): Promise<void>;
 }
 
 /**
