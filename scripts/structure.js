@@ -426,7 +426,7 @@ class Folder extends NotationProgenitor {
 //#endregion
 
 const containerFolder = new NotationContainer(Folder, `${developer}.${title}.Folder`);
-const folder = containerFolder.content;
+const notes = containerFolder.content.notes;
 
 //#region Holder
 /**
@@ -487,4 +487,4 @@ const memory = containerMemory.content;
 const containerConstruct = new NotationContainer(Holder, `${developer}.${title}.Construct`);
 const construct = containerConstruct.content;
 
-export { developer, title, Themes, containerSettings, settings, Poll, Sheet, Note, Folder, containerFolder, folder, Holder, containerMemory, memory, containerConstruct, construct };
+export { developer, title, Themes, containerSettings, settings, Poll, Sheet, Note, notes, memory, construct };

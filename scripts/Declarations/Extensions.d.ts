@@ -67,7 +67,7 @@ interface Element {
 	 * @param type The type of element to retrieve.
 	 * @param selectors The selectors to search for the element.
 	 * @returns The element instance.
-	 * @throws If the element is missing or has an invalid type.
+	 * @throws {TypeError} If the element is missing or has an invalid type.
 	 */
 	getElement<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
 	/**
@@ -77,16 +77,35 @@ interface Element {
 	 * @param selectors The selectors to search for the element.
 	 * @param strict Whether to reject if the element is missing or has an invalid type.
 	 * @returns A promise that resolves to the element instance.
-	 * @throws If the element is missing or has an invalid type and strict mode is enabled.
+	 * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
 	 */
 	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
+	/**
+	 * Retrieves the closest ancestor element of the specified type and selectors.
+	 * @template T
+	 * @param type The type of element to retrieve.
+	 * @param selectors The selectors to search for the element.
+	 * @returns The element instance.
+	 * @throws {TypeError} If the element is missing or has an invalid type.
+	 */
+	getClosest<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
+	/**
+	 * Tries to retrieve the closest ancestor element of the specified type and selectors.
+	 * @template T
+	 * @param type The type of element to retrieve.
+	 * @param selectors The selectors to search for the element.
+	 * @param strict Whether to reject if the element is missing or has an invalid type.
+	 * @returns A promise that resolves to the element instance.
+	 * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
+	 */
+	tryGetClosest<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 	/**
 	 * Retrieves elements of the specified type and selectors.
 	 * @template T
 	 * @param type The type of elements to retrieve.
 	 * @param selectors The selectors to search for the elements.
 	 * @returns The NodeList of element instances.
-	 * @throws If any element is missing or has an invalid type.
+	 * @throws {TypeError} If any element is missing or has an invalid type.
 	 */
 	getElements<T extends typeof Element>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
 	/**
@@ -96,7 +115,7 @@ interface Element {
 	 * @param selectors The selectors to search for the elements.
 	 * @param strict Whether to reject if any element is missing or has an invalid type.
 	 * @returns A promise that resolves to the NodeList of element instances.
-	 * @throws If any element is missing or has an invalid type and strict mode is enabled.
+	 * @throws {TypeError} If any element is missing or has an invalid type and strict mode is enabled.
 	 */
 	tryGetElements<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
 }
@@ -108,7 +127,7 @@ interface Document {
 	 * @param type The type of element to retrieve.
 	 * @param selectors The selectors to search for the element.
 	 * @returns The element instance.
-	 * @throws If the element is missing or has an invalid type.
+	 * @throws {TypeError} If the element is missing or has an invalid type.
 	 */
 	getElement<T extends typeof Element>(type: T, selectors: string): InstanceType<T>;
 	/**
@@ -118,7 +137,7 @@ interface Document {
 	 * @param selectors The selectors to search for the element.
 	 * @param strict Whether to reject if the element is missing or has an invalid type.
 	 * @returns A promise that resolves to the element instance.
-	 * @throws If the element is missing or has an invalid type and strict mode is enabled.
+	 * @throws {TypeError} {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
 	 */
 	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 	/**
@@ -127,7 +146,7 @@ interface Document {
 	 * @param type The type of elements to retrieve.
 	 * @param selectors The selectors to search for the elements.
 	 * @returns The NodeList of element instances.
-	 * @throws If any element is missing or has an invalid type.
+	 * @throws {TypeError} If any element is missing or has an invalid type.
 	 */
 	getElements<T extends typeof Element>(type: T, selectors: string): NodeListOf<InstanceType<T>>;
 	/**
@@ -137,7 +156,7 @@ interface Document {
 	 * @param selectors The selectors to search for the elements.
 	 * @param strict Whether to reject if any element is missing or has an invalid type.
 	 * @returns A promise that resolves to the NodeList of element instances.
-	 * @throws If any element is missing or has an invalid type and strict mode is enabled.
+	 * @throws {TypeError} If any element is missing or has an invalid type and strict mode is enabled.
 	 */
 	tryGetElements<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<NodeListOf<InstanceType<T>>>;
 }
@@ -219,11 +238,6 @@ declare function load<T>(promise: Promise<T>, duration?: number, delay?: number)
  * @returns A promise that resolves once the error handling is complete.
  */
 declare function stabilize(error: Error, locked?: boolean): Promise<void>;
-/**
- * Logs data to the console dialog.
- * @param data The data to log.
- */
-declare function log(...data: any[]): void;
 
 interface Navigator {
 	/**
