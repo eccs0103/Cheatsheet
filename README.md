@@ -1,9 +1,8 @@
-# Cheatset (Шпаргалка)
-Программа для решения тестов.  
-© Adaptive Core 2023  
+# Cheatsheet
+A program for solving tests.
 - - -
-## Руководство
-Для работы программы требуется лист. Лист должен быть файл JSON со структурой:  
+## Guide
+To use the program, a sheet is required. The sheet must be a JSON file with the following structure:
 ```js
 {
 	"title": String,
@@ -14,69 +13,76 @@
 	}>,
 }
 ```
-и может быть загружен с устройства или импортирован с помощью ссылки.
+...and can be loaded from the device or imported using a link.
 - - -
-## Новости
-### Обновление 
-- Улучшена валидация листов.  
-- Улучшено групповое управление.  
+## Feed
+### Update 2.0.0 (24.02.2024) : AWT 2.5.2
+- Core updated.
+- Processes accelerated with asynchronous operations.
+- Website structure improved.
+- Image preloading added.
 
-### Обновление 1.2.8 (04.04.2023)
-- Обновлено ядро.  
-- Подготовка к внедрению новой конструкции.  
+### Update 1.3.5 (13.04.2023)
+- Improved list validation.
+- Enhanced group management.
 
-### Обновление 1.2.5 (05.03.2023)
-- Добавлено управление темой.  
-- Исправлены разные ошибки.  
+### Update 1.2.8 (04.04.2023)
+- Core updated.
+- Preparation for the introduction of a new structure.
 
-### Обновление 1.2.4 (15.02.2023)
-- Улучшена HTML структура.  
-- Усовершенствована возможность группового управления.  
-- Исправлена проблема адаптивности для смартфонов.  
-- Добавлена возможность управлять регистстром во время поиска.  
-- Добавлена возможность быстрого поиска за счет усовершенствованного поиска.  
-- Добавлена возможность сброса настроек.  
-- Обновлен список информации.  
-- Улучшена CSS структура.  
-- Встроена адаптивная тема.  
-- Перезаписаны модули.  
-- Сокращена JS структура.  
-- Улучшена загрузка данных с облака и с устройства.  
-- Убраны нестабильные функции.  
-- Стабилизирована работа настроек при обновлении.  
-- Улучшены описания ошибок.  
+### Update 1.2.5 (05.03.2023)
+- Theme management added.
+- Various errors fixed.
 
-### Обновление 1.1.10 (13.01.2023)
-- Ускорена работа поиска с помощью предзагрузки данных.  
-- Ускорена работа сканирования листов с помощью предзагрузки данных.  
-- Усовершенствована возможность группового управления.  
-- Изменена стиль всплывающих окон.  
+### Update 1.2.4 (15.02.2023)
+- HTML structure improved.
+- Group management functionality enhanced.
+- Smartphone adaptability issue fixed.
+- Case sensitivity control during search added.
+- Quick search feature improved.
+- Settings reset option added.
+- Information list updated.
+- CSS structure improved.
+- Adaptive theme integrated.
+- Modules rewritten.
+- JavaScript structure optimized.
+- Data loading from cloud and device improved.
+- Unstable functions removed.
+- Settings stability improved during updates.
+- Error descriptions improved.
 
-### Обновление 1.1.7 (12.01.2023)
-- Исправлена ошибка показа найстроек.  
-- Улучшена показ листов. Исправлена ошибка при которой затруднялась возможность открыть лист.  
-- Добавлена возможность скачать локальные листы.  
-- Добавлено групповое управление.  
-- Теперь можно загрузить с устройства несколько листов сразу.  
+### Update 1.1.10 (13.01.2023)
+- Search speed improved with data preloading.
+- Sheet scanning accelerated with data preloading.
+- Group management enhanced.
+- Popup style changed.
 
-### Обновление 1.1.4 (11.01.2023)
-- При единственном варианте в вопросе его можно сразу передать как строку в JSON лист. Номер правильного ответа должен ему соответствовать под индексом 0.  
-- Усовершенствован метод сканирования листов.  
-- При создании листа теперь не понадобиться вводить дату. Она будет создана автоматически при импортировании листа.  
-- Улучшен вид вопросов и ответов.  
-- Прекращена поддержка лист старых форматов. Они будут автоматички переобразованы в новый формат.  
+### Update 1.1.7 (12.01.2023)
+- Settings display error fixed.
+- Sheet display improved; issue preventing sheet opening resolved.
+- Ability to download local sheets added.
+- Group management feature added.
+- Multiple sheet upload from device enabled.
 
-### Обновление 1.1.0 (02.01.2023)
-- Изменен дизайн.  
-- Добавлена возможность загружать лист с устройства.  
-- Исправлены мелкие ошибки.  
-- Улучшена система обработки ошибок.  
+### Update 1.1.4 (11.01.2023)
+- Single-choice questions can now be directly passed as a string in JSON format. The correct answer number should correspond to index 0.
+- Sheet scanning method improved.
+- Date input during sheet creation automated upon import.
+- Question and answer display enhanced.
+- Support for old sheet formats discontinued; automatic conversion to new format.
 
-### Обновление 1.0.2 (24.12.2022)
-- Изменены метаданные․  
-- Слегка обновлен дизайн․  
+### Update 1.1.0 (02.01.2023)
+- Design revamped.
+- Ability to upload sheets from device added.
+- Minor bugs fixed.
+- Error handling system improved.
 
-### Обновление 1.0.0 (21.12.2022)
-- Адаптирован дизайн как и на мобильные устройства, так и для планшетов и компьютеров.  
-- Добавлена возможность удаления листов.  
-- Изменена полоса прокрутки.  
+### Update 1.0.2 (24.12.2022)
+- Metadata updated.
+- Design slightly refreshed.
+
+### Update 1.0.0 (21.12.2022)
+- Design adapted for mobile devices, tablets, and computers.
+- Ability to delete sheets added.
+- Scroll bar style changed.
+
