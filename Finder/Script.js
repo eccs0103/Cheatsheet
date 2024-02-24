@@ -1,6 +1,7 @@
 "use strict";
 
-import { Poll, Sheet, memory } from "../Scripts/Structure.js";
+import { NotationContainer } from "../Scripts/Modules/Storage.js";
+import { Holder, Poll, Settings, Sheet, pathMemory, pathSettings } from "../Scripts/Structure.js";
 
 try {
 	//#region Definition
@@ -9,6 +10,10 @@ try {
 	const inputSearchField = document.getElement(HTMLInputElement, `input#search-field`);
 	//#endregion
 	//#region Controller
+	const settings = new NotationContainer(Settings, pathSettings).content;
+	document.documentElement.dataset[`theme`] = settings.theme;
+	const memory = new NotationContainer(Holder, pathMemory).content;
+
 	class Controller {
 		/**
 		 * @param {Poll} poll 
@@ -26,13 +31,16 @@ try {
 				{
 					for (let index = 0; index < poll.cases.length; index++) {
 						const $case = poll.cases[index];
-						const divCase = divCases.appendChild(document.createElement(`div`));
-						divCase.classList.add(`case`, `with-inline-gap`);
-						{
-							const spanCase = divCase.appendChild(document.createElement(`span`));
-							spanCase.textContent = $case;
-							spanCase.classList.add(index === poll.answer ? `highlight` : `invalid`);
-							{ }
+						const correctness = (index === poll.answer);
+						if (settings.incorrectCases || correctness) {
+							const divCase = divCases.appendChild(document.createElement(`div`));
+							divCase.classList.add(`case`, `with-inline-gap`);
+							{
+								const spanCase = divCase.appendChild(document.createElement(`span`));
+								spanCase.textContent = $case;
+								spanCase.classList.add(correctness ? `highlight` : `invalid`);
+								{ }
+							}
 						}
 					}
 				}
@@ -53,9 +61,9 @@ try {
 				return map;
 			});
 			const flags = new Set(`g`);
-			// if (settings.ignoreCase) {
-			// 	flags.add(`i`);
-			// }
+			if (settings.ignoreCase) {
+				flags.add(`i`);
+			}
 			this.#flags = Array.from(flags).join(``);
 		}
 		/** @type {string} */ #title;
@@ -80,7 +88,7 @@ try {
 		/**
 		 * @returns {Promise<void>}
 		 */
-		async construct() {
+		async initialize() {
 			await this.#promisePolls;
 		}
 		/**
@@ -93,9 +101,9 @@ try {
 		 */
 		async filter(pattern) {
 			pattern = pattern.replace(/[-\\^$*+?.()|[\]{}]/g, `\\$&`);
-			// if (settings.skipWords) {
-			// 	pattern = pattern.replace(/ /g, `$&(\\S+ )*?`);
-			// }
+			if (settings.skipWords) {
+				pattern = pattern.replace(/ /g, `$&(\\S+ )*?`);
+			}
 			const regex = new RegExp(pattern, this.#flags);
 			const polls = await this.#promisePolls;
 			for (const [poll, [divPoll, spanQuestion]] of polls) {
@@ -118,7 +126,7 @@ try {
 	h3SheetTitle.textContent = controller.title;
 	//#endregion
 	//#region Main
-	await window.load(controller.construct());
+	await window.load(controller.initialize());
 	//#endregion
 	//#region Footer
 	await controller.filter(inputSearchField.value);

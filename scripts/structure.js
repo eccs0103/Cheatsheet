@@ -5,7 +5,7 @@ import { } from "./Modules/Extensions.js";
 import { } from "./Modules/Generators.js";
 import { } from "./Modules/Measures.js";
 import { } from "./Modules/Palette.js";
-import { NotationContainer, NotationProgenitor } from "./Modules/Storage.js";
+import { NotationProgenitor } from "./Modules/Storage.js";
 import { } from "./Modules/Time.js";
 
 //#region Metadata
@@ -128,10 +128,6 @@ class Settings extends NotationProgenitor {
 	}
 }
 //#endregion
-
-const containerSettings = new NotationContainer(Settings, `${developer}.${title}.Settings`);
-const settings = containerSettings.content;
-document.documentElement.dataset[`theme`] = settings.theme;
 
 //#region Poll
 /**
@@ -425,9 +421,6 @@ class Folder extends NotationProgenitor {
 }
 //#endregion
 
-const containerFolder = new NotationContainer(Folder, `${developer}.${title}.Folder`);
-const notes = containerFolder.content.notes;
-
 //#region Holder
 /**
  * @typedef HolderNotation
@@ -481,10 +474,9 @@ class Holder extends NotationProgenitor {
 }
 //#endregion
 
-const containerMemory = new NotationContainer(Holder, `${developer}.${title}.Memory`);
-const memory = containerMemory.content;
+const pathSettings = `${developer}.${title}.Settings`;
+const pathFolder = `${developer}.${title}.Folder`;
+const pathMemory = `${developer}.${title}.Memory`;
+const pathConstruct = `${developer}.${title}.Construct`;
 
-const containerConstruct = new NotationContainer(Holder, `${developer}.${title}.Construct`);
-const construct = containerConstruct.content;
-
-export { developer, title, Themes, containerSettings, settings, Poll, Sheet, Note, notes, memory, construct };
+export { Themes, Settings, Poll, Sheet, Note, Folder, Holder, pathSettings, pathFolder, pathMemory, pathConstruct };

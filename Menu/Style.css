@@ -116,6 +116,8 @@ div.float-section {
 	bottom: var(--size-gap);
 	width: fit-content;
 	height: fit-content;
+	border-radius: 50vmin;
+	overflow: hidden;
 }
 
 header:has(input#toggle-edit-mode:checked) ~ main div.float-section button#open-add-dialog {
@@ -124,7 +126,6 @@ header:has(input#toggle-edit-mode:checked) ~ main div.float-section button#open-
 
 button#open-add-dialog img.icon {
 	height: var(--size-large-standart);
-	filter: invert(1);
 }
 
 header:not(:has(input#toggle-edit-mode:checked)) ~ main div.float-section button#open-actions-dialog {
@@ -133,5 +134,13 @@ header:not(:has(input#toggle-edit-mode:checked)) ~ main div.float-section button
 
 button#open-actions-dialog img.icon {
 	height: var(--size-large-standart);
-	filter: invert(1);
+}
+
+body::after {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	z-index: -1;
+	content: url("../Resources/Checkmark.png") url("../Resources/Close.png");
 }

@@ -311,7 +311,8 @@ img {
 	object-fit: contain;
 }
 
-img.icon {
+img.icon,
+img.avatar {
 	height: var(--size-standart);
 	aspect-ratio: 1;
 }

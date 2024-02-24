@@ -1,6 +1,7 @@
 "use strict";
 
-import { Note, Sheet, memory, notes } from "../Scripts/Structure.js";
+import { NotationContainer } from "../Scripts/Modules/Storage.js";
+import { Folder, Holder, Note, Settings, Sheet, pathFolder, pathMemory, pathSettings } from "../Scripts/Structure.js";
 
 try {
 	//#region Definition
@@ -19,6 +20,11 @@ try {
 	const buttonDeleteSelection = dialogSheetActions.getElement(HTMLButtonElement, `button#delete-selection`);
 	//#endregion
 	//#region Controller
+	const settings = new NotationContainer(Settings, pathSettings).content;
+	document.documentElement.dataset[`theme`] = settings.theme;
+	const memory = new NotationContainer(Holder, pathMemory).content;
+	const notes = new NotationContainer(Folder, pathFolder).content.notes;
+
 	class Controller {
 		/**
 		 * @param {Note} note 
@@ -84,16 +90,6 @@ try {
 			return [divNote, inputToggleMark, labelToggleMark];
 		}
 		/**
-		 * @param {Note[]} notes 
-		 */
-		constructor(notes) {
-			this.#notes = notes;
-		}
-		/**
-		 * @type {Note[]}
-		 */
-		#notes;
-		/**
 		 * @type {Map<Note, HTMLDivElement>}
 		 */
 		#mapNotes = new Map();
@@ -155,7 +151,7 @@ try {
 		 * @returns {Promise<void>}
 		 */
 		async addNote(note) {
-			this.#notes.push(note);
+			notes.push(note);
 			await this.#constructNote(note);
 		};
 		/**
@@ -172,7 +168,7 @@ try {
 		 * @returns {Promise<void>}
 		 */
 		async removeNote(index) {
-			const [note] = this.#notes.splice(index, 1);
+			const [note] = notes.splice(index, 1);
 			await this.#destructNote(note);
 		};
 		/**
@@ -184,7 +180,7 @@ try {
 				const current = indexes[index];
 				await this.removeNote(current - index);
 				for (let index2 = current - index; index2 < this.#mapNotes.size; index2++) {
-					const note = this.#notes[index2];
+					const note = notes[index2];
 					const divNote = this.#mapNotes.get(note) ?? (() => {
 						throw new ReferenceError(`Unable to reach construct at index ${index2}`);
 					})();
@@ -214,7 +210,8 @@ try {
 			return indexes;
 		}
 	}
-	const controller = new Controller(notes);
+
+	const controller = new Controller();
 	//#endregion
 	//#region Header
 	inputToggleMarkAll.addEventListener(`change`, (event) => {

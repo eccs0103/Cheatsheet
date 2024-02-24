@@ -34,7 +34,7 @@ main {
 
 div.poll {
 	display: grid;
-	grid-template: 
+	grid-template:
 		'index-area	question-area	' auto
 		'index-area	cases-area		' auto
 		/ auto 1fr
@@ -53,21 +53,20 @@ div.poll span.question {
 
 div.poll div.cases {
 	grid-area: cases-area;
-	counter-reset: cases-counter;
 }
 
 div.poll div.cases div.case {
+	user-select: all;
 	display: grid;
-	grid-template: 
+	grid-template:
 		'index-area	case-area	' auto
-		/ auto 1fr
-	;
-	counter-increment: cases-counter;
+		/ auto 1fr;
 }
 
 div.poll div.cases div.case::before {
 	grid-area: index-area;
-	content: counter(cases-counter) ")";
+	font-family: monospace;
+	content: "•";
 }
 
 footer {
