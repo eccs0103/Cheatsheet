@@ -2,6 +2,189 @@
 
 "use strict";
 
+import { ArchiveManager } from "./Storage.js";
+
+//#region Function
+/**
+ * Not implemented function to import source.
+ * @param {unknown} source The source to import.
+ * @param {string} name The name of the source.
+ * @returns {any} The imported value.
+ * @throws {ReferenceError} If the function is called.
+ */
+Function.prototype.import = function (source, name = `source`) {
+	throw new ReferenceError(`Not implemented function`);
+};
+
+/**
+ * Not implemented function to export source.
+ * @returns {any} The exported value.
+ * @throws {ReferenceError} If the function is called.
+ */
+Function.prototype.export = function () {
+	throw new ReferenceError(`Not implemented function`);
+};
+//#endregion
+//#region Number
+/**
+ * Imports a number from the source.
+ * @param {unknown} source The source to import.
+ * @param {string} name The name of the source.
+ * @returns {number} The imported number.
+ * @throws {ReferenceError} If the source is undefined.
+ * @throws {TypeError} If the source is not a number.
+ */
+Number.import = function (source, name = `source`) {
+	if (source === undefined) {
+		throw new ReferenceError(`${name.replace(/^\w/, (part) => part.toUpperCase())} is not defined`);
+	}
+	if (typeof (source) !== `number`) {
+		throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`);
+	}
+	const result = source.valueOf();
+	return result;
+};
+
+/**
+ * Exports the number value.
+ * @returns {number} The exported number.
+ */
+Number.prototype.export = function () {
+	const result = this.valueOf();
+	return result;
+};
+//#endregion
+//#region Boolean
+/**
+ * Imports a boolean from the source.
+ * @param {unknown} source The source to import.
+ * @param {string} name The name of the source.
+ * @returns {boolean} The imported boolean.
+ * @throws {ReferenceError} If the source is undefined.
+ * @throws {TypeError} If the source is not a boolean.
+ */
+Boolean.import = function (source, name = `source`) {
+	if (source === undefined) {
+		throw new ReferenceError(`${name.replace(/^\w/, (part) => part.toUpperCase())} is not defined`);
+	}
+	if (typeof (source) !== `boolean`) {
+		throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`);
+	}
+	const result = source.valueOf();
+	return result;
+};
+
+/**
+ * Exports the boolean value.
+ * @returns {boolean} The exported boolean.
+ */
+Boolean.prototype.export = function () {
+	const result = this.valueOf();
+	return result;
+};
+//#endregion
+//#region String
+/**
+ * Imports a string from the source.
+ * @param {unknown} source The source to import.
+ * @param {string} name The name of the source.
+ * @returns {string} The imported string.
+ * @throws {ReferenceError} If the source is undefined.
+ * @throws {TypeError} If the source is not a string.
+ */
+String.import = function (source, name = `source`) {
+	if (source === undefined) {
+		throw new ReferenceError(`${name.replace(/^\w/, (part) => part.toUpperCase())} is not defined`);
+	}
+	if (typeof (source) !== `string`) {
+		throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`);
+	}
+	const result = source.valueOf();
+	return result;
+};
+
+/**
+ * Exports the string value.
+ * @returns {string} The exported string.
+ */
+String.prototype.export = function () {
+	const result = this.valueOf();
+	return result;
+};
+//#endregion
+//#region Object
+/**
+ * Imports an object from the source.
+ * @param {unknown} source The source to import.
+ * @param {string} name The name of the source.
+ * @returns {object} The imported object.
+ * @throws {ReferenceError} If the source is undefined.
+ * @throws {TypeError} If the source is not an object or is null.
+ */
+Object.import = function (source, name = `source`) {
+	if (source === undefined) {
+		throw new ReferenceError(`${name.replace(/^\w/, (part) => part.toUpperCase())} is not defined`);
+	}
+	if (typeof (source) !== `object`) {
+		throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`);
+	}
+	if (source === null) {
+		throw new TypeError(`Unable to import ${(name)} due it's ${typename(null)} type`);
+	}
+	const result = source.valueOf(); //TODO check
+	return result;
+};
+
+/**
+ * Exports the object value.
+ * @returns {object} The exported object.
+ */
+Object.prototype.export = function () {
+	const result = this.valueOf();
+	return result;
+};
+//#endregion
+//#region Array
+/**
+ * Imports an array from the source.
+ * @template {Function & { new(...args: any): any }} T
+ * @param {unknown} source The source to import.
+ * @param {T} type The type of the elements in the array.
+ * @param {string} name The name of the source.
+ * @returns {InstanceType<T>[]} The imported array.
+ * @throws {ReferenceError} If the source is undefined.
+ * @throws {TypeError} If the source is not an array or if any element cannot be imported.
+ */
+Array.import = function (source, type, name = `source`) {
+	if (source === undefined) {
+		throw new ReferenceError(`${name.replace(/^\w/, (part) => part.toUpperCase())} is not defined`);
+	}
+	if (!(source instanceof Array)) {
+		throw new TypeError(`Unable to import ${name} due it's ${typename(source)} type`);
+	}
+	const result = source.map((item, index) => {
+		try {
+			const result = type.import(item, `${name}[${index}]`);
+			if (!(result instanceof type)) {
+				throw new TypeError(`Unable to import ${name}[${index}] due it's ${typename(source)} type`);
+			}
+			return (/** @type {InstanceType<T>} */ (result));
+		} catch (error) {
+			throw new TypeError(`Unable to import ${name}[${index}] due it's ${typename(source)} type`, { cause: error }); //TODO check
+		}
+	});
+	return result;
+};
+
+/**
+ * Exports the array value.
+ * @returns {this[]} The exported array.
+ */
+Array.prototype.export = function () {
+	const result = this.map(item => item.export());
+	return result;
+};
+//#endregion
 //#region Math
 /**
  * Clamps a value between a minimum and maximum value.
@@ -60,7 +243,7 @@ Math.toSignedFactor = function (value, period) {
  * @param {() => T | PromiseLike<T>} action The action to execute.
  * @returns {Promise<T>} A promise that resolves with the result of the action.
  */
-Promise.constructor.prototype.fulfill = function (action) {
+Promise.fulfill = function (action) {
 	return new Promise((resolve, reject) => {
 		try {
 			resolve(action());
@@ -72,20 +255,22 @@ Promise.constructor.prototype.fulfill = function (action) {
 //#endregion
 //#region Error
 /**
- * Analyzes the error and returns a descriptive string.
- * @param {Error} error The error object to analyze.
- * @returns {string} A descriptive string representing the error.
- */
-Error.constructor.prototype.analyze = function (error) {
-	return error.stack ?? `${error.name}: ${error.message}`;
-};
-
-/**
  * @param {any} error The error object to generate.
  * @returns {Error} The generated error object.
  */
-Error.constructor.prototype.generate = function (error) {
+Error.generate = function (error) {
 	return error instanceof Error ? error : new Error(`Undefined error type`);
+};
+
+/**
+ * @returns {string}
+ */
+Error.prototype.toString = function () {
+	let text = this.stack ?? `${this.name}: ${this.message}`;
+	if (this.cause !== undefined) {
+		text += ` cause of:\n\r${Error.generate(this.cause)}`;
+	}
+	return text;
 };
 //#endregion
 //#region Element
@@ -246,12 +431,33 @@ Document.prototype.tryGetElements = function (type, selectors, strict = false) {
 };
 //#endregion
 //#region Window
+/**
+ * Gets the type name of a value.
+ * @param {unknown} value The value to get the type name of.
+ * @returns {string} The type name of the value.
+ */
+Window.prototype.typename = function (value) {
+	if (value === undefined) return `Undefined`;
+	else if (value === null) return `Null`;
+	else return value.constructor.name;
+};
+
 const dialogAlert = document.getElement(HTMLDialogElement, `dialog.pop-up.alert`);
 dialogAlert.addEventListener(`click`, (event) => {
 	if (event.target === dialogAlert) {
 		dialogAlert.close();
 	}
 });
+
+/**
+ * Retrieves the data path based on developer and application name metadata.
+ * @returns {string} The data path.
+ */
+Window.prototype.getDataPath = function () {
+	const developer = document.getElement(HTMLMetaElement, `meta[name="author"]`).content;
+	const title = document.getElement(HTMLMetaElement, `meta[name="application-name"]`).content;
+	return `${developer}.${title}`;
+};
 
 /**
  * Asynchronously displays an alert message.
@@ -456,7 +662,7 @@ Window.prototype.load = async function (promise, duration = 200, delay = 0) {
  * @returns {Promise<void>} A promise that resolves once the error handling is complete.
  */
 Window.prototype.stabilize = async function (error, reload = true) {
-	await window.alertAsync(Error.analyze(error), `Error`);
+	await window.alertAsync(error.toString(), `Error`);
 	if (reload) {
 		location.reload();
 	}

@@ -1,4 +1,124 @@
 /// <reference path="../Modules/Extensions.js" />
+/// (?<!throws )\{[\w<>\[\]]+\} 
+
+interface Function {
+	/**
+	 * Not implemented function to import source.
+	 * @param source The source to import.
+	 * @param name The name of the source.
+	 * @returns The imported value.
+	 * @throws {ReferenceError} If the function is called.
+	 */
+	import(source: unknown, name?: string): any;
+	/**
+	 * Not implemented function to export source.
+	 * @returns The exported value.
+	 * @throws {ReferenceError} If the function is called.
+	 */
+	export(): any;
+}
+
+interface NumberConstructor {
+	/**
+	 * Imports a number from the source.
+	 * @param source The source to import.
+	 * @param name The name of the source.
+	 * @returns The imported number.
+	 * @throws {ReferenceError} If the source is undefined.
+	 * @throws {TypeError} If the source is not a number.
+	 */
+	import(source: unknown, name?: string): number;
+}
+
+interface Number {
+	/**
+	 * Exports the number value.
+	 * @returns The exported number.
+	 */
+	export(): number;
+}
+
+interface BooleanConstructor {
+	/**
+	 * Imports a boolean from the source.
+	 * @param source The source to import.
+	 * @param name The name of the source.
+	 * @returns The imported boolean.
+	 * @throws {ReferenceError} If the source is undefined.
+	 * @throws {TypeError} If the source is not a boolean.
+	 */
+	import(source: unknown, name?: string): boolean;
+}
+
+interface Boolean {
+	/**
+	 * Exports the boolean value.
+	 * @returns The exported boolean.
+	 */
+	export(): boolean;
+}
+
+interface StringConstructor {
+	/**
+	 * Imports a string from the source.
+	 * @param source The source to import.
+	 * @param name The name of the source.
+	 * @returns The imported string.
+	 * @throws {ReferenceError} If the source is undefined.
+	 * @throws {TypeError} If the source is not a string.
+	 */
+	import(source: unknown, name?: string): string;
+}
+
+interface String {
+	/**
+	 * Exports the string value.
+	 * @returns The exported string.
+	 */
+	export(): string;
+}
+
+interface ObjectConstructor {
+	/**
+	 * Imports an object from the source.
+	 * @param source The source to import.
+	 * @param name The name of the source.
+	 * @returns The imported object.
+	 * @throws {ReferenceError} If the source is undefined.
+	 * @throws {TypeError} If the source is not an object or is null.
+	 */
+	import(source: unknown, name?: string): object;
+}
+
+interface Object {
+	/**
+	 * Exports the object value.
+	 * @returns The exported object.
+	 */
+	export(): object;
+}
+
+interface ArrayConstructor {
+	/**
+	 * Imports an array from the source.
+	 * @template T
+	 * @param source The source to import.
+	 * @param type The type of the elements in the array.
+	 * @param name The name of the source.
+	 * @returns The imported array.
+	 * @throws {ReferenceError} If the source is undefined.
+	 * @throws {TypeError} If the source is not an array or if any element cannot be imported.
+	 */
+	import<T extends Function & { new(...args: any): any; }>(source: unknown, type: T, name?: string): InstanceType<T>[];
+}
+
+interface Array<T extends Function> {
+	/**
+	 * Exports the array value.
+	 * @returns The exported array.
+	 */
+	export(): T[];
+}
 
 interface Math {
 	/**
@@ -48,16 +168,18 @@ interface PromiseConstructor {
 
 interface ErrorConstructor {
 	/**
-	 * Analyzes the error and returns a descriptive string.
-	 * @param error The error object to analyze.
-	 * @returns A descriptive string representing the error.
-	 */
-	analyze(error: Error): string;
-	/**
 	 * @param error The error object to generate.
 	 * @returns The generated error object.
 	 */
 	generate(error: any): Error;
+}
+
+interface Error {
+	/**
+	 * Returns a descriptive string.
+	 * @returns A descriptive string representing the error.
+	 */
+	toString(): string;
 }
 
 interface Element {
@@ -137,7 +259,7 @@ interface Document {
 	 * @param selectors The selectors to search for the element.
 	 * @param strict Whether to reject if the element is missing or has an invalid type.
 	 * @returns A promise that resolves to the element instance.
-	 * @throws {TypeError} {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
+	 * @throws {TypeError} If the element is missing or has an invalid type and strict mode is enabled.
 	 */
 	tryGetElement<T extends typeof Element>(type: T, selectors: string, strict?: boolean): Promise<InstanceType<T>>;
 	/**
@@ -162,6 +284,17 @@ interface Document {
 }
 
 interface Window {
+	/**
+	 * Gets the type name of a value.
+	 * @param value The value to get the type name of.
+	 * @returns The type name of the value.
+	 */
+	typename(value: unknown): string;
+	/**
+	 * Retrieves the data path based on developer and application name metadata.
+	 * @returns The data path.
+	 */
+	getDataPath(): string;
 	/**
 	 * Asynchronously displays an alert message.
 	 * @param message The message to display.
@@ -201,6 +334,17 @@ interface Window {
 	stabilize(error: Error, reload?: boolean): Promise<void>;
 }
 
+/**
+ * Gets the type name of a value.
+ * @param value The value to get the type name of.
+ * @returns The type name of the value.
+ */
+declare function typename(value: unknown): string;
+/**
+ * Retrieves the data path based on developer and application name metadata.
+ * @returns The data path.
+ */
+declare function getDataPath(): string;
 /**
  * Asynchronously displays an alert message.
  * @param message The message to display.

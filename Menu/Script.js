@@ -1,6 +1,6 @@
 "use strict";
 
-import { NotationContainer } from "../Scripts/Modules/Storage.js";
+import { ArchiveManager } from "../Scripts/Modules/Storage.js";
 import { Folder, Holder, Note, Settings, Sheet, pathFolder, pathMemory, pathSettings } from "../Scripts/Structure.js";
 
 try {
@@ -20,10 +20,11 @@ try {
 	const buttonDeleteSelection = dialogSheetActions.getElement(HTMLButtonElement, `button#delete-selection`);
 	//#endregion
 	//#region Controller
-	const settings = new NotationContainer(Settings, pathSettings).content;
+	const settings = new ArchiveManager(pathSettings, Settings).data;
 	document.documentElement.dataset[`theme`] = settings.theme;
-	const memory = new NotationContainer(Holder, pathMemory).content;
-	const notes = new NotationContainer(Folder, pathFolder).content.notes;
+	const memory = new ArchiveManager(pathMemory, Holder).data;
+	const folder = new ArchiveManager(pathFolder, Folder).data;
+	const notes = folder.notes;
 
 	class Controller {
 		/**
@@ -288,7 +289,7 @@ try {
 			const selection = controller.getSelection();
 			for (const current of selection) {
 				const sheet = notes[current].sheet;
-				navigator.download(new File([JSON.stringify(Sheet.export(sheet))], `${sheet.title}.json`));
+				navigator.download(new File([JSON.stringify(sheet.export())], `${sheet.title}.json`));
 			}
 			dialogSheetActions.close();
 		} catch (error) {
@@ -302,7 +303,7 @@ try {
 			await navigator.share({
 				files: selection.map((current) => {
 					const sheet = notes[current].sheet;
-					return new File([JSON.stringify(Sheet.export(sheet))], `${sheet.title}.json`);
+					return new File([JSON.stringify(sheet.export())], `${sheet.title}.json`);
 				}),
 				text: `Sharing with you ${notes.length} sheet(s). Use them in ${location.origin}${location.pathname}.`,
 				url: `${location.origin}${location.pathname}`,

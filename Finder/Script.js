@@ -1,6 +1,6 @@
 "use strict";
 
-import { NotationContainer } from "../Scripts/Modules/Storage.js";
+import { ArchiveManager } from "../Scripts/Modules/Storage.js";
 import { Holder, Poll, Settings, Sheet, pathMemory, pathSettings } from "../Scripts/Structure.js";
 
 try {
@@ -10,9 +10,9 @@ try {
 	const inputSearchField = document.getElement(HTMLInputElement, `input#search-field`);
 	//#endregion
 	//#region Controller
-	const settings = new NotationContainer(Settings, pathSettings).content;
+	const settings = new ArchiveManager(pathSettings, Settings).data;
 	document.documentElement.dataset[`theme`] = settings.theme;
-	const memory = new NotationContainer(Holder, pathMemory).content;
+	const memory = new ArchiveManager(pathMemory, Holder).data;
 
 	class Controller {
 		/**
@@ -29,16 +29,14 @@ try {
 				const divCases = divPoll.appendChild(document.createElement(`div`));
 				divCases.classList.add(`cases`);
 				{
-					for (let index = 0; index < poll.cases.length; index++) {
-						const $case = poll.cases[index];
-						const correctness = (index === poll.answer);
-						if (settings.incorrectCases || correctness) {
+					for (const $case of poll.cases) {
+						if ($case.correctness || settings.incorrectCases) {
 							const divCase = divCases.appendChild(document.createElement(`div`));
 							divCase.classList.add(`case`, `with-inline-gap`);
 							{
 								const spanCase = divCase.appendChild(document.createElement(`span`));
-								spanCase.textContent = $case;
-								spanCase.classList.add(correctness ? `highlight` : `invalid`);
+								spanCase.textContent = $case.text;
+								spanCase.classList.add($case.correctness ? `highlight` : `invalid`);
 								{ }
 							}
 						}
