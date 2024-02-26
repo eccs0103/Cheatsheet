@@ -1,6 +1,6 @@
 "use strict";
 
-import { NotationContainer } from "../Scripts/Modules/Storage.js";
+import { ArchiveManager } from "../Scripts/Modules/Storage.js";
 import { Settings, Themes, pathSettings } from "../Scripts/Structure.js";
 
 try {
@@ -13,8 +13,8 @@ try {
 	const buttonResetSettings = document.getElement(HTMLButtonElement, `button#reset-settings`);
 	//#endregion
 	//#region Controller
-	const containerSettings = new NotationContainer(Settings, pathSettings);
-	let settings = containerSettings.content;
+	const managerSettings = new ArchiveManager(pathSettings, Settings);
+	let settings = managerSettings.data;
 	document.documentElement.dataset[`theme`] = settings.theme;
 	//#endregion
 	//#region Main
@@ -49,8 +49,7 @@ try {
 	//#region Advanced
 	buttonResetSettings.addEventListener(`click`, async (event) => {
 		if (await window.confirmAsync(`The settings will be reset to factory defaults. Are you sure?`)) {
-			containerSettings.reset();
-			settings = containerSettings.content;
+			settings = managerSettings.reassemble();
 			selectDropdownTheme.value = settings.theme;
 			document.documentElement.dataset[`theme`] = settings.theme;
 			inputToggleIncorrectCases.checked = settings.incorrectCases;

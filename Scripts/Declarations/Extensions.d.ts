@@ -1,23 +1,6 @@
 /// <reference path="../Modules/Extensions.js" />
 /// (?<!throws )\{[\w<>\[\]]+\} 
 
-interface Function {
-	/**
-	 * Not implemented function to import source.
-	 * @param source The source to import.
-	 * @param name The name of the source.
-	 * @returns The imported value.
-	 * @throws {ReferenceError} If the function is called.
-	 */
-	import(source: unknown, name?: string): any;
-	/**
-	 * Not implemented function to export source.
-	 * @returns The exported value.
-	 * @throws {ReferenceError} If the function is called.
-	 */
-	export(): any;
-}
-
 interface NumberConstructor {
 	/**
 	 * Imports a number from the source.
@@ -78,6 +61,23 @@ interface String {
 	export(): string;
 }
 
+interface Function {
+	/**
+	 * Not implemented function to import source.
+	 * @param source The source to import.
+	 * @param name The name of the source.
+	 * @returns The imported value.
+	 * @throws {ReferenceError} If the function is called.
+	 */
+	import(source: unknown, name?: string): any;
+	/**
+	 * Not implemented function to export source.
+	 * @returns The exported value.
+	 * @throws {ReferenceError} If the function is called.
+	 */
+	export(): any;
+}
+
 interface ObjectConstructor {
 	/**
 	 * Imports an object from the source.
@@ -87,7 +87,7 @@ interface ObjectConstructor {
 	 * @throws {ReferenceError} If the source is undefined.
 	 * @throws {TypeError} If the source is not an object or is null.
 	 */
-	import(source: unknown, name?: string): object;
+	import(source: unknown, name?: string): Object;
 }
 
 interface Object {
@@ -95,21 +95,19 @@ interface Object {
 	 * Exports the object value.
 	 * @returns The exported object.
 	 */
-	export(): object;
+	export(): Object;
 }
 
 interface ArrayConstructor {
 	/**
 	 * Imports an array from the source.
-	 * @template T
 	 * @param source The source to import.
-	 * @param type The type of the elements in the array.
 	 * @param name The name of the source.
 	 * @returns The imported array.
 	 * @throws {ReferenceError} If the source is undefined.
 	 * @throws {TypeError} If the source is not an array or if any element cannot be imported.
 	 */
-	import<T extends Function & { new(...args: any): any; }>(source: unknown, type: T, name?: string): InstanceType<T>[];
+	import(source: unknown, name?: string): any[];
 }
 
 interface Array<T extends Function> {

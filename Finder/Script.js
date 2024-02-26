@@ -124,7 +124,7 @@ try {
 	h3SheetTitle.textContent = controller.title;
 	//#endregion
 	//#region Main
-	await window.load(controller.initialize());
+	await window.load(controller.initialize(), 100, 500);
 	//#endregion
 	//#region Footer
 	await controller.filter(inputSearchField.value);

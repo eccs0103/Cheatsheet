@@ -2,29 +2,6 @@
 
 "use strict";
 
-import { ArchiveManager } from "./Storage.js";
-
-//#region Function
-/**
- * Not implemented function to import source.
- * @param {unknown} source The source to import.
- * @param {string} name The name of the source.
- * @returns {any} The imported value.
- * @throws {ReferenceError} If the function is called.
- */
-Function.prototype.import = function (source, name = `source`) {
-	throw new ReferenceError(`Not implemented function`);
-};
-
-/**
- * Not implemented function to export source.
- * @returns {any} The exported value.
- * @throws {ReferenceError} If the function is called.
- */
-Function.prototype.export = function () {
-	throw new ReferenceError(`Not implemented function`);
-};
-//#endregion
 //#region Number
 /**
  * Imports a number from the source.
@@ -112,12 +89,33 @@ String.prototype.export = function () {
 	return result;
 };
 //#endregion
+//#region Function
+/**
+ * Not implemented function to import source.
+ * @param {unknown} source The source to import.
+ * @param {string} name The name of the source.
+ * @returns {any} The imported value.
+ * @throws {ReferenceError} If the function is called.
+ */
+Function.prototype.import = function (source, name = `source`) {
+	throw new ReferenceError(`Not implemented function`);
+};
+
+/**
+ * Not implemented function to export source.
+ * @returns {any} The exported value.
+ * @throws {ReferenceError} If the function is called.
+ */
+Function.prototype.export = function () {
+	throw new ReferenceError(`Not implemented function`);
+};
+//#endregion
 //#region Object
 /**
  * Imports an object from the source.
  * @param {unknown} source The source to import.
  * @param {string} name The name of the source.
- * @returns {object} The imported object.
+ * @returns {Object} The imported object.
  * @throws {ReferenceError} If the source is undefined.
  * @throws {TypeError} If the source is not an object or is null.
  */
@@ -137,7 +135,7 @@ Object.import = function (source, name = `source`) {
 
 /**
  * Exports the object value.
- * @returns {object} The exported object.
+ * @returns {Object} The exported object.
  */
 Object.prototype.export = function () {
 	const result = this.valueOf();
@@ -147,32 +145,20 @@ Object.prototype.export = function () {
 //#region Array
 /**
  * Imports an array from the source.
- * @template {Function & { new(...args: any): any }} T
  * @param {unknown} source The source to import.
- * @param {T} type The type of the elements in the array.
  * @param {string} name The name of the source.
- * @returns {InstanceType<T>[]} The imported array.
+ * @returns {any[]} The imported array.
  * @throws {ReferenceError} If the source is undefined.
  * @throws {TypeError} If the source is not an array or if any element cannot be imported.
  */
-Array.import = function (source, type, name = `source`) {
+Array.import = function (source, name = `source`) {
 	if (source === undefined) {
 		throw new ReferenceError(`${name.replace(/^\w/, (part) => part.toUpperCase())} is not defined`);
 	}
 	if (!(source instanceof Array)) {
 		throw new TypeError(`Unable to import ${name} due it's ${typename(source)} type`);
 	}
-	const result = source.map((item, index) => {
-		try {
-			const result = type.import(item, `${name}[${index}]`);
-			if (!(result instanceof type)) {
-				throw new TypeError(`Unable to import ${name}[${index}] due it's ${typename(source)} type`);
-			}
-			return (/** @type {InstanceType<T>} */ (result));
-		} catch (error) {
-			throw new TypeError(`Unable to import ${name}[${index}] due it's ${typename(source)} type`, { cause: error }); //TODO check
-		}
-	});
+	const result = Array.from(source);
 	return result;
 };
 

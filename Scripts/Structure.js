@@ -158,14 +158,31 @@ class Poll {
 		try {
 			const shell = Object.import(source);
 			const question = String.import(shell[`question`], `property question`);
-			const cases = Array.import(shell[`cases`], Case, `property cases`);
+			const cases = Array.import(shell[`cases`], `property cases`).map((item, index) => Case.import(item, `property cases[${(index)}]`));
 
 			const result = new Poll();
 			result.question = question;
 			result.#cases = cases;
 			return result;
 		} catch (error) {
-			throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
+			try {
+				const shell = Object.import(source);
+				const question = String.import(shell[`question`], `property question`);
+				const answer = Number.import(shell[`answer`], `property answer`);
+				const texts = Array.import(shell[`cases`], `property cases`).map((item, index) => String.import(item, `property cases[${(index)}]`));
+
+				const result = new Poll();
+				result.question = question;
+				result.#cases = texts.map((text, index) => {
+					const $case = new Case();
+					$case.text = text.valueOf();
+					$case.correctness = (index === answer);
+					return $case;
+				});
+				return result;
+			} catch (error) {
+				throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
+			}
 		}
 	}
 	/**
@@ -206,7 +223,7 @@ class Sheet {
 		try {
 			const shell = Object.import(source);
 			const title = String.import(shell[`title`], `property title`);
-			const polls = Array.import(shell[`polls`], Poll, `property polls`);
+			const polls = Array.import(shell[`polls`], `property polls`).map((item, index) => Poll.import(item, `property polls[${(index)}]`));
 
 			const result = new Sheet();
 			result.title = title;
@@ -309,7 +326,7 @@ class Folder {
 	static import(source, name = `source`) {
 		try {
 			const shell = Object.import(source);
-			const notes = Array.import(shell[`notes`], Note, `property notes`);
+			const notes = Array.import(shell[`notes`], `property notes`).map((item, index) => Note.import(item, `property notes[${(index)}]`));
 
 			const result = new Folder();
 			result.#notes = notes;
