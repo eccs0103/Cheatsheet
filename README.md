@@ -3,24 +3,60 @@ A program for solving tests.
 - - -
 ## Guide
 To use the program, a sheet is required. The sheet must be a JSON file with the following structure:
-```js
+```ts
+interface Sheet {
+	title: String;
+	polls: Poll[];
+}
+
+interface Poll {
+	question: String;
+	cases: Case;
+}
+
+interface Case {
+	text: String;
+	correctness: Boolean;
+}
+```
+Example of a valid JSON structure:
+```json
 {
-	"title": String,
-	"polls": Array<{
-		"question": String,
-		"answer": Number,
-		"cases": String | Array<String>,
-	}>,
+	"title": "Sheet title",
+	"polls": [
+		{
+			"question": "Question 1",
+			"cases": [
+				{ "text": "Answer 1 for question 1", "correctness": true },
+				{ "text": "Answer 2 for question 1", "correctness": false },
+				{ "text": "Answer 3 for question 1", "correctness": true },
+				{ "text": "Answer 4 for question 1", "correctness": false }
+			]
+		},
+		{
+			"question": "Question 2",
+			"cases": [
+				{ "text": "Answer 1 for question 2", "correctness": true },
+				{ "text": "Answer 2 for question 2", "correctness": false },
+				{ "text": "Answer 3 for question 2", "correctness": false },
+				{ "text": "Answer 4 for question 2", "correctness": false },
+				{ "text": "Answer 5 for question 2", "correctness": true },
+				{ "text": "Answer 6 for question 2", "correctness": false }
+			]
+		}
+	]
 }
 ```
 ...and can be loaded from the device or imported using a link.
 - - -
 ## Feed
-### Update 2.0.0 (24.02.2024) : AWT 2.5.2
+### Update 2.0.0 (24.02.2024) : Adaptive Core 2.6.0
 - Core updated.
 - Processes accelerated with asynchronous operations.
 - Website structure improved.
 - Image preloading added.
+- Multiple correct answer support added in polls.
+- New sheet format utilized. Old format will be automatically converted to the new one.
 
 ### Update 1.3.5 (13.04.2023)
 - Improved list validation.
