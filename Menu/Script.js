@@ -289,7 +289,10 @@ try {
 			const selection = controller.getSelection();
 			for (const current of selection) {
 				const sheet = notes[current].sheet;
-				navigator.download(new File([JSON.stringify(sheet.export())], `${sheet.title}.json`));
+				navigator.download(new File([
+					JSON.stringify(sheet.export(), undefined, `\t`)
+						.replace(/(\{)\n\s*("text": .+)\n\s*("correctness": .+)\n\s*(\})/g, `$1 $2 $3 $4`)
+				], `${sheet.title}.json`));
 			}
 			dialogSheetActions.close();
 		} catch (error) {
@@ -310,7 +313,7 @@ try {
 			});
 			dialogSheetActions.close();
 		} catch (error) {
-			await window.stabilize(Error.generate(error));
+			await window.alertAsync(`${Error.generate(error)}`, `Warning`);
 		}
 	});
 
