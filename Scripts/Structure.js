@@ -106,12 +106,9 @@ class Case {
 	static import(source, name = `source`) {
 		try {
 			const shell = Object.import(source);
-			const text = String.import(shell[`text`], `property text`);
-			const correctness = Boolean.import(shell[`correctness`], `property correctness`);
-
 			const result = new Case();
-			result.text = text;
-			result.correctness = correctness;
+			result.text = String.import(shell[`text`], `property text`);
+			result.correctness = Boolean.import(shell[`correctness`], `property correctness`);
 			return result;
 		} catch (error) {
 			throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
@@ -126,14 +123,22 @@ class Case {
 			correctness: this.correctness,
 		};
 	}
-	/** @type {string} */ #text = ``;
+	/**
+	 * @param {string} text 
+	 * @param {boolean} correctness 
+	 */
+	constructor(text = ``, correctness = false) {
+		this.#text = text;
+		this.#correctness = correctness;
+	}
+	/** @type {string} */ #text;
 	get text() {
 		return this.#text;
 	}
 	set text(value) {
 		this.#text = value;
 	}
-	/** @type {boolean} */ #correctness = false;
+	/** @type {boolean} */ #correctness;
 	get correctness() {
 		return this.#correctness;
 	}
@@ -154,36 +159,55 @@ class Poll {
 	 * @param {unknown} source 
 	 * @returns {Poll}
 	 */
+	static #import1(source, name = `source`) {
+		const shell = Object.import(source);
+		const result = new Poll();
+		result.question = String.import(shell[`question`], `property question`);
+		result.#cases = Array.import(shell[`cases`], `property cases`)
+			.map((item, index) => Case.import(item, `property cases[${(index)}]`));
+		return result;
+	}
+	/**
+	 * @param {unknown} source 
+	 * @returns {Poll}
+	 */
+	static #import2(source, name = `source`) {
+		const shell = Object.import(source);
+		const result = new Poll();
+		result.question = String.import(shell[`question`], `property question`);
+		const answer = Number.import(shell[`answer`], `property answer`);
+		result.#cases = Array.import(shell[`cases`], `property cases`)
+			.map((item, index) => new Case(String.import(item, `property cases[${(index)}]`), index === answer));
+		return result;
+	}
+	/**
+	 * @param {unknown} source 
+	 * @returns {Poll}
+	 */
+	static #import3(source, name = `source`) {
+		const shell = Object.import(source);
+		const result = new Poll();
+		const answer = Number.import(shell[`answer`], `property answer`);
+		result.question = String.import(shell[`question`], `property question`);
+		result.cases.push(new Case(String.import(shell[`cases`], `property cases`), (0 === answer)));
+		return result;
+	}
+	/**
+	 * @param {unknown} source 
+	 * @param {string} name 
+	 * @returns {Poll}
+	 */
 	static import(source, name = `source`) {
-		try {
-			const shell = Object.import(source);
-			const question = String.import(shell[`question`], `property question`);
-			const cases = Array.import(shell[`cases`], `property cases`).map((item, index) => Case.import(item, `property cases[${(index)}]`));
-
-			const result = new Poll();
-			result.question = question;
-			result.#cases = cases;
-			return result;
-		} catch (error) {
+		let cause;
+		for (const method of [Poll.#import1, Poll.#import2, Poll.#import3]) {
 			try {
-				const shell = Object.import(source);
-				const question = String.import(shell[`question`], `property question`);
-				const answer = Number.import(shell[`answer`], `property answer`);
-				const texts = Array.import(shell[`cases`], `property cases`).map((item, index) => String.import(item, `property cases[${(index)}]`));
-
-				const result = new Poll();
-				result.question = question;
-				result.#cases = texts.map((text, index) => {
-					const $case = new Case();
-					$case.text = text.valueOf();
-					$case.correctness = (index === answer);
-					return $case;
-				});
-				return result;
+				return method(source, name);
 			} catch (error) {
-				throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
+				cause = error;
+				continue;
 			}
 		}
+		throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: cause });
 	}
 	/**
 	 * @returns {PollNotation}
@@ -222,12 +246,10 @@ class Sheet {
 	static import(source, name = `source`) {
 		try {
 			const shell = Object.import(source);
-			const title = String.import(shell[`title`], `property title`);
-			const polls = Array.import(shell[`polls`], `property polls`).map((item, index) => Poll.import(item, `property polls[${(index)}]`));
-
 			const result = new Sheet();
-			result.title = title;
-			result.#polls = polls;
+			result.title = String.import(shell[`title`], `property title`);
+			result.#polls = Array.import(shell[`polls`], `property polls`)
+				.map((item, index) => Poll.import(item, `property polls[${(index)}]`));
 			return result;
 		} catch (error) {
 			throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
@@ -270,10 +292,10 @@ class Note {
 	static import(source, name = `source`) {
 		try {
 			const shell = Object.import(source);
-			const date = new Date(Number.import(shell[`date`], `property date`));
-			const sheet = Sheet.import(shell[`sheet`], `property sheet`);
-
-			const result = new Note(date, sheet);
+			const result = new Note(
+				new Date(Number.import(shell[`date`], `property date`)),
+				Sheet.import(shell[`sheet`], `property sheet`)
+			);
 			return result;
 		} catch (error) {
 			throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
@@ -326,10 +348,9 @@ class Folder {
 	static import(source, name = `source`) {
 		try {
 			const shell = Object.import(source);
-			const notes = Array.import(shell[`notes`], `property notes`).map((item, index) => Note.import(item, `property notes[${(index)}]`));
-
 			const result = new Folder();
-			result.#notes = notes;
+			result.#notes = Array.import(shell[`notes`], `property notes`)
+				.map((item, index) => Note.import(item, `property notes[${(index)}]`));
 			return result;
 		} catch (error) {
 			throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
@@ -364,10 +385,8 @@ class Holder {
 	static import(source, name = `source`) {
 		try {
 			const shell = Object.import(source);
-			const sheet = shell[`sheet`] === null ? null : Sheet.import(shell[`sheet`], `property sheet`);
-
 			const result = new Holder();
-			result.sheet = sheet;
+			result.sheet = shell[`sheet`] === null ? null : Sheet.import(shell[`sheet`], `property sheet`);
 			return result;
 		} catch (error) {
 			throw new TypeError(`Unable to import ${(name)} due it's ${typename(source)} type`, { cause: error });
@@ -391,9 +410,10 @@ class Holder {
 }
 //#endregion
 
-const pathSettings = `${window.getDataPath()}.Settings`;
-const pathFolder = `${window.getDataPath()}.Folder`;
-const pathMemory = `${window.getDataPath()}.Memory`;
-const pathConstruct = `${window.getDataPath()}.Construct`;
+const pathData = window.getDataPath();
+const pathSettings = `${pathData}.Settings`;
+const pathFolder = `${pathData}.Folder`;
+const pathMemory = `${pathData}.Memory`;
+const pathConstruct = `${pathData}.Construct`;
 
 export { Themes, Settings, Case, Poll, Sheet, Note, Folder, Holder, pathSettings, pathFolder, pathMemory, pathConstruct };
