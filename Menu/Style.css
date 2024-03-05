@@ -112,8 +112,8 @@ input[id^="toggle-mark-"]:checked + label[for^="toggle-mark-"] > img.icon {
 
 div.float-section {
 	position: absolute;
-	right: var(--size-gap);
-	bottom: var(--size-gap);
+	right: var(--size-large-gap);
+	bottom: var(--size-large-gap);
 	width: fit-content;
 	height: fit-content;
 	border-radius: 50vmin;

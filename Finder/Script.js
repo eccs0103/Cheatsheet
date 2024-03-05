@@ -10,9 +10,9 @@ try {
 	const inputSearchField = document.getElement(HTMLInputElement, `input#search-field`);
 	//#endregion
 	//#region Controller
-	const settings = new ArchiveManager(pathSettings, Settings).data;
-	document.documentElement.dataset[`theme`] = settings.theme;
-	const memory = new ArchiveManager(pathMemory, Holder).data;
+	const settings = (await ArchiveManager.construct(pathSettings, Settings)).data;
+	navigator.colorScheme = settings.theme;
+	const memory = (await ArchiveManager.construct(pathMemory, Holder)).data;
 
 	class Controller {
 		/**

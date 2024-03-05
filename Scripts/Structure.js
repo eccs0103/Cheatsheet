@@ -410,7 +410,7 @@ class Holder {
 }
 //#endregion
 
-const pathData = window.getDataPath();
+const pathData = navigator.getDataPath();
 const pathSettings = `${pathData}.Settings`;
 const pathFolder = `${pathData}.Folder`;
 const pathMemory = `${pathData}.Memory`;

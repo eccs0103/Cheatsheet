@@ -13,9 +13,9 @@ try {
 	const buttonResetSettings = document.getElement(HTMLButtonElement, `button#reset-settings`);
 	//#endregion
 	//#region Controller
-	const managerSettings = new ArchiveManager(pathSettings, Settings);
+	const managerSettings = (await ArchiveManager.construct(pathSettings, Settings));
 	let settings = managerSettings.data;
-	document.documentElement.dataset[`theme`] = settings.theme;
+	navigator.colorScheme = settings.theme;
 	//#endregion
 	//#region Main
 	//#region View
@@ -49,7 +49,8 @@ try {
 	//#region Advanced
 	buttonResetSettings.addEventListener(`click`, async (event) => {
 		if (await window.confirmAsync(`The settings will be reset to factory defaults. Are you sure?`)) {
-			settings = managerSettings.reassemble();
+			managerSettings.reassemble();
+			settings = managerSettings.data;
 			selectDropdownTheme.value = settings.theme;
 			document.documentElement.dataset[`theme`] = settings.theme;
 			inputToggleIncorrectCases.checked = settings.incorrectCases;

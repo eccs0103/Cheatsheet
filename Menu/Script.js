@@ -20,10 +20,10 @@ try {
 	const buttonDeleteSelection = dialogSheetActions.getElement(HTMLButtonElement, `button#delete-selection`);
 	//#endregion
 	//#region Controller
-	const settings = new ArchiveManager(pathSettings, Settings).data;
-	document.documentElement.dataset[`theme`] = settings.theme;
-	const memory = new ArchiveManager(pathMemory, Holder).data;
-	const folder = new ArchiveManager(pathFolder, Folder).data;
+	const settings = (await ArchiveManager.construct(pathSettings, Settings)).data;
+	navigator.colorScheme = settings.theme;
+	const memory = (await ArchiveManager.construct(pathMemory, Holder)).data;
+	const folder = (await ArchiveManager.construct(pathFolder, Folder)).data;
 	const notes = folder.notes;
 
 	class Controller {
