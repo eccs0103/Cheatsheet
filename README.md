@@ -4,9 +4,9 @@ A program for solving tests.
 ## Guide
 To use the program, a sheet is required. The sheet must be a JSON file with the following structure:
 ```ts
-interface Sheet {
-	title: String;
-	polls: Poll[];
+interface Case {
+	text: String;
+	correctness: Boolean;
 }
 
 interface Poll {
@@ -14,9 +14,9 @@ interface Poll {
 	cases: Case;
 }
 
-interface Case {
-	text: String;
-	correctness: Boolean;
+interface Sheet {
+	title: String;
+	polls: Poll[];
 }
 ```
 Example of a valid JSON structure:
