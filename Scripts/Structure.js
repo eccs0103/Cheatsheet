@@ -125,6 +125,19 @@ class Case {
 	}
 	/**
 	 * @param {string} text 
+	 * @returns {CaseNotation}
+	 */
+	static parse(text) {
+		const match = /^(\d+)\.\s*(.+)$/.exec(text);
+		if (match === null) throw new SyntaxError(`Unable to parse case from '${(text)}'`);
+		const [, correctness, $text] = match;
+		return {
+			text: $text,
+			correctness: Boolean(Number(correctness)),
+		};
+	}
+	/**
+	 * @param {string} text 
 	 * @param {boolean} correctness 
 	 */
 	constructor(text = ``, correctness = false) {
@@ -218,6 +231,20 @@ class Poll {
 			cases: this.cases.map(item => item.export()),
 		};
 	}
+	/**
+	 * @param {string} text 
+	 * @returns {PollNotation}
+	 */
+	static parse(text) {
+		const match = /^([^\n]+)\n([^]+)$/m.exec(text);
+		if (match === null) throw new SyntaxError(`Unable to parse poll from '${(text)}'`);
+		const [, question, content] = match;
+		const cases = content.split(/\n/).map(part => Case.parse(part.trim()));
+		return {
+			question: question.trim(),
+			cases: cases,
+		};
+	}
 	/** @type {string} */ #question = ``;
 	get question() {
 		return this.#question;
@@ -262,6 +289,17 @@ class Sheet {
 		return {
 			title: this.title,
 			polls: this.polls.map(item => item.export()),
+		};
+	}
+	/**
+	 * @param {string} text 
+	 * @returns {SheetNotation}
+	 */
+	static parse(text) {
+		const polls = text.split(/\n\s*\n/m).map(part => Poll.parse(part.trim()));
+		return {
+			title: ``,
+			polls: polls,
 		};
 	}
 	/** @type {string} */ #title = ``;

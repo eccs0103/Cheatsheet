@@ -292,7 +292,7 @@ try {
 				navigator.download(new File([
 					JSON.stringify(sheet.export(), undefined, `\t`)
 						.replace(/(\{)\n\s*("text": .+)\n\s*("correctness": .+)\n\s*(\})/g, `$1 $2 $3 $4`)
-				], `${sheet.title}.json`));
+				], `${sheet.title.replaceVoid(`Untitled`)}.json`));
 			}
 			dialogSheetActions.close();
 		} catch (error) {
@@ -306,7 +306,7 @@ try {
 			await navigator.share({
 				files: selection.map((current) => {
 					const sheet = notes[current].sheet;
-					return new File([JSON.stringify(sheet.export())], `${sheet.title}.json`);
+					return new File([JSON.stringify(sheet.export())], `${sheet.title.replaceVoid(`Untitled`)}.json`);
 				}),
 				text: `Sharing with you ${notes.length} sheet(s). Use them in ${location.origin}${location.pathname}.`,
 				url: `${location.origin}${location.pathname}`,
