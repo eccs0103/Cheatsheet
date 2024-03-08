@@ -147,7 +147,10 @@ Object.import = function (source, name = `source`) {
 	if (source === null) {
 		throw new TypeError(`Unable to import ${(name)} due it's ${typename(null)} type`);
 	}
-	const result = source.valueOf(); //TODO check
+	/**
+	 * @todo Check
+	 */
+	const result = source.valueOf();
 	return result;
 };
 
@@ -182,6 +185,7 @@ Array.import = function (source, name = `source`) {
 
 /**
  * Exports the array value.
+* @todo Check
  * @returns {this[]} The exported array.
  */
 Array.prototype.export = function () {
@@ -510,7 +514,6 @@ dialogConfirm.addEventListener(`click`, (event) => {
  * @param {string} title The title of the confirmation dialog.
  * @returns {Promise<boolean>} A promise that resolves to true if the user confirms, and false otherwise.
  */
-// @ts-ignore
 Window.prototype.confirmAsync = function (message = ``, title = `Message`) {
 	dialogConfirm.showModal();
 	//#region Header
@@ -576,7 +579,6 @@ dialogPrompt.addEventListener(`click`, (event) => {
  * @param {string} title The title of the prompt dialog.
  * @returns {Promise<string?>} A promise that resolves to the user's input value if accepted, or null if canceled.
  */
-// @ts-ignore
 Window.prototype.promptAsync = function (message = ``, _default = ``, title = `Message`) {
 	dialogPrompt.showModal();
 	//#region Header
@@ -815,7 +817,8 @@ class Application {
 			version: this.version.toString(),
 		};
 	}
-	/** @type {VersionManager} */ #version = new VersionManager();
+	/** @type {VersionManager} */
+	#version = new VersionManager();
 	get version() {
 		return this.#version;
 	}
