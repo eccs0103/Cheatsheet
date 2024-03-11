@@ -135,6 +135,9 @@ try {
 			await window.stabilize(Error.generate(error));
 		}
 	});
+	window.addEventListener(`focusin`, (event) => {
+		inputSearchField.focus();
+	});
 	//#endregion
 } catch (error) {
 	await window.stabilize(Error.generate(error));

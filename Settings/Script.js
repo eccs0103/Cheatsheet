@@ -27,7 +27,7 @@ try {
 	selectDropdownTheme.value = settings.theme;
 	selectDropdownTheme.addEventListener(`change`, (event) => {
 		settings.theme = selectDropdownTheme.value;
-		document.documentElement.dataset[`theme`] = settings.theme;
+		navigator.colorScheme = settings.theme;
 	});
 	//#endregion
 	//#region Search
